@@ -11,9 +11,9 @@ using namespace std;
 // variables to keep track of their dimensions. These are all global variables
 // so they can be shared for all the functions but it would make more senese if
 // they were included as a structure or object.
-static int matrix_1[10][10];
-static int matrix_2[10][10];
-static int result_matrix[10][10];
+static float matrix_1[10][10];
+static float matrix_2[10][10];
+static float result_matrix[10][10];
 static int matrix_1_rows;
 static int matrix_1_cols;
 static int matrix_2_rows;
@@ -21,7 +21,7 @@ static int matrix_2_cols;
 static int result_matrix_rows;
 static int result_matrix_cols;
 
-void print_matrix(int matrix[][10], int matrix_num) {
+void print_matrix(float matrix_1[][10], int matrix_num) {
 	int row_num;
 	int col_num;
 	switch (matrix_num) {
@@ -39,14 +39,14 @@ void print_matrix(int matrix[][10], int matrix_num) {
 			break;
 		}
 		default : {
-			cout << "Bad matrix print choice." << endl;
+			cout << "Bad matrix_1 print choice." << endl;
 			return;
 		}
 	}
 
     for (int row_index=0; row_index < row_num; row_index++) {
         for (int col_index=0; col_index < col_num; col_index++) {
-            cout << matrix[row_index][col_index] << "\t";
+            cout << matrix_1[row_index][col_index] << "\t";
         }
         cout << endl;
     }
@@ -65,7 +65,7 @@ void create_matrix(int matrix_num) {
             cout << "To many rows entered." << endl;
         }
         if ( row_count < 1 ) {
-            cout << "Matrix must have 1 or more rows." << endl;
+            cout << "matrix_1 must have 1 or more rows." << endl;
         }
     }
     while ( col_count > 10 ) {
@@ -75,11 +75,11 @@ void create_matrix(int matrix_num) {
             cout << "To many columns entered." << endl;
         }
         if ( col_count < 1 ) {
-            cout << "Matrix must have 1 or more columns." << endl;
+            cout << "matrix_1 must have 1 or more columns." << endl;
         }
     }
 
-    cout << "Enter matrix element values:" << endl;
+    cout << "Enter matrix_1 element values:" << endl;
     // Fill row and column values
 
     switch (matrix_num) {
@@ -102,7 +102,7 @@ void create_matrix(int matrix_num) {
 		    }
 		    break;
     	} default : {
-    		cout << "Bad matrix creation number choice." << endl;
+    		cout << "Bad matrix_1 creation number choice." << endl;
     		return;
     	}
     }
@@ -127,7 +127,7 @@ int add_sub_matrices(bool sub=false) {
 				result_matrix[row_index][col_index] = matrix_1[row_index][col_index] + mult * matrix_2[row_index][col_index];
 			}
 		}
-		// Same size so just use one matrix dimensions.
+		// Same size so just use one matrix_1 dimensions.
 		result_matrix_rows = matrix_2_rows;
 		result_matrix_cols = matrix_2_cols;
 		cout << "The result is:" << endl;
@@ -143,7 +143,7 @@ int add_sub_matrices(bool sub=false) {
 int multiply_matrices() {
 	// Check if multiplication possible.
 	if ( matrix_1_cols == matrix_2_rows ) {
-		// First matrix iteration.
+		// First matrix_1 iteration.
 		for (int row_index=0; row_index < matrix_1_rows; row_index++) {
 			// Store sum value of row by column multiplication.
 			for (int col_index_2=0; col_index_2 < matrix_2_cols; col_index_2++) {
@@ -162,9 +162,112 @@ int multiply_matrices() {
 		print_matrix(result_matrix, 3);
 		return 0;
 	} else {
-		cout << "First matrix column count must match second matrix row count." << endl;
+		cout << "First matrix_1 column count must match second matrix_1 row count." << endl;
 		return 1;
 	}
+}
+
+
+void transpose_matrix() {
+	// Iterate through columns and then rows. Similar to reassigning
+	// col_index and row_index to each other's values.
+	for ( int col_index=0; col_index < matrix_1_cols; col_index++ ) {
+		// Reintialize to fill new row values through each column index.
+		for ( int row_index=0; row_index < matrix_1_rows; row_index++ ) {
+			result_matrix[col_index][row_index] = matrix_1[row_index][col_index];
+		}
+		// Assign row values to row in matrix_t.
+	}
+	// Opposite dimensions
+	result_matrix_rows = matrix_1_cols;
+	result_matrix_cols = matrix_1_rows;
+	return;
+}
+
+
+int get_determinant_3x3() {
+	// Ensure that the passed matrix_1 is a 3x3 matrix_1.
+	// Might make sense to have this check before the function
+	// to save the user time.
+	float det;
+	if ( matrix_1_rows == 3 && matrix_1_cols == 3 ) {
+		// Since we're restricting input to 3x3 this is just a very blunt equation.
+		det = (
+			matrix_1[0][0] * (matrix_1[1][1] * matrix_1[2][2] - matrix_1[1][2] * matrix_1[2][1])
+		) - (
+			matrix_1[0][1] * (matrix_1[1][0] * matrix_1[2][2] - matrix_1[1][2] * matrix_1[2][0])
+		) + (
+			matrix_1[0][2] * (matrix_1[1][0] * matrix_1[2][1] - matrix_1[1][1] * matrix_1[2][0])
+		);
+		// It makes more sense for some of these print statements to be called
+		// outside the function howerver I'm avoiding dupicate prints on bad
+		// user input. The else statement should really be handled as an
+		// exception instead.
+		cout << "The result is: " << det << endl;
+	} else {
+		cout << "This operation only supports 3x3 matrices." << endl;
+	}
+	return det;
+}
+
+
+void get_inverse_3x3() {
+	// Ensure that the passed matrix_1 is a 3x3 matrix_1.
+	// Might make sense to have this check before the function
+	// to save the user time.
+	if ( matrix_1_rows == 3 && matrix_1_cols == 3 ) {
+		// Calculate 3x3 adjoint of input matrix_1.
+		int row_offset_1;
+		int row_offset_2;
+		int col_offset_1;
+		int col_offset_2;
+		int coeff = 1;
+		float det;
+		det = get_determinant_3x3();
+
+		// Calculate the adjoint of the matrix_1 over the determinant and transpose.
+		// http://www.mathwords.com/a/adjoint.htm
+		// http://www.purplemath.com/modules/mtrxinvr.htm
+		for (int row = 0; row < matrix_1_cols; row++) {
+
+			// Offsets values for cross mult.
+			row_offset_1 = row - 1;
+			row_offset_2 = row + 1;
+			if (row_offset_1 < 0) {
+				row_offset_1 = 1;
+				row_offset_2 = row_offset_1 + 1;
+			} else if (row_offset_2 >= matrix_1_cols) {
+				row_offset_1 = 0;
+				row_offset_2 = row_offset_1 + 1;
+			}
+			for (int col = 0; col < matrix_1_rows; col++) {
+				// Offsets values for cross mult.
+				col_offset_1 = col - 1;
+				col_offset_2 = col + 1;
+				if (col_offset_1 < 0) {
+					col_offset_1 = 1;
+					col_offset_2 = col_offset_1 + 1;
+				} else if (col_offset_2 >= matrix_1_cols) {
+					col_offset_1 = 0;
+					col_offset_2 = col_offset_1 + 1;
+				}
+				// In my vectors version I had it call the traspose code but
+				// it makes more sense just to swap the column and row values
+				// here like this.
+				result_matrix[col][row] = coeff/det * (matrix_1[row_offset_1][col_offset_1] * matrix_1[row_offset_2][col_offset_2] - matrix_1[row_offset_1][col_offset_2] * matrix_1[row_offset_2][col_offset_1]);
+				// Toggle +- coeffecient.
+				coeff *= -1;
+			}
+		}
+		// Same size matrix if 3x3.
+		result_matrix_rows = matrix_1_cols;
+		result_matrix_cols = matrix_1_rows;
+		cout << "The result is:" << endl;
+		print_matrix(result_matrix, 3);
+	} else {
+		cout << "This operation only supports 3x3 matrices." << endl;
+	}
+	return;
 }
 
 
@@ -184,6 +287,7 @@ int main() {
 		cout << "Enter your choice: ";
 
 		cin >> menu_selection;
+		// Menu selection for matrix_1 operations.
 		switch(menu_selection) {
 			case 1 : {
 				create_matrix(1);
@@ -216,27 +320,36 @@ int main() {
 			}
 			case 3 : {
 				create_matrix(1);
+				cout << "Your input is:" << endl;
+				print_matrix(matrix_1, 1);
 				create_matrix(2);
+				cout << "Your input is:" << endl;
+				print_matrix(matrix_2, 2);
 				multiply_matrices();
 				break;
 			}
 			case 4 : {
 				create_matrix(1);
-				// result_matrix = transpose_matrix(matrix_1);
+				cout << "Your input is:" << endl;
+				print_matrix(matrix_1, 1);
+				transpose_matrix();
 				cout << "The result is:" << endl;
-				// print_matrix(result_matrix);
+				print_matrix(result_matrix, 3);
 				break;
 			}
 			case 5 : {
-				int det;
+				float det;
 				create_matrix(1);
-				// det = get_determinant_3x3(matrix_1);
-				cout << "The result is:" << det << endl;
+				cout << "Your input is:" << endl;
+				print_matrix(matrix_1, 1);
+				det = get_determinant_3x3();
 				break;
 			}
 			case 6 : {
 				create_matrix(1);
-				// get_inverse_3x3(matrix_1);
+				cout << "Your input is:" << endl;
+				print_matrix(matrix_1, 1);
+				get_inverse_3x3();
 				break;
 			}
 			case 7 : {

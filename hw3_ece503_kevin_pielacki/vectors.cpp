@@ -40,7 +40,7 @@ vector<vector<int>> create_matrix() {
 			cout << "Matrix must have 1 or more columns." << endl;
 		}
 	}
-	
+
 	cout << "Enter matrix element values:" << endl;
 	// Fill row and column values.
 	for (int row_index=0; row_index < row_count; row_index++) {
@@ -61,14 +61,14 @@ vector<vector<int>> create_matrix() {
 int add_sub_matrices(vector<vector<int>> matrix_1, vector<vector<int>> matrix_2, bool sub=false) {
 	int mult;
 	vector<vector<int>> result_matrix;
-	
+
 	// Optional arugment to perform subtraction.
 	if ( sub ) {
 		mult = -1;
 	} else {
 		mult = 1;
 	}
-	
+
 	// Check if matrices same dimensions.
 	if ( matrix_1.size() == matrix_2.size() && matrix_1[0].size() == matrix_2[0].size() ) {
 		for (int row_index=0; row_index < matrix_1.size(); row_index++) {
@@ -126,7 +126,7 @@ vector<vector<int>> transpose_matrix(vector<vector<int>> matrix) {
 	// Used to condition interation through input matrix.
 	const int row_cnt_in = matrix.size();
 	const int col_cnt_in = matrix[0].size();
-	
+
 	// Iterate through columns and then rows. Similar to reassigning
 	// col_index and row_index to each other's values.
 	for ( int col_index=0; col_index < col_cnt_in; col_index++ ) {
@@ -232,7 +232,7 @@ int main() {
 	vector<vector<int>> matrix_1;
 	vector<vector<int>> matrix_2;
 	vector<vector<int>> result_matrix;
-	
+
 
 	while ( show_menu ) {
 		cout << "Menu" << endl;
@@ -244,8 +244,9 @@ int main() {
 		cout << "\tChoice 6: Inverse (3x3 Only)" << endl;
 		cout << "\tChoice 7: Quit" << endl;
 		cout << "Enter your choice: ";
-		
+
 		cin >> menu_selection;
+		// Menu selection for matrix operations.
 		switch(menu_selection) {
 			case 1 : {
 				matrix_1 = create_matrix();
@@ -281,7 +282,7 @@ int main() {
 				int det;
 				matrix_1 = create_matrix();
 				det = get_determinant_3x3(matrix_1);
-				cout << "The result is:" << det << endl;
+				cout << "The result is: " << det << endl;
 				break;
 			}
 			case 6 : {
@@ -297,6 +298,6 @@ int main() {
 			default : cout << "Invalid choice, try again." << endl;
 		}
 	}
-	
+
 	return 0;
 }
