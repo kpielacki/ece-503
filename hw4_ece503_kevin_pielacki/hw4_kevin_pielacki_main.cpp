@@ -9,6 +9,7 @@ const int max_books = 20;
 void insert(int list[], int *num_in_list, int new_element) {
     // Indicate that the the insert already exists if non-negative.
     int shift_index = -1;
+    // Check if more than 20 books.
     if (*num_in_list > max_books) {
         cout << "Cannot exceed more than " << max_books << " books." << endl;
         return;
@@ -42,6 +43,71 @@ void insert(int list[], int *num_in_list, int new_element) {
 };
 
 
+void insert_at(int list[], int *num_in_list, int at_position, int new_element) {
+    // For the insert_at function I'm constratining all the at_position value
+    // to be within the current list's element count. Since the assignment
+    // requires the initial insert to be at zero and the element counter would
+    // be off otherwise I think this makes the most sense.
+
+    // Indicate that the the insert already exists if non-negative.
+    int shift_index = -1;
+    // Check if more than 20 books.
+    if (*num_in_list > max_books) {
+        cout << "Cannot exceed more than " << max_books << " books." << endl;
+        return;
+    }
+
+    // Fail if postion selection to large of negative.
+    if (*num_in_list < at_position) {
+        cout << "There's only " << *num_in_list << " books. The position you specified is too great." << endl;
+        return;
+    }
+    else if (at_position < 0) {
+        cout << "Position selection most be non-negative." << endl;
+        return;
+    }
+
+    for (int i = 0; i < *num_in_list; i++) {
+        // Remove element, shift list, add item to last, and don't increment if
+        // ISBN already exists.
+        if (list[i] == new_element) {
+            cout << "ISBN value " << new_element << " already exists. Removing that entry and shifting to new position." << endl;
+            shift_index = i;
+        }
+    }
+
+    if (shift_index >= 0) {
+        // Remove existing element and shift all elements down.
+        for (int i = shift_index; i < *num_in_list - 1; i++) {
+            int *last = list + i;
+            last = list + i + 1;
+            // Reduce list item count allows to reuse the next block of code
+            // to insert the element to it's new position.
+            *num_in_list = *num_in_list - 1;
+        }
+    }
+
+    // Iterate backwards to shift elements up.
+    for (int i = *num_in_list - 1; i >= at_position; i--) {
+        // Remove element, shift list, add item to last, and don't increment if
+        // ISBN already exists.
+        cout << i << endl;
+        int *last = list + i + 1;
+        *last = list[i];
+    }
+
+
+    // Assign element to postion.
+    int *last = list + at_position;
+    *last = new_element;
+
+    // Increment list item count.
+    *num_in_list = *num_in_list + 1;
+    return;
+
+}
+
+
 
 void print_list(int list[], int num_in_list) {
     for (int i=0; i < num_in_list; i++) {
@@ -56,6 +122,7 @@ int main() {
     int books[20];
     int num_books = 0;
     int isbn_select = 0;
+    int insert_pos;
 
     while (in_menu) {
         cout << "-----Select an Option-----" << endl;
@@ -80,6 +147,12 @@ int main() {
                 break;
             }
             case 2 : {
+                cout << "Select ISBN number to insert: ";
+                cin >> isbn_select;
+                cout << "Select a position to insert into: ";
+                cin >> insert_pos;
+                insert_at(books, &num_books, insert_pos, isbn_select);
+                break;
                 break;
             }
             case 3 : {
