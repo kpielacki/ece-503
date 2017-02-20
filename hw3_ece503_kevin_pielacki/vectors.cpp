@@ -4,7 +4,7 @@ using namespace std;
 #include <string>
 
 
-void print_matrix(vector<vector<int>> matrix) {
+void print_matrix(vector< vector<float> > matrix) {
 	for (int row_index=0; row_index < matrix.size(); row_index++) {
 		for (int col_index=0; col_index < matrix[row_index].size(); col_index++) {
 			cout << matrix[row_index][col_index] << "\t";
@@ -14,11 +14,11 @@ void print_matrix(vector<vector<int>> matrix) {
 }
 
 
-vector<vector<int>> create_matrix() {
+vector< vector<float> > create_matrix() {
 	int row_count = 11;
 	int col_count = 11;
-	vector<vector<int>> matrix_values;
-	int element_value;
+	vector< vector<float> > matrix_values;
+	float element_value;
 
 	while ( row_count > 10 ) {
 		cout << "Enter number of rows 10 or less: ";
@@ -45,7 +45,7 @@ vector<vector<int>> create_matrix() {
 	// Fill row and column values.
 	for (int row_index=0; row_index < row_count; row_index++) {
 		// Values for the entire row.
-		vector<int> row_values;
+		 vector<float>  row_values;
 		for (int col_index=0; col_index < col_count; col_index++) {
 			cin >> element_value;
 			row_values.push_back(element_value);
@@ -58,9 +58,9 @@ vector<vector<int>> create_matrix() {
 }
 
 
-int add_sub_matrices(vector<vector<int>> matrix_1, vector<vector<int>> matrix_2, bool sub=false) {
+int add_sub_matrices(vector< vector<float> > matrix_1, vector< vector<float> > matrix_2, bool sub=false) {
 	int mult;
-	vector<vector<int>> result_matrix;
+	vector< vector<float> > result_matrix;
 
 	// Optional arugment to perform subtraction.
 	if ( sub ) {
@@ -72,7 +72,7 @@ int add_sub_matrices(vector<vector<int>> matrix_1, vector<vector<int>> matrix_2,
 	// Check if matrices same dimensions.
 	if ( matrix_1.size() == matrix_2.size() && matrix_1[0].size() == matrix_2[0].size() ) {
 		for (int row_index=0; row_index < matrix_1.size(); row_index++) {
-			vector<int> row_values;
+			 vector<float>  row_values;
 			for (int col_index=0; col_index < matrix_1[row_index].size(); col_index++) {
 				row_values.push_back(matrix_1[row_index][col_index] + mult * matrix_2[row_index][col_index]);
 			}
@@ -88,15 +88,15 @@ int add_sub_matrices(vector<vector<int>> matrix_1, vector<vector<int>> matrix_2,
 }
 
 
-int multiply_matrices(vector<vector<int>> matrix_1, vector<vector<int>> matrix_2) {
-	vector<vector<int>> result_matrix;
+int multiply_matrices(vector< vector<float> > matrix_1, vector< vector<float> > matrix_2) {
+	vector< vector<float> > result_matrix;
 
 	// Check if multiplication possible.
 	if ( matrix_1[0].size() == matrix_2.size() ) {
 		// First matrix iteration.
 		for (int row_index=0; row_index < matrix_1.size(); row_index++) {
 			// Result vector for entire row in result matrix.
-			vector<int> row_values;
+			 vector<float>  row_values;
 			// Store sum value of row by column multiplication.
 			for (int col_index_2=0; col_index_2 < matrix_2[0].size(); col_index_2++) {
 				int element_value = 0;
@@ -120,9 +120,9 @@ int multiply_matrices(vector<vector<int>> matrix_1, vector<vector<int>> matrix_2
 }
 
 
-vector<vector<int>> transpose_matrix(vector<vector<int>> matrix) {
+vector< vector<float> > transpose_matrix(vector< vector<float> > matrix) {
 	// Initiate transposed matrix.
-	vector<vector<int>> matrix_t;
+	vector< vector<float> > matrix_t;
 	// Used to condition interation through input matrix.
 	const int row_cnt_in = matrix.size();
 	const int col_cnt_in = matrix[0].size();
@@ -131,7 +131,7 @@ vector<vector<int>> transpose_matrix(vector<vector<int>> matrix) {
 	// col_index and row_index to each other's values.
 	for ( int col_index=0; col_index < col_cnt_in; col_index++ ) {
 		// Reintialize to fill new row values through each column index.
-		vector<int> row_values;
+		 vector<float>  row_values;
 		for ( int row_index=0; row_index < row_cnt_in; row_index++ ) {
 			row_values.push_back(matrix[row_index][col_index]);
 		}
@@ -142,11 +142,11 @@ vector<vector<int>> transpose_matrix(vector<vector<int>> matrix) {
 }
 
 
-int get_determinant_3x3(vector<vector<int>> matrix) {
+float get_determinant_3x3(vector< vector<float> > matrix) {
 	// Ensure that the passed matrix is a 3x3 matrix.
 	// Might make sense to have this check before the function
 	// to save the user time.
-	int det;
+	float det;
 	if ( matrix.size() == 3 && matrix[0].size() == 3 ) {
 		// Since we're restricting input to 3x3 this is just a very blunt equation.
 		det = (
@@ -163,20 +163,20 @@ int get_determinant_3x3(vector<vector<int>> matrix) {
 }
 
 
-void get_inverse_3x3(vector<vector<int>> matrix) {
+void get_inverse_3x3(vector< vector<float> > matrix) {
 	// Ensure that the passed matrix is a 3x3 matrix.
 	// Might make sense to have this check before the function
 	// to save the user time.
 	if ( matrix.size() == 3 && matrix[0].size() == 3 ) {
 		// Calculate 3x3 adjoint of input matrix.
-		vector<vector<int>> result_matrix;
+		vector< vector<float> > result_matrix;
 
 		int row_offset_1;
 		int row_offset_2;
 		int col_offset_1;
 		int col_offset_2;
 		int coeff = 1;
-		int det;
+		float det;
 		det = get_determinant_3x3(matrix);
 
 		// Calculate the adjoint of the matrix over the determinant and transpose.
@@ -195,7 +195,7 @@ void get_inverse_3x3(vector<vector<int>> matrix) {
 				row_offset_2 = row_offset_1 + 1;
 			}
 			// Stores entire row values.
-			vector<int> row_values;
+			 vector<float>  row_values;
 			for (int col = 0; col < matrix.size(); col++) {
 				// Offsets values for cross mult.
 				col_offset_1 = col - 1;
@@ -229,9 +229,9 @@ int main() {
 	int menu_selection;
 	// All functions require at most 2 matrices.
 	// No need to reinitialize at new menu selection.
-	vector<vector<int>> matrix_1;
-	vector<vector<int>> matrix_2;
-	vector<vector<int>> result_matrix;
+	vector< vector<float> > matrix_1;
+	vector< vector<float> > matrix_2;
+	vector< vector<float> > result_matrix;
 
 
 	while ( show_menu ) {
