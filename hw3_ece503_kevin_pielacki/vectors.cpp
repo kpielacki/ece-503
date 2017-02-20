@@ -120,7 +120,7 @@ int multiply_matrices(vector<vector<int>> matrix_1, vector<vector<int>> matrix_2
 }
 
 
-int transpose_matrix(vector<vector<int>> matrix) {
+vector<vector<int>> transpose_matrix(vector<vector<int>> matrix) {
 	// Initiate transposed matrix.
 	vector<vector<int>> matrix_t;
 	// Used to condition interation through input matrix.
@@ -138,37 +138,91 @@ int transpose_matrix(vector<vector<int>> matrix) {
 		// Assign row values to row in matrix_t.
 		matrix_t.push_back(row_values);
 	}
-	cout << "The result is:" << endl;
-	print_matrix(matrix_t);
-	return 0;
+	return matrix_t;
 }
 
 
-void get_determinant_3x3(vector<vector<int>> matrix) {
+int get_determinant_3x3(vector<vector<int>> matrix) {
 	// Ensure that the passed matrix is a 3x3 matrix.
 	// Might make sense to have this check before the function
 	// to save the user time.
+	int det;
 	if ( matrix.size() == 3 && matrix[0].size() == 3 ) {
 		// Since we're restricting input to 3x3 this is just a very blunt equation.
-		int det = (
+		det = (
 			matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[1][2] * matrix[2][1])
 		) - (
 			matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0])
 		) + (
 			matrix[0][2] * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0])
 		);
-		cout << "The result is:" << det << endl;
+	} else {
+		cout << "This operation only supports 3x3 matrices." << endl;
+	}
+	return det;
+}
+
+
+void get_inverse_3x3(vector<vector<int>> matrix) {
+	// Ensure that the passed matrix is a 3x3 matrix.
+	// Might make sense to have this check before the function
+	// to save the user time.
+	if ( matrix.size() == 3 && matrix[0].size() == 3 ) {
+		// Calculate 3x3 adjoint of input matrix.
+		vector<vector<int>> result_matrix;
+
+		int row_offset_1;
+		int row_offset_2;
+		int col_offset_1;
+		int col_offset_2;
+		int coeff = 1;
+		int det;
+		det = get_determinant_3x3(matrix);
+
+		// Calculate the adjoint of the matrix over the determinant and transpose.
+		// http://www.mathwords.com/a/adjoint.htm
+		// http://www.purplemath.com/modules/mtrxinvr.htm
+		for (int row = 0; row < matrix[0].size(); row++) {
+
+			// Offsets values for cross mult.
+			row_offset_1 = row - 1;
+			row_offset_2 = row + 1;
+			if (row_offset_1 < 0) {
+				row_offset_1 = 1;
+				row_offset_2 = row_offset_1 + 1;
+			} else if (row_offset_2 >= matrix[0].size()) {
+				row_offset_1 = 0;
+				row_offset_2 = row_offset_1 + 1;
+			}
+			// Stores entire row values.
+			vector<int> row_values;
+			for (int col = 0; col < matrix.size(); col++) {
+				// Offsets values for cross mult.
+				col_offset_1 = col - 1;
+				col_offset_2 = col + 1;
+				if (col_offset_1 < 0) {
+					col_offset_1 = 1;
+					col_offset_2 = col_offset_1 + 1;
+				} else if (col_offset_2 >= matrix[0].size()) {
+					col_offset_1 = 0;
+					col_offset_2 = col_offset_1 + 1;
+				}
+
+				row_values.push_back(coeff/det * (matrix[row_offset_1][col_offset_1] * matrix[row_offset_2][col_offset_2] - matrix[row_offset_1][col_offset_2] * matrix[row_offset_2][col_offset_1]));
+				// Toggle +- coeffecient.
+				coeff *= -1;
+			}
+			result_matrix.push_back(row_values);
+		}
+		// Using previous transpose function.
+		result_matrix = transpose_matrix(result_matrix);
+		cout << "The result is:" << endl;
+		print_matrix(result_matrix);
 	} else {
 		cout << "This operation only supports 3x3 matrices." << endl;
 	}
 	return;
 }
-
-vector<vector<int>> get_inverse(vector<vector<int>> matrix) {
-	vector<vector<int>> result_matrix;
-	return result_matrix;
-}
-
 
 int main() {
 	bool show_menu = true;
@@ -187,7 +241,7 @@ int main() {
 		cout << "\tChoice 3: Multiplication" << endl;
 		cout << "\tChoice 4: Transpose" << endl;
 		cout << "\tChoice 5: Determinant (3x3 Only)" << endl;
-		cout << "\tChoice 6: Inverse" << endl;
+		cout << "\tChoice 6: Inverse (3x3 Only)" << endl;
 		cout << "\tChoice 7: Quit" << endl;
 		cout << "Enter your choice: ";
 		
@@ -218,18 +272,22 @@ int main() {
 			}
 			case 4 : {
 				matrix_1 = create_matrix();
-				transpose_matrix(matrix_1);
+				result_matrix = transpose_matrix(matrix_1);
+				cout << "The result is:" << endl;
+				print_matrix(result_matrix);
 				break;
 			}
 			case 5 : {
 				int det;
 				matrix_1 = create_matrix();
-				get_determinant_3x3(matrix_1);
+				det = get_determinant_3x3(matrix_1);
+				cout << "The result is:" << det << endl;
 				break;
 			}
 			case 6 : {
 				matrix_1 = create_matrix();
-				result_matrix = get_inverse(matrix_1);
+				get_inverse_3x3(matrix_1);
+				break;
 			}
 			case 7 : {
 				// Exit while loop.
