@@ -81,10 +81,10 @@ void insert_at(int list[], int *num_in_list, int at_position, int new_element) {
         for (int i = shift_index; i < *num_in_list - 1; i++) {
             int *last = list + i;
             last = list + i + 1;
-            // Reduce list item count allows to reuse the next block of code
-            // to insert the element to it's new position.
-            *num_in_list = *num_in_list - 1;
         }
+        // Reduce list item count allows to reuse the next block of code
+        // to insert the element to it's new position.
+        *num_in_list = *num_in_list - 1;
     }
 
     // Iterate backwards to shift elements up.
@@ -104,9 +104,31 @@ void insert_at(int list[], int *num_in_list, int at_position, int new_element) {
     // Increment list item count.
     *num_in_list = *num_in_list + 1;
     return;
-
 }
 
+
+void delete_at(int list[], int *num_in_list, int at_position) {
+    // Fail if postion selection to large of negative.
+    if (*num_in_list < at_position) {
+        cout << "Sepecified element does not exist." << endl;
+        return;
+    }
+    else if (at_position < 0) {
+        cout << "Position selection most be non-negative." << endl;
+        return;
+    }
+
+    // Remove existing element and shift all elements down.
+    for (int i = at_position; i < *num_in_list - 1; i++) {
+        int *last = list + i;
+        *last = list[i + 1];
+    }
+    // Reduce list item count allows to reuse the next block of code
+    // to insert the element to it's new position.
+    *num_in_list = *num_in_list - 1;
+
+    return;
+}
 
 
 void print_list(int list[], int num_in_list) {
@@ -122,7 +144,7 @@ int main() {
     int books[20];
     int num_books = 0;
     int isbn_select = 0;
-    int insert_pos;
+    int pos_select;
 
     while (in_menu) {
         cout << "-----Select an Option-----" << endl;
@@ -150,9 +172,8 @@ int main() {
                 cout << "Select ISBN number to insert: ";
                 cin >> isbn_select;
                 cout << "Select a position to insert into: ";
-                cin >> insert_pos;
-                insert_at(books, &num_books, insert_pos, isbn_select);
-                break;
+                cin >> pos_select;
+                insert_at(books, &num_books, pos_select, isbn_select);
                 break;
             }
             case 3 : {
@@ -162,6 +183,9 @@ int main() {
                 break;
             }
             case 5 : {
+                cout << "Select a position to delete: ";
+                cin >> pos_select;
+                delete_at(books, &num_books, pos_select);
                 break;
             }
             case 6 : {
