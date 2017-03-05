@@ -13,6 +13,7 @@ class BookList {
         void delete_at(int at_position);
         void delete_isbn(int isbn);
         void sort_books_selection();
+        void sort_books_bubble();
         void print_list();
 
     private:

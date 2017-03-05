@@ -146,12 +146,15 @@ void BookList::delete_isbn(int isbn) {
     return;
 }
 
+
 void BookList::sort_books_selection() {
     int temp;
     for (int i = 0; i < BookList::book_cnt; i++) {
         // Set initial value to first element.
         int current_min = BookList::books[i];
         for (int j = i + 1; j < BookList::book_cnt; j++) {
+            // Select min element and set to first value with
+            // offset to ignore sorted elements.
             if (BookList::books[j] < current_min) {
                 temp = BookList::books[i];
                 BookList::books[i] = BookList::books[j];
@@ -163,11 +166,30 @@ void BookList::sort_books_selection() {
 }
 
 
+void BookList::sort_books_bubble() {
+    int temp;
+    for (int i = 0; i < BookList::book_cnt; i++) {
+        // Iterate to last element - sorted max elements - 1 for offset.
+        for (int j = 0; j < BookList::book_cnt - i - 1; j++) {
+            // Swap current and current + 1 element if greater moving max
+            // value to end of list.
+            if (BookList::books[j] > BookList::books[j + 1]) {
+                temp = BookList::books[j];
+                BookList::books[j] = BookList::books[j + 1];
+                BookList::books[j + 1] = temp;
+            }
+        }
+    }
+    return;
+}
+
+
 void BookList::print_list() {
-    std::cout << "--- Book List ---" << std::endl;
+    // Print current book list
+    std::cout << "----- Book List -----" << std::endl;
     for (int i = 0; i < BookList::book_cnt; i++) {
         std::cout << i + 1 << ") " << BookList::books[i] << std::endl;
     }
-    std::cout << "-----------------" << std::endl << std::endl;
+    std::cout << "---------------------" << std::endl << std::endl;
     return;
 }
