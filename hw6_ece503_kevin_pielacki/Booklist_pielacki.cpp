@@ -1,5 +1,6 @@
 #include "Booklist_pielacki.h"
 #include <iostream>
+#include <string>
 
 
 BookList::BookList() {
