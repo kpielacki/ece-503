@@ -240,18 +240,28 @@ void BookList::delete_isbn(int isbn) {
 
 void BookList::sort_books_selection() {
     int temp;
+    int *array_val;
+    int swap_index;
+
+    // Set pointer to books array.
+    array_val = BookList::books;
     for (int i = 0; i < BookList::book_cnt; i++) {
         // Set initial value to first element.
-        int current_min = BookList::books[i];
+        // Use iterator offset to access elements.
+        int current_min = *(array_val + i);
+        // Set swap to current index. Will overwrite if lesser value found.
+        swap_index = i;
         for (int j = i + 1; j < BookList::book_cnt; j++) {
             // Select min element and set to first value with
             // offset to ignore sorted elements.
-            if (BookList::books[j] < current_min) {
-                temp = BookList::books[i];
-                BookList::books[i] = BookList::books[j];
-                BookList::books[j] = temp;
+            if (*(array_val + j) < current_min) {
+                current_min = *(array_val + j);
+                swap_index = j;
             }
         }
+        // Swap current min with current unsorted element.
+        *(array_val + swap_index) = *(array_val + i);
+        *(array_val + i) = current_min;
     }
     // Set sorted to true.
     BookList::set_sorted(true);
@@ -260,16 +270,19 @@ void BookList::sort_books_selection() {
 
 
 void BookList::sort_books_bubble() {
+    int *array_val;
     int temp;
+    array_val = BookList::books;
+
     for (int i = 0; i < BookList::book_cnt; i++) {
         // Iterate to last element - sorted max elements - 1 for offset.
         for (int j = 0; j < BookList::book_cnt - i - 1; j++) {
             // Swap current and current + 1 element if greater moving max
             // value to end of list.
-            if (BookList::books[j] > BookList::books[j + 1]) {
-                temp = BookList::books[j];
-                BookList::books[j] = BookList::books[j + 1];
-                BookList::books[j + 1] = temp;
+            if (*(array_val + j) > *(array_val + j + 1)) {
+                temp = *(array_val + j);
+                *(array_val + j) = *(array_val + j + 1);
+                *(array_val + j + 1) = temp;
             }
         }
     }
