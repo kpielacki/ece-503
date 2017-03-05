@@ -14,6 +14,7 @@ BookList::BookList() {
     return;
 }
 
+
 bool BookList::max_books() {
     // Return true if book_list at max books.
     if (BookList::book_cnt >= BookList::max_book_cnt) {
@@ -22,9 +23,10 @@ bool BookList::max_books() {
     return false;
 }
 
+
 int BookList::find_book(int isbn) {
     // Return index of first found passed isbn in books
-    // otherwise return larger than possible value.
+    // otherwise return negative value.
     // Object variable books should always contain a unique
     // list of books.
     for (int i = 0; i < BookList::book_cnt; i++) {
@@ -32,8 +34,9 @@ int BookList::find_book(int isbn) {
             return i;
         }
     }
-    return BookList::max_book_cnt + 1;
+    return -1;
 }
+
 
 void BookList::insert(int isbn) {
 
@@ -45,7 +48,7 @@ void BookList::insert(int isbn) {
     int dup_index;
     dup_index = BookList::find_book(isbn);
     // Handle book already in list.
-    if (dup_index < BookList::max_book_cnt) {
+    if (dup_index >= 0) {
         std::cout << "Duplicate book found. Shifting to end of list." << std::endl;
         // Delete duplicate book. Book count decrement handled in method.
         BookList::delete_at(dup_index + 1);
@@ -75,7 +78,7 @@ void BookList::insert_at(int at_position, int isbn) {
         // Handle book already in list.
         int dup_index;
         dup_index = BookList::find_book(isbn);
-        if (dup_index < BookList::max_book_cnt) {
+        if (dup_index >= 0) {
             if (at_position > BookList::book_cnt) {
                 std::cout << "Cannot add duplicated book into new index." << std::endl;
                 return;
@@ -123,6 +126,38 @@ void BookList::delete_at(int at_position) {
             }
         }
         BookList::book_cnt--;
+    }
+    return;
+}
+
+
+void BookList::delete_isbn(int isbn) {
+    // Delete book with passed isbn.
+    for (int i = 0; i < BookList::book_cnt; i++) {
+        // If index contains passed isbn call delete_at for that index + 1.
+        if (BookList::books[i] == isbn) {
+            BookList::delete_at(i + 1);
+            std::cout << "ISBN " << isbn << " removed from your list." << std::endl;
+            return;
+        }
+    }
+    // If no book was found with that ISBN let user know.
+    std::cout << "No book found in your list with ISBN " << isbn << "." << std::endl;
+    return;
+}
+
+void BookList::sort_books_selection() {
+    int temp;
+    for (int i = 0; i < BookList::book_cnt; i++) {
+        // Set initial value to first element.
+        int current_min = BookList::books[i];
+        for (int j = i + 1; j < BookList::book_cnt; j++) {
+            if (BookList::books[j] < current_min) {
+                temp = BookList::books[i];
+                BookList::books[i] = BookList::books[j];
+                BookList::books[j] = temp;
+            }
+        }
     }
     return;
 }

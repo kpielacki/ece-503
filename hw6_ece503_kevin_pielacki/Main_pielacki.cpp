@@ -42,6 +42,17 @@ int main() {
                 break;
             }
             case 3 : {
+                std::cout << "Select ISBN number to find: ";
+                std::cin >> isbn_select;
+                pos_select = mybooks.find_book(isbn_select);
+                if (pos_select < 0) {
+                    std::cout << "No book found for ISBN " << isbn_select << "."
+                    << std::endl;
+                } else {
+                    // Returning user friendly index + 1.
+                    std::cout << "ISBN " << isbn_select << " is in position "
+                    << pos_select + 1 << "." << std::endl;
+                }
                 break;
             }
             case 4 : {
@@ -54,9 +65,13 @@ int main() {
                 break;
             }
             case 6 : {
+                std::cout << "Select an ISBN to delete from your list: ";
+                std::cin >> isbn_select;
+                mybooks.delete_isbn(isbn_select);
                 break;
             }
             case 7 : {
+                mybooks.sort_books_selection();
                 break;
             }
             case 8 : {
