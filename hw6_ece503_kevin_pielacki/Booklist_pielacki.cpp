@@ -9,7 +9,10 @@ BookList::BookList() {
     // Set max book count. Possibly reinitate books to
     // this size as a passed value. Also helpful for
     // handling max book capacity.
-    max_book_cnt = 5;
+    max_book_cnt = 20;
+
+    // Set book list to be sorted initially since empty.
+    sorted = true;
 
     return;
 }
@@ -24,14 +27,71 @@ bool BookList::max_books() {
 }
 
 
+bool BookList::get_sorted() {
+    // Public access value of sorted.
+    return BookList::sorted;
+}
+
+
+void BookList::set_sorted(bool is_sorted) {
+    // Private set value of sorted.
+    // Not really needed since it's private but for the sake
+    // of showing a setter.
+    BookList::sorted = is_sorted;
+    return;
+}
+
+
 int BookList::find_book(int isbn) {
     // Return index of first found passed isbn in books
     // otherwise return negative value.
-    // Object variable books should always contain a unique
+    // Instance variable books should always contain a unique
     // list of books.
     for (int i = 0; i < BookList::book_cnt; i++) {
+        // If element found return position.
         if (books[i] == isbn) {
             return i;
+        }
+    }
+    return -1;
+}
+
+
+int BookList::find_book_binary(int isbn) {
+    // Return index of first found passed isbn in books
+    // otherwise return negative value using binary search.
+    // Instance variable books should always contain a unique
+    // list of books.
+    int center_pos = BookList::book_cnt / 2;
+    int new_center_pos = BookList::book_cnt / 2;
+    int high_pos = BookList::book_cnt;
+    int low_pos = 0;
+
+    // Refuse to search unsorted list.
+    if (BookList::sorted) {
+        // Keep searching if there are unchecked elements that could
+        // hold the needed value or value found.
+        while (true) {
+            if (books[center_pos] == isbn) {
+                // If center_pos index is search isbn return index.
+                return center_pos;
+            } else if (books[center_pos] > isbn) {
+                // If search isbn smaller than center_pos.
+                high_pos = center_pos;
+                new_center_pos = low_pos + (high_pos - low_pos) / 2;
+            } else {
+                // If search isbn larger than center_pos.
+                low_pos = center_pos;
+                new_center_pos = low_pos + (high_pos - low_pos) / 2;
+            }
+            // If new calculated postion is the same return -1 to indicate
+            // search isbn does not exist in book list.
+            if (center_pos == new_center_pos) {
+                return -1;
+            } else {
+                // Assign new calculated position to check next iteration.
+                center_pos = new_center_pos;
+            }
         }
     }
     return -1;
@@ -55,6 +115,14 @@ void BookList::insert(int isbn) {
     }
     BookList::books[BookList::book_cnt] = isbn;
     BookList::book_cnt++;
+
+    // If list is sorted and more than one book check if new value breaks sorting.
+    if (BookList::sorted and BookList::book_cnt > 1) {
+        if (BookList::books[BookList::book_cnt - 1] < BookList::books[BookList::book_cnt - 2]) {
+            // Set sorted to false when new insert breaks sorting.
+            BookList::set_sorted(false);
+        }
+    }
     return;
 }
 
@@ -89,13 +157,36 @@ void BookList::insert_at(int at_position, int isbn) {
         }
         // Iterate backward to shift all books up.
         for (int i = BookList::book_cnt; i >= at_position; i--) {
-            std::cout << i << std::endl;
             BookList::books[i] = BookList::books[i - 1];
         }
 
         // Set passed postion to passed isbn.
         BookList::books[at_position - 1] = isbn;
         BookList::book_cnt++;
+
+        // If list is sorted and more than one book check if new value breaks sorting.
+        if (BookList::sorted and BookList::book_cnt > 1) {
+            if (at_position == 1) {
+                // Only need to compare element afterwards if insert at first index.
+                if (BookList::books[at_position - 1] > BookList::books[at_position]) {
+                    // Set sorted to false when new insert breaks sorting.
+                    BookList::set_sorted(false);
+                }
+            } else if (BookList::book_cnt + 1 == at_position) {
+                // If inserted at end of list only compare element before.
+                if (BookList::books[at_position - 1] < BookList::books[at_position - 2]) {
+                    // Set sorted to false when new insert breaks sorting.
+                    BookList::set_sorted(false);
+                }
+            }
+            else {
+                // Check if new element breaks sorting left and right to index.
+                if (BookList::books[at_position - 1] > BookList::books[at_position] or BookList::books[at_position - 1] < BookList::books[at_position - 2]) {
+                    // Set sorted to false when new insert breaks sorting.
+                    BookList::set_sorted(false);
+                }   
+            }
+        }
     }
     return;
 }
@@ -162,6 +253,8 @@ void BookList::sort_books_selection() {
             }
         }
     }
+    // Set sorted to true.
+    BookList::set_sorted(true);
     return;
 }
 
@@ -180,6 +273,8 @@ void BookList::sort_books_bubble() {
             }
         }
     }
+    // Set sorted to true.
+    BookList::set_sorted(true);
     return;
 }
 

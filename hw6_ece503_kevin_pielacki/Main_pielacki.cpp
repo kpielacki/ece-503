@@ -9,9 +9,11 @@ int main() {
     int isbn_select = 0;
     int pos_select;
 
+    // Instantiate object of type BookList.
     BookList mybooks;
 
     while (in_menu) {
+        // Menu print for method selection.
         std::cout << "-----Select an Option-----" << std::endl;
         std::cout << " 1. Insert new book at the end of the list" << std::endl;
         std::cout << " 2. Insert new book at a certain position" << std::endl;
@@ -25,6 +27,7 @@ int main() {
         std::cout << " 10. Quit" << std::endl;
         std::cout << "\nPlease select a menu option: ";
 
+        // Get user selection and call proper BookList method for operation.
         std::cin >> user_selection;
         switch (user_selection) {
             case 1 : {
@@ -56,6 +59,22 @@ int main() {
                 break;
             }
             case 4 : {
+                // Check if the list is sorted.
+                if (mybooks.get_sorted()) {
+                    std::cout << "Select ISBN number to find: ";
+                    std::cin >> isbn_select;
+                    pos_select = mybooks.find_book_binary(isbn_select);
+                    if (pos_select < 0) {
+                        std::cout << "No book found for ISBN " << isbn_select << "."
+                        << std::endl;
+                    } else {
+                        // Returning user friendly index + 1.
+                        std::cout << "ISBN " << isbn_select << " is in position "
+                        << pos_select + 1 << "." << std::endl;
+                    }
+                } else {
+                    std::cout << "Your book list needs to be sorted before using this operation." << std::endl;
+                }
                 break;
             }
             case 5 : {
