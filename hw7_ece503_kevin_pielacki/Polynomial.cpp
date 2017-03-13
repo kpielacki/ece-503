@@ -154,7 +154,7 @@ Polynomial operator+(const Polynomial& poly_1, const Polynomial& poly_2) {
 
     // Include terms with ucommon exponents.
     for (int idx_1 = 0; idx_1 < poly_1.term_cnt; idx_1++) {
-        if (skip_idx_1) {
+        if (skip_idx_1[idx_1]) {
             continue;
         } else {
             poly_add.coeffs[poly_add.term_cnt] = poly_1.coeffs[idx_1];
@@ -163,7 +163,7 @@ Polynomial operator+(const Polynomial& poly_1, const Polynomial& poly_2) {
         }
     }
     for (int idx_2 = 0; idx_2 < poly_2.term_cnt; idx_2++) {
-        if (skip_idx_2) {
+        if (skip_idx_2[idx_2]) {
             continue;
         } else {
             poly_add.coeffs[poly_add.term_cnt] = poly_2.coeffs[idx_2];
@@ -173,4 +173,68 @@ Polynomial operator+(const Polynomial& poly_1, const Polynomial& poly_2) {
     }
 
     return poly_add;
+}
+
+
+Polynomial operator-(const Polynomial& poly_1, const Polynomial& poly_2) {
+    // Skip prompt for setting terms. Will be handled within function call.
+    Polynomial poly_sub(false);
+    // An example output showed that in the case where the two polynomials do
+    // not share the same exponent that the output is composed of both terms
+    // meaning that the the assumption for max term count of 6 will not apply
+    // for Polynomial operations.
+    // First Polynomial is : 2x^2 + 3x^3
+    // Second Polynomial is : 1x + 2x^2 + 3x^3
+
+    // The max possible term count after subtracking two Polynomial types is
+    // doubled in the case where all the exponents are unique so modify
+    // max_term_cnt to allow for 12 term Polynomial creation.
+    int skip_idx_1[6] = {false, false, false, false, false, false};
+    int skip_idx_2[6] = {false, false, false, false, false, false};
+    poly_sub.max_term_cnt *= 2;
+
+    // Handle addition of shared exponent values.
+    for (int idx_1 = 0; idx_1 < poly_1.term_cnt; idx_1++) {
+        for (int idx_2 = 0; idx_2 < poly_2.term_cnt; idx_2++) {
+            if (poly_1.expons[idx_1] == poly_2.expons[idx_2]) {
+                // Subtract term for common exponents.
+
+                // Skip if subtraction leads to zero value.
+                int poly_coeff;
+                poly_coeff = poly_1.coeffs[idx_1] - poly_2.coeffs[idx_2];
+                if (poly_coeff != 0) {
+                    poly_sub.coeffs[poly_sub.term_cnt] = poly_coeff;
+                    poly_sub.expons[poly_sub.term_cnt] = poly_1.expons[idx_1];
+                    poly_sub.term_cnt += 1;
+                }
+
+                // Keep track of common terms when adding uncommon terms.
+                skip_idx_1[idx_1] = true;
+                skip_idx_2[idx_2] = true;
+            }
+        }
+    }
+
+    // Include terms with ucommon exponents.
+    for (int idx_1 = 0; idx_1 < poly_1.term_cnt; idx_1++) {
+        if (skip_idx_1[idx_1]) {
+            continue;
+        } else {
+            poly_sub.coeffs[poly_sub.term_cnt] = poly_1.coeffs[idx_1];
+            poly_sub.expons[poly_sub.term_cnt] = poly_1.expons[idx_1];
+            poly_sub.term_cnt += 1;
+        }
+    }
+    // Subtract second argument uncommon exponent terms.
+    for (int idx_2 = 0; idx_2 < poly_2.term_cnt; idx_2++) {
+        if (skip_idx_2[idx_2]) {
+            continue;
+        } else {
+            poly_sub.coeffs[poly_sub.term_cnt] = -poly_2.coeffs[idx_2];
+            poly_sub.expons[poly_sub.term_cnt] = poly_2.expons[idx_2];
+            poly_sub.term_cnt += 1;
+        }
+    }
+
+    return poly_sub;
 }

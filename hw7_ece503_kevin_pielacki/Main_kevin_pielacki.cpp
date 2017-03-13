@@ -12,8 +12,12 @@ int main() {
     cout << "The first polynomial is: " << poly_1 << endl;
     cout << "The second polynomial is: " << poly_2 << endl;
 
-
     cout << "Adding the two polynomials yields: " << poly_1 + poly_2 << endl;
+
+
+    cout << "Subtracting the two polynomials yields: " << poly_1 - poly_2 << endl;
+
+
     return 0;
 }
 
