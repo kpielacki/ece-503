@@ -35,6 +35,7 @@ class Polynomial {
         // the result can have even more terms so without creating a dynamic
         // array to handle this new limit the operation would result in an
         // error.
+        // For now just have a method quit and refuse the operation.
         int coeffs[36];
         int expons[36];
         int term_cnt;

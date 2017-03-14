@@ -148,6 +148,9 @@ ostream& operator<<(ostream& os, const Polynomial& poly) {
             if (exp_val == 0) {
                 // Return only coefficient if exponent value is zero.
                  continue;
+            } else if (exp_val == 1) {
+                // Return only variable if exponent value is zero.
+                r_string = r_string + poly.var;
             } else {
                 r_string = r_string + poly.var + "^" + int_to_string(exp_val);
             }
