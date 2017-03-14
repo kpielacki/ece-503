@@ -18,6 +18,9 @@ Polynomial::Polynomial(bool set_terms) {
         for (int i = 0; i < Polynomial::term_cnt; i++) {
             Polynomial::set_term(i);
         }
+        // Order exponents in ascending order.
+        // I think this makes the print easier to read.
+        Polynomial::sort_by_expons();
     } else {
         Polynomial::term_cnt = 0;
     }
@@ -75,6 +78,36 @@ void Polynomial::set_term(int term_idx) {
         }
     }
 
+}
+
+
+// Use bubble sorting to order exponents ascending after operations that return
+// polynomials in a mixed order.
+void Polynomial::sort_by_expons() {
+    int *expons_val;
+    int *coeffs_val;
+    int *_val;
+    int temp_expon;
+    int temp_coeff;
+    expons_val = Polynomial::expons;
+    coeffs_val = Polynomial::coeffs;
+
+    for (int i = 0; i < Polynomial::term_cnt; i++) {
+        // Iterate to last element - sorted max elements - 1 for offset.
+        for (int j = 0; j < Polynomial::term_cnt - i - 1; j++) {
+            // Swap current and current + 1 element if greater moving max
+            // value to end of list.
+            if (*(expons_val + j) > *(expons_val + j + 1)) {
+                temp_expon = *(expons_val + j);
+                temp_coeff = *(coeffs_val + j);
+                *(expons_val + j) = *(expons_val + j + 1);
+                *(expons_val + j + 1) = temp_expon;
+                *(coeffs_val + j) = *(coeffs_val + j + 1);
+                *(coeffs_val + j + 1) = temp_coeff;
+            }
+        }
+    }
+    return;
 }
 
 
@@ -177,7 +210,7 @@ Polynomial operator+(const Polynomial& poly_1, const Polynomial& poly_2) {
             poly_add.term_cnt += 1;
         }
     }
-
+    poly_add.sort_by_expons();
     return poly_add;
 }
 
@@ -241,7 +274,7 @@ Polynomial operator-(const Polynomial& poly_1, const Polynomial& poly_2) {
             poly_sub.term_cnt += 1;
         }
     }
-
+    poly_sub.sort_by_expons();
     return poly_sub;
 }
 
@@ -255,6 +288,9 @@ Polynomial operator*(const Polynomial& poly_1, const Polynomial& poly_2) {
     // I'm using the max term count which is defaulted to 6 and cannot be
     // changed outside a method.
     poly_mult.max_term_cnt *= poly_mult.max_term_cnt;
+
+    // Multiply one term at a time and add to poly_mult.
+    // By using addition the terms with the same exponents will be combined.
     for (int idx_1 = 0; idx_1 < poly_1.term_cnt; idx_1++) {
         for (int idx_2 = 0; idx_2 < poly_2.term_cnt; idx_2++) {
             Polynomial poly_temp(false);
@@ -271,6 +307,7 @@ Polynomial operator*(const Polynomial& poly_1, const Polynomial& poly_2) {
             poly_mult = poly_mult + poly_temp;
         }
     }
+    poly_mult.sort_by_expons();
     return poly_mult;
 }
 
@@ -299,5 +336,12 @@ Polynomial& Polynomial::operator+=(const Polynomial& poly_2) {
 Polynomial& Polynomial::operator-=(const Polynomial& poly_2) {
     // Reuse overloaded subtraction operator.
     *this = *this - poly_2;
+    return *this;
+}
+
+
+Polynomial& Polynomial::operator*=(const Polynomial& poly_2) {
+    // Reuse overloaded multiply operator.
+    *this = *this * poly_2;
     return *this;
 }
