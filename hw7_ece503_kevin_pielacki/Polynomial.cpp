@@ -5,6 +5,7 @@
 using namespace std;
 
 
+// Constructor
 Polynomial::Polynomial(bool set_terms) {
     // Assuming we will allow a zero term polynomial.
     Polynomial::min_term_cnt = 0;
@@ -22,6 +23,11 @@ Polynomial::Polynomial(bool set_terms) {
     }
 }
 
+
+// Destructor
+Polynomial::~Polynomial() {
+
+}
 
 void Polynomial::set_term_cnt() {
     Polynomial::term_cnt = -1;
@@ -237,6 +243,35 @@ Polynomial operator-(const Polynomial& poly_1, const Polynomial& poly_2) {
     }
 
     return poly_sub;
+}
+
+
+Polynomial operator*(const Polynomial& poly_1, const Polynomial& poly_2) {
+    // Keep poly_mult empty and fill term by term with poly_temp.
+    Polynomial poly_mult(false);
+    Polynomial poly_temp(false);
+    // Max terms that can be returned by multiplying two polynomials is the
+    // term count squared.
+    // I'm using the max term count which is defaulted to 6 and cannot be
+    // changed outside a method.
+    poly_mult.max_term_cnt *= poly_mult.max_term_cnt;
+    for (int idx_1 = 0; idx_1 < poly_1.term_cnt; idx_1++) {
+        for (int idx_2 = 0; idx_2 < poly_2.term_cnt; idx_2++) {
+            Polynomial poly_temp(false);
+            int poly_coeff;
+            int poly_exp;
+            // Multiply current coefficients.
+            poly_temp.coeffs[poly_temp.term_cnt] = poly_1.coeffs[idx_1] * poly_2.coeffs[idx_2];
+            // Add current exponents.
+            poly_temp.expons[poly_temp.term_cnt] = poly_1.expons[idx_1] + poly_2.expons[idx_2];
+            // Techinically not needed but want to keep track.
+            poly_temp.term_cnt += 1;
+
+            // Let addition deal with common exponent terms and term counting.
+            poly_mult = poly_mult + poly_temp;
+        }
+    }
+    return poly_mult;
 }
 
 

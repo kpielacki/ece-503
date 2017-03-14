@@ -6,11 +6,13 @@ class Polynomial {
 
     public:
         Polynomial(bool set_terms);
+        ~Polynomial();
 
         // Overloaded functions must be freinds to access private members.
         friend std::ostream& operator<<(std::ostream&, const Polynomial&);
         friend Polynomial operator+(const Polynomial& poly_1, const Polynomial& poly_2);
         friend Polynomial operator-(const Polynomial& poly_1, const Polynomial& poly_2);
+        friend Polynomial operator*(const Polynomial& poly_1, const Polynomial& poly_2);
         Polynomial& operator=(const Polynomial& poly_2);
         Polynomial& operator+=(const Polynomial& poly_2);
         Polynomial& operator-=(const Polynomial& poly_2);
