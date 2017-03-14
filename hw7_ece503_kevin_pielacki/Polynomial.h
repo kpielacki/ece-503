@@ -21,6 +21,7 @@ class Polynomial {
     private:
         int min_term_cnt;
         int max_term_cnt;
+        int term_capacity;
         char var;
 
         // I'm initializing the array size to be 36 even though the term count
@@ -34,7 +35,8 @@ class Polynomial {
         // Problem is if the user keeps applying these operations afterwards
         // the result can have even more terms so without creating a dynamic
         // array to handle this new limit the operation would result in an
-        // error.
+        // error. This allows us to tweak the user allowed input vs the result
+        // from an operation.
         // For now just have a method quit and refuse the operation.
         int coeffs[36];
         int expons[36];
@@ -43,6 +45,7 @@ class Polynomial {
         void set_term_cnt();
         void set_term(int term_idx);
         void sort_by_expons();
+        void handle_term_capacity();
 };
 
 #endif

@@ -10,6 +10,7 @@ Polynomial::Polynomial(bool set_terms) {
     // Assuming we will allow a zero term polynomial.
     Polynomial::min_term_cnt = 0;
     Polynomial::max_term_cnt = 6;
+    Polynomial::term_capacity = 36;
     // Default variable value of 'x'.
     Polynomial::var = 'x';
 
@@ -111,6 +112,13 @@ void Polynomial::sort_by_expons() {
 }
 
 
+// Call to handle when trying to insert new element past term_capacity.
+// Right now prints capacity exceeded but in future could be used to
+// dynamically set coeffs and expons array length.
+void Polynomial::handle_term_capacity() {
+    cout << "Operation Overflow: Max allowed terms resulting from an operation is " << Polynomial::term_capacity << ". Not all results shown." << endl;
+}
+
 string int_to_string (int num) {
     // Opens string stream to convert int value to string.
     // Used to build r_string in "<<" overload.
@@ -186,6 +194,10 @@ Polynomial operator+(const Polynomial& poly_1, const Polynomial& poly_2) {
                 poly_add.coeffs[poly_add.term_cnt] = poly_1.coeffs[idx_1] + poly_2.coeffs[idx_2];
                 poly_add.expons[poly_add.term_cnt] = poly_1.expons[idx_1];
                 poly_add.term_cnt += 1;
+                if (poly_add.term_cnt >= poly_add.term_capacity) {
+                    poly_add.handle_term_capacity();
+                    return poly_add;
+                }
 
                 // Keep track of common terms when adding uncommon terms.
                 skip_idx_1[idx_1] = true;
@@ -202,6 +214,10 @@ Polynomial operator+(const Polynomial& poly_1, const Polynomial& poly_2) {
             poly_add.coeffs[poly_add.term_cnt] = poly_1.coeffs[idx_1];
             poly_add.expons[poly_add.term_cnt] = poly_1.expons[idx_1];
             poly_add.term_cnt += 1;
+            if (poly_add.term_cnt >= poly_add.term_capacity) {
+                poly_add.handle_term_capacity();
+                return poly_add;
+            }
         }
     }
     for (int idx_2 = 0; idx_2 < poly_2.term_cnt; idx_2++) {
@@ -211,6 +227,10 @@ Polynomial operator+(const Polynomial& poly_1, const Polynomial& poly_2) {
             poly_add.coeffs[poly_add.term_cnt] = poly_2.coeffs[idx_2];
             poly_add.expons[poly_add.term_cnt] = poly_2.expons[idx_2];
             poly_add.term_cnt += 1;
+            if (poly_add.term_cnt >= poly_add.term_capacity) {
+                poly_add.handle_term_capacity();
+                return poly_add;
+            }
         }
     }
     poly_add.sort_by_expons();
@@ -248,6 +268,10 @@ Polynomial operator-(const Polynomial& poly_1, const Polynomial& poly_2) {
                     poly_sub.coeffs[poly_sub.term_cnt] = poly_coeff;
                     poly_sub.expons[poly_sub.term_cnt] = poly_1.expons[idx_1];
                     poly_sub.term_cnt += 1;
+                    if (poly_sub.term_cnt >= poly_sub.term_capacity) {
+                        poly_sub.handle_term_capacity();
+                        return poly_sub;
+                    }
                 }
 
                 // Keep track of common terms when adding uncommon terms.
@@ -265,6 +289,10 @@ Polynomial operator-(const Polynomial& poly_1, const Polynomial& poly_2) {
             poly_sub.coeffs[poly_sub.term_cnt] = poly_1.coeffs[idx_1];
             poly_sub.expons[poly_sub.term_cnt] = poly_1.expons[idx_1];
             poly_sub.term_cnt += 1;
+            if (poly_sub.term_cnt >= poly_sub.term_capacity) {
+                poly_sub.handle_term_capacity();
+                return poly_sub;
+            }
         }
     }
     // Subtract second argument uncommon exponent terms.
@@ -275,6 +303,10 @@ Polynomial operator-(const Polynomial& poly_1, const Polynomial& poly_2) {
             poly_sub.coeffs[poly_sub.term_cnt] = -poly_2.coeffs[idx_2];
             poly_sub.expons[poly_sub.term_cnt] = poly_2.expons[idx_2];
             poly_sub.term_cnt += 1;
+            if (poly_sub.term_cnt >= poly_sub.term_capacity) {
+                poly_sub.handle_term_capacity();
+                return poly_sub;
+            }
         }
     }
     poly_sub.sort_by_expons();
@@ -308,6 +340,12 @@ Polynomial operator*(const Polynomial& poly_1, const Polynomial& poly_2) {
 
             // Let addition deal with common exponent terms and term counting.
             poly_mult = poly_mult + poly_temp;
+            if (poly_mult.term_cnt >= poly_mult.term_capacity) {
+                // No need to call handle term capcity since print message will
+                // be called from the addition operator. Just return the
+                // current polynomial calculated.
+                return poly_mult;
+            }
         }
     }
     poly_mult.sort_by_expons();
