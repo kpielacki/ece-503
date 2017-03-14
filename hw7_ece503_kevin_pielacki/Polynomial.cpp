@@ -238,3 +238,31 @@ Polynomial operator-(const Polynomial& poly_1, const Polynomial& poly_2) {
 
     return poly_sub;
 }
+
+
+Polynomial& Polynomial::operator=(const Polynomial& poly_2) {
+    // Copy class parameters to LH Polynomial.
+    this->var = poly_2.var;
+    this->min_term_cnt = poly_2.min_term_cnt;
+    this->max_term_cnt =  poly_2.max_term_cnt;
+    this->term_cnt =  poly_2.term_cnt;
+    for (int idx = 0; idx < poly_2.term_cnt; idx++) {
+        this->coeffs[idx] =  poly_2.coeffs[idx];
+        this->expons[idx] =  poly_2.expons[idx];
+    }
+    return *this;
+}
+
+
+Polynomial& Polynomial::operator+=(const Polynomial& poly_2) {
+    // Reuse overloaded addition operator.
+    *this = *this + poly_2;
+    return *this;
+}
+
+
+Polynomial& Polynomial::operator-=(const Polynomial& poly_2) {
+    // Reuse overloaded subtraction operator.
+    *this = *this - poly_2;
+    return *this;
+}

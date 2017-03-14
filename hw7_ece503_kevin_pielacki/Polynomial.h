@@ -11,6 +11,9 @@ class Polynomial {
         friend std::ostream& operator<<(std::ostream&, const Polynomial&);
         friend Polynomial operator+(const Polynomial& poly_1, const Polynomial& poly_2);
         friend Polynomial operator-(const Polynomial& poly_1, const Polynomial& poly_2);
+        Polynomial& operator=(const Polynomial& poly_2);
+        Polynomial& operator+=(const Polynomial& poly_2);
+        Polynomial& operator-=(const Polynomial& poly_2);
 
     private:
         int min_term_cnt;
