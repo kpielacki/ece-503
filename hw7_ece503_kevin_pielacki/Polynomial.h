@@ -5,8 +5,12 @@
 class Polynomial {
 
     public:
-        Polynomial(bool set_terms);
+        Polynomial();
         ~Polynomial();
+        void set_terms();
+
+        char get_var();
+        void set_var(char var_name);
 
         // Overloaded functions must be freinds to access private members.
         friend std::ostream& operator<<(std::ostream&, const Polynomial&);

@@ -6,9 +6,11 @@ using namespace std;
 
 
 int main() {
-    Polynomial poly_1(true);
-    Polynomial poly_2(true);
-    Polynomial poly_1_temp(false);
+    Polynomial poly_1;
+    poly_1.set_terms();
+    Polynomial poly_2;
+    poly_2.set_terms();
+    Polynomial poly_1_temp;
 
     cout << "The first polynomial is: " << poly_1 << endl;
     cout << "The second polynomial is: " << poly_2 << endl;

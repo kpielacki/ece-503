@@ -6,25 +6,34 @@ using namespace std;
 
 
 // Constructor
-Polynomial::Polynomial(bool set_terms) {
+Polynomial::Polynomial() {
     // Assuming we will allow a zero term polynomial.
     Polynomial::min_term_cnt = 0;
     Polynomial::max_term_cnt = 6;
+
+    // I wanted to write a skeleton where the term capacity can be increased
+    // if needed by calling handle_term_capacity method. If we wanted to use
+    // dynamic arrays it makes more sense to increase your array size more than
+    // one element since increasing array size is a resource expensive call.
     Polynomial::term_capacity = 36;
+
     // Default variable value of 'x'.
+    //  Can be changed by calling set_var.
+    // At one point I wanted to have the class handle different variables but
+    // it's not required by the assignment. This really should be a matrix for
+    // every possible combination of variables you could multiply by and that
+    // would also require coeffecients exponents to be a matrix which is far
+    // beyond the assignment requirements. So if now if you try an operator on
+    // two Polynomials with different variables it will return a error message
+    // with an empty Polynomial saying it's not supported.
     Polynomial::var = 'x';
 
-    if (set_terms) {
-        Polynomial::set_term_cnt();
-        for (int i = 0; i < Polynomial::term_cnt; i++) {
-            Polynomial::set_term(i);
-        }
-        // Order exponents in ascending order.
-        // I think this makes the print easier to read.
-        Polynomial::sort_by_expons();
-    } else {
-        Polynomial::term_cnt = 0;
-    }
+    // Initialize term count to 0.
+    //  User calls set_terms to fill values needed for Polynomial.
+    //  Friends can access term counts and individual terms freely to by pass
+    //    constraints. This allows us to handle situations where the term count
+    //    exceeds the intented value of 6.
+    Polynomial::term_cnt = 0;
 }
 
 
@@ -47,6 +56,8 @@ void Polynomial::set_term_cnt() {
 }
 
 
+// Private method used to check user input on term with specific index.
+//  Forces each term to have a unique exponent.
 void Polynomial::set_term(int term_idx) {
     int coeff = 0;
     int exp;
@@ -78,7 +89,35 @@ void Polynomial::set_term(int term_idx) {
             Polynomial::expons[term_idx] = exp;
         }
     }
+}
 
+
+// Public method called by user to prompt for term count and all terms.
+void Polynomial::set_terms() {
+    Polynomial::set_term_cnt();
+    for (int i = 0; i < Polynomial::term_cnt; i++) {
+        Polynomial::set_term(i);
+    }
+    // Order exponents in ascending order.
+    // I think this makes the print easier to read.
+    Polynomial::sort_by_expons();
+    return;
+}
+
+
+// Getter for variable name.
+char Polynomial::get_var() {
+    return Polynomial::var;
+}
+
+
+// Sets variable used for polynomial.
+// I also made sure that when combining common terms to check for the same
+// variable name. This way a polynomial like the one below can exist:
+//  a^2 + 2x^2
+void Polynomial::set_var(char var_name) {
+    Polynomial::var = var_name;
+    return;
 }
 
 
@@ -170,14 +209,18 @@ ostream& operator<<(ostream& os, const Polynomial& poly) {
 
 
 Polynomial operator+(const Polynomial& poly_1, const Polynomial& poly_2) {
-    // Skip prompt for setting terms. Will be handled within function call.
-    Polynomial poly_add(false);
+    Polynomial poly_add;
     // An example output showed that in the case where the two polynomials do
     // not share the same exponent that the output is composed of both terms
     // meaning that the the assumption for max term count of 6 will not apply
     // for Polynomial operations.
     // First Polynomial is : 2x^2 + 3x^3
     // Second Polynomial is : 1x + 2x^2 + 3x^3
+
+    if (poly_1.var != poly_2.var) {
+        cout << "Operator must use Polynomials with the same var value." << endl;
+        return poly_add;
+    }
 
     // The max possible term count after adding two Polynomial types is doubled
     // in the case where all the exponents are unique so modify max_term_cnt to
@@ -189,7 +232,7 @@ Polynomial operator+(const Polynomial& poly_1, const Polynomial& poly_2) {
     // Handle addition of shared exponent values.
     for (int idx_1 = 0; idx_1 < poly_1.term_cnt; idx_1++) {
         for (int idx_2 = 0; idx_2 < poly_2.term_cnt; idx_2++) {
-            if (poly_1.expons[idx_1] == poly_2.expons[idx_2]) {
+            if (poly_1.expons[idx_1] == poly_2.expons[idx_2] and poly_1.var == poly_2.var) {
                 // Add term for common exponents.
                 poly_add.coeffs[poly_add.term_cnt] = poly_1.coeffs[idx_1] + poly_2.coeffs[idx_2];
                 poly_add.expons[poly_add.term_cnt] = poly_1.expons[idx_1];
@@ -239,8 +282,13 @@ Polynomial operator+(const Polynomial& poly_1, const Polynomial& poly_2) {
 
 
 Polynomial operator-(const Polynomial& poly_1, const Polynomial& poly_2) {
-    // Skip prompt for setting terms. Will be handled within function call.
-    Polynomial poly_sub(false);
+    Polynomial poly_sub;
+
+    if (poly_1.var != poly_2.var) {
+        cout << "Operator must use Polynomials with the same var value." << endl;
+        return poly_sub;
+    }
+
     // An example output showed that in the case where the two polynomials do
     // not share the same exponent that the output is composed of both terms
     // meaning that the the assumption for max term count of 6 will not apply
@@ -258,7 +306,7 @@ Polynomial operator-(const Polynomial& poly_1, const Polynomial& poly_2) {
     // Handle addition of shared exponent values.
     for (int idx_1 = 0; idx_1 < poly_1.term_cnt; idx_1++) {
         for (int idx_2 = 0; idx_2 < poly_2.term_cnt; idx_2++) {
-            if (poly_1.expons[idx_1] == poly_2.expons[idx_2]) {
+            if (poly_1.expons[idx_1] == poly_2.expons[idx_2] and poly_1.var == poly_2.var) {
                 // Subtract term for common exponents.
 
                 // Skip if subtraction leads to zero value.
@@ -316,19 +364,25 @@ Polynomial operator-(const Polynomial& poly_1, const Polynomial& poly_2) {
 
 Polynomial operator*(const Polynomial& poly_1, const Polynomial& poly_2) {
     // Keep poly_mult empty and fill term by term with poly_temp.
-    Polynomial poly_mult(false);
-    Polynomial poly_temp(false);
+    Polynomial poly_mult;
+    Polynomial poly_temp;
     // Max terms that can be returned by multiplying two polynomials is the
     // term count squared.
     // I'm using the max term count which is defaulted to 6 and cannot be
     // changed outside a method.
+
+    if (poly_1.var != poly_2.var) {
+        cout << "Operator must use Polynomials with the same var value." << endl;
+        return poly_mult;
+    }
+
     poly_mult.max_term_cnt *= poly_mult.max_term_cnt;
 
     // Multiply one term at a time and add to poly_mult.
     // By using addition the terms with the same exponents will be combined.
     for (int idx_1 = 0; idx_1 < poly_1.term_cnt; idx_1++) {
         for (int idx_2 = 0; idx_2 < poly_2.term_cnt; idx_2++) {
-            Polynomial poly_temp(false);
+            Polynomial poly_temp;
             int poly_coeff;
             int poly_exp;
             // Multiply current coefficients.
