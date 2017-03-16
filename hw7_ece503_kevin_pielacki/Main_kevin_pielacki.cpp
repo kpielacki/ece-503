@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "Polynomial.h"
+#include "Polynomial_kevin_pielacki.h"
 
 using namespace std;
 
@@ -21,7 +21,7 @@ int main() {
     // demonstartions.
     poly_1_temp = poly_1;
     poly_1_temp += poly_2;
-    cout << "+= the polynomials yields : " << poly_1_temp << endl;
+    cout << "+= the polynomials yields: " << poly_1_temp << endl;
 
 
     cout << "Subtracting the two polynomials yields: " << poly_1 - poly_2 << endl;
@@ -30,7 +30,7 @@ int main() {
     // demonstartions.
     poly_1_temp = poly_1;
     poly_1_temp -= poly_2;
-    cout << "-= the polynomials yields : " << poly_1_temp << endl;
+    cout << "-= the polynomials yields: " << poly_1_temp << endl;
 
 
     cout << "Multiplying the two polynomials yields: " << poly_1 * poly_2 << endl;
@@ -39,7 +39,7 @@ int main() {
     // demonstartions.
     poly_1_temp = poly_1;
     poly_1_temp *= poly_2;
-    cout << "*= the polynomials yields : " << poly_1_temp << endl;
+    cout << "*= the polynomials yields: " << poly_1_temp << endl;
 
     return 0;
 }

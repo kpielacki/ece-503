@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "Polynomial.h"
+#include "Polynomial_kevin_pielacki.h"
 
 using namespace std;
 
