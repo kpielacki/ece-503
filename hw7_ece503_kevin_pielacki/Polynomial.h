@@ -1,16 +1,27 @@
 #ifndef Polynomial_H
 #define Polynomial_H
 
+#include <string>
 
 class Polynomial {
 
     public:
         Polynomial();
         ~Polynomial();
+        std::string get_term(int term_idx);
+        // Handles setting the term count and all terms needed.
         void set_terms();
 
         char get_var();
         void set_var(char var_name);
+
+        // Getters for term criteria.
+        // No need for setters since access to these parameters should be
+        // private and not available to the client.
+        int get_min_term_cnt();
+        int get_max_term_cnt();
+        int get_term_cnt();
+        int get_term_capacity();
 
         // Overloaded functions must be freinds to access private members.
         friend std::ostream& operator<<(std::ostream&, const Polynomial&);

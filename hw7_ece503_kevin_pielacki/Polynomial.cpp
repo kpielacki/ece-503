@@ -1,8 +1,18 @@
 #include <iostream>
 #include <sstream>
+#include <string>
 #include "Polynomial.h"
 
 using namespace std;
+
+
+string int_to_string (int num) {
+    // Opens string stream to convert int value to string.
+    // Used to build r_string in "<<" overload.
+    ostringstream ss;
+    ss << num;
+    return ss.str();
+}
 
 
 // Constructor
@@ -39,7 +49,14 @@ Polynomial::Polynomial() {
 
 // Destructor
 Polynomial::~Polynomial() {
-
+    // I didn't use anything that requires to be deleted so for the sake of
+    // demonstrating a destructor I'll adjust the values to represent an empty
+    // polynomial.
+    Polynomial::min_term_cnt = 0;
+    Polynomial::max_term_cnt = 0;
+    Polynomial::term_capacity = 0;
+    Polynomial::var = '\0';
+    Polynomial::term_cnt = 0;
 }
 
 void Polynomial::set_term_cnt() {
@@ -53,6 +70,40 @@ void Polynomial::set_term_cnt() {
             cout << "Min term count is " << Polynomial::min_term_cnt << endl;
         }
     }
+}
+
+
+// Returns term at index.
+// Note that all polynomials are sorted by exponent value in ascending order so
+// a user might enter in any order but it will be ordered immediately.
+string Polynomial::get_term(int term_idx) {
+    string r_string = "";
+    if (term_idx >= Polynomial::term_cnt or term_idx < Polynomial::min_term_cnt) {
+            return "Invalid term index.";
+    } else {
+        int coeff_val = Polynomial::coeffs[term_idx];
+        int exp_val = Polynomial::expons[term_idx];
+        // Handle sign print between terms.
+        if (coeff_val == 0) {
+            // Skip value of zero.
+            return r_string;
+        } else {
+            // Don't add "+" sign for first term and don't add space for
+            // "-" sign if first term.
+            r_string = int_to_string(coeff_val);
+        }
+
+        if (exp_val == 0) {
+            // Return only coefficient if exponent value is zero.
+             return r_string;
+        } else if (exp_val == 1) {
+            // Return only variable if exponent value is zero.
+            r_string = r_string + Polynomial::var;
+        } else {
+            r_string = r_string + Polynomial::var + "^" + int_to_string(exp_val);
+        }
+    }
+    return r_string;
 }
 
 
@@ -121,6 +172,26 @@ void Polynomial::set_var(char var_name) {
 }
 
 
+int Polynomial::get_min_term_cnt() {
+    return Polynomial::min_term_cnt;
+}
+
+
+int Polynomial::get_max_term_cnt() {
+    return Polynomial::max_term_cnt;
+}
+
+
+int Polynomial::get_term_cnt() {
+    return Polynomial::term_cnt;
+}
+
+
+int Polynomial::get_term_capacity() {
+    return Polynomial::term_capacity;
+}
+
+
 // Use bubble sorting to order exponents ascending after operations that return
 // polynomials in a mixed order.
 void Polynomial::sort_by_expons() {
@@ -158,21 +229,13 @@ void Polynomial::handle_term_capacity() {
     cout << "Operation Overflow: Max allowed terms resulting from an operation is " << Polynomial::term_capacity << ". Not all results shown." << endl;
 }
 
-string int_to_string (int num) {
-    // Opens string stream to convert int value to string.
-    // Used to build r_string in "<<" overload.
-    ostringstream ss;
-    ss << num;
-    return ss.str();
-}
-
 
 ostream& operator<<(ostream& os, const Polynomial& poly) {
     string r_string = "";
     bool first_term = true;
     for (int term_idx = 0; term_idx < poly.term_cnt; term_idx++) {
-        if (term_idx > poly.term_cnt or term_idx < poly.min_term_cnt) {
-            os << "Invalid term index. ";
+        if (term_idx >= poly.term_cnt or term_idx < poly.min_term_cnt) {
+            os << "Invalid term index.";
         } else {
             int coeff_val = poly.coeffs[term_idx];
             int exp_val = poly.expons[term_idx];
