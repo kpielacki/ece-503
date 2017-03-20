@@ -61,7 +61,7 @@ Polynomial::~Polynomial() {
 
 void Polynomial::set_term_cnt() {
     Polynomial::term_cnt = -1;
-    while (Polynomial::term_cnt < Polynomial::min_term_cnt or Polynomial::term_cnt > Polynomial::max_term_cnt) {
+    while (Polynomial::term_cnt < Polynomial::min_term_cnt || Polynomial::term_cnt > Polynomial::max_term_cnt) {
         cout << "Enter the number of polynomial terms: ";
         cin >> Polynomial::term_cnt;
         if (Polynomial::term_cnt > Polynomial::max_term_cnt) {
@@ -78,7 +78,7 @@ void Polynomial::set_term_cnt() {
 // a user might enter in any order but it will be ordered immediately.
 string Polynomial::get_term(int term_idx) {
     string r_string = "";
-    if (term_idx >= Polynomial::term_cnt or term_idx < Polynomial::min_term_cnt) {
+    if (term_idx >= Polynomial::term_cnt || term_idx < Polynomial::min_term_cnt) {
             return "Invalid term index.";
     } else {
         int coeff_val = Polynomial::coeffs[term_idx];
@@ -234,7 +234,7 @@ ostream& operator<<(ostream& os, const Polynomial& poly) {
     string r_string = "";
     bool first_term = true;
     for (int term_idx = 0; term_idx < poly.term_cnt; term_idx++) {
-        if (term_idx >= poly.term_cnt or term_idx < poly.min_term_cnt) {
+        if (term_idx >= poly.term_cnt || term_idx < poly.min_term_cnt) {
             os << "Invalid term index.";
         } else {
             int coeff_val = poly.coeffs[term_idx];
@@ -248,7 +248,7 @@ ostream& operator<<(ostream& os, const Polynomial& poly) {
                 // "-" sign if first term.
                 r_string = int_to_string(coeff_val);
                 first_term = false;
-            } else if (coeff_val > 0 and term_idx > 0) {
+            } else if (coeff_val > 0 && term_idx > 0) {
                 r_string = r_string + " + " + int_to_string(coeff_val);
             } else {
                 // Force positive to space out "-" print.
@@ -295,7 +295,7 @@ Polynomial operator+(const Polynomial& poly_1, const Polynomial& poly_2) {
     // Handle addition of shared exponent values.
     for (int idx_1 = 0; idx_1 < poly_1.term_cnt; idx_1++) {
         for (int idx_2 = 0; idx_2 < poly_2.term_cnt; idx_2++) {
-            if (poly_1.expons[idx_1] == poly_2.expons[idx_2] and poly_1.var == poly_2.var) {
+            if (poly_1.expons[idx_1] == poly_2.expons[idx_2] && poly_1.var == poly_2.var) {
                 // Add term for common exponents.
                 poly_add.coeffs[poly_add.term_cnt] = poly_1.coeffs[idx_1] + poly_2.coeffs[idx_2];
                 poly_add.expons[poly_add.term_cnt] = poly_1.expons[idx_1];
@@ -369,7 +369,7 @@ Polynomial operator-(const Polynomial& poly_1, const Polynomial& poly_2) {
     // Handle addition of shared exponent values.
     for (int idx_1 = 0; idx_1 < poly_1.term_cnt; idx_1++) {
         for (int idx_2 = 0; idx_2 < poly_2.term_cnt; idx_2++) {
-            if (poly_1.expons[idx_1] == poly_2.expons[idx_2] and poly_1.var == poly_2.var) {
+            if (poly_1.expons[idx_1] == poly_2.expons[idx_2] && poly_1.var == poly_2.var) {
                 // Subtract term for common exponents.
 
                 // Skip if subtraction leads to zero value.
