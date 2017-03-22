@@ -2,16 +2,22 @@
 #include <string>
 #include "Shape.h"
 #include "TwoDimensionalShape.h"
+#include "ThreeDimensionalShape.h"
+#include "Circle.h"
+#include "Triangle.h"
+#include "Sphere.h"
 
 
 int main() {
     bool in_menu = true;
     int option;
-    int x;
-    int y;
-    int radius;
-    int width;
-    int height;
+    float x;
+    float y;
+    float z;
+    float radius;
+    float side_length;
+    float width;
+    float height;
 
     while (in_menu) {
         std::cout << "Please choose a shape or 0 to exit:" << std::endl;
@@ -33,15 +39,31 @@ int main() {
                 std::cin >> y;
                 std::cout << "Please enter the radius of the circle: ";
                 std::cin >> radius;
-                TwoDimensionalShape circle(x, y);
-                std::cout << "The circle with radius " << circle.get_x() << " that is located at (" << circle.get_x() << ", " << circle.get_y() << ") has:" << std::endl;
+                Circle circle(x, y, radius);
+                std::cout << "The circle with radius " << circle.get_radius() << " that is located at (" << circle.get_x() << ", " << circle.get_y() << ") has:" << std::endl;
                 std::cout << "An area of: " << circle.get_area() << std::endl;
                 break;
             } case 2: {
-                std::cout << "Triangle" << std::endl;
+                std::cout << "Please enter the center of the triangle (x-coordinate and then the y-coordinate): ";
+                std::cin >> x;
+                std::cin >> y;
+                std::cout << "Please enter the side length of the triangle: ";
+                std::cin >> side_length;
+                Triangle triangle(x, y, side_length);
+                std::cout << "The triangle with side length " << triangle.get_side_length() << " that is located at (" << triangle.get_x() << ", " << triangle.get_y() << ") has:" << std::endl;
+                std::cout << "An area of: " << triangle.get_area() << std::endl;
                 break;
             } case 3: {
-                std::cout << "Sphere" << std::endl;
+                std::cout << "Please enter the center of the sphere (x-coordinate, y-coordinate, and then the z-coordinate): ";
+                std::cin >> x;
+                std::cin >> y;
+                std::cin >> z;
+                std::cout << "Please enter the radius of the sphere: ";
+                std::cin >> radius;
+                Sphere sphere(x, y, z, radius);
+                std::cout << "The sphere with radius " << sphere.get_radius() << " that is located at (" << sphere.get_x() << ", " << sphere.get_y() << ", " << sphere.get_z() << ") has:" << std::endl;
+                std::cout << "A surface area of: " << sphere.get_area() << std::endl;
+                std::cout << "A volume of: " << sphere.get_area() << std::endl;
                 break;
             } case 4: {
                 std::cout << "Regular Tetrahedron" << std::endl;

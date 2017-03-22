@@ -3,10 +3,10 @@
 
 
 Shape::Shape() {
-    area = 0;
+
 }
 
 
 float Shape::get_area() {
-    return area;
+    return 0;
 }

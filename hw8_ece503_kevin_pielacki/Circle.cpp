@@ -2,10 +2,8 @@
 #include "Circle.h"
 
 
-Circle::Circle(float x, float y, float radius) {
-       Circle::x = x;
-       Circle::y = y;
-       Circle::radius = radius;
+Circle::Circle(float x_val, float y_val, float radius_val) : TwoDimensionalShape(x_val, y_val) {
+        Circle::set_radius(radius_val);
 }
 
 
@@ -14,6 +12,11 @@ float Circle::get_radius() {
 }
 
 
-void Circle::set_radius(float radius) {
-    Circle::radius = radius;
+void Circle::set_radius(float radius_val) {
+    radius = radius_val;
+}
+
+
+float Circle::get_area() {
+    return 3.14 * ( Circle::get_radius() * Circle::get_radius() );
 }

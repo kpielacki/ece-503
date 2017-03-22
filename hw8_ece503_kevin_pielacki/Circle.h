@@ -6,9 +6,10 @@
 class Circle : public TwoDimensionalShape {
     
     public:
-        Circle(float x, float y, float radius);
+        Circle(float x_val, float y_val, float radius_val);
         float get_radius();
-        void set_radius(float radius);
+        void set_radius(float radius_val);
+        float get_area();
     
     private:
         float radius;

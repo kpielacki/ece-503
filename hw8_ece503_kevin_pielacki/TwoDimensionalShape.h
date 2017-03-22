@@ -5,11 +5,11 @@
 class TwoDimensionalShape : public Shape {
 
     public:
-        TwoDimensionalShape(float x, float y);
+        TwoDimensionalShape(float x_val, float y_val);
         float get_x();
-        void set_x(float x);
+        void set_x(float x_val);
         float get_y();
-        void set_y(float y);
+        void set_y(float y_val);
 
     protected:
         float x;

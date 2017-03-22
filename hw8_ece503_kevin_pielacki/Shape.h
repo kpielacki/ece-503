@@ -8,8 +8,6 @@ class Shape {
         Shape();
         virtual float get_area();
 
-    protected:
-        float area;
 };
 
 #endif
