@@ -41,7 +41,7 @@ int main() {
                 std::cin >> radius;
                 Circle circle(x, y, radius);
                 std::cout << "The circle with radius " << circle.get_radius() << " that is located at (" << circle.get_x() << ", " << circle.get_y() << ") has:" << std::endl;
-                std::cout << "An area of: " << circle.get_area() << std::endl;
+                std::cout << "    -An area of: " << circle.get_area() << std::endl;
                 break;
             } case 2: {
                 std::cout << "Please enter the center of the triangle (x-coordinate and then the y-coordinate): ";
@@ -51,7 +51,7 @@ int main() {
                 std::cin >> side_length;
                 Triangle triangle(x, y, side_length);
                 std::cout << "The triangle with side length " << triangle.get_side_length() << " that is located at (" << triangle.get_x() << ", " << triangle.get_y() << ") has:" << std::endl;
-                std::cout << "An area of: " << triangle.get_area() << std::endl;
+                std::cout << "    -An area of: " << triangle.get_area() << std::endl;
                 break;
             } case 3: {
                 std::cout << "Please enter the center of the sphere (x-coordinate, y-coordinate, and then the z-coordinate): ";
@@ -62,8 +62,8 @@ int main() {
                 std::cin >> radius;
                 Sphere sphere(x, y, z, radius);
                 std::cout << "The sphere with radius " << sphere.get_radius() << " that is located at (" << sphere.get_x() << ", " << sphere.get_y() << ", " << sphere.get_z() << ") has:" << std::endl;
-                std::cout << "A surface area of: " << sphere.get_area() << std::endl;
-                std::cout << "A volume of: " << sphere.get_area() << std::endl;
+                std::cout << "    -A surface area of: " << sphere.get_area() << std::endl;
+                std::cout << "    -A volume of: " << sphere.get_volume() << std::endl;
                 break;
             } case 4: {
                 std::cout << "Regular Tetrahedron" << std::endl;

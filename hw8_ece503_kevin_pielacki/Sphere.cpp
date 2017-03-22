@@ -18,5 +18,10 @@ void Sphere::set_radius(float radius_val) {
 
 
 float Sphere::get_area() {
-    return 3.14 * ( Sphere::get_radius() * Sphere::get_radius() );
+    return 4 * 3.14 * ( Sphere::get_radius() * Sphere::get_radius() );
+}
+
+
+float Sphere::get_volume() {
+    return ( 4.0 / 3.0 ) * 3.14 * ( Sphere::get_radius() * Sphere::get_radius() * Sphere::get_radius() );
 }

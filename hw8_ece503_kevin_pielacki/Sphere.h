@@ -10,6 +10,7 @@ class Sphere : public ThreeDimensionalShape {
         float get_radius();
         void set_radius(float radius_val);
         float get_area();
+        float get_volume();
     
     private:
         float radius;
