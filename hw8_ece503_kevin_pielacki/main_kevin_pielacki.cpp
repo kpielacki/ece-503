@@ -6,6 +6,7 @@
 #include "Circle.h"
 #include "Triangle.h"
 #include "Sphere.h"
+#include "Tetrahedron.h"
 
 
 int main() {
@@ -67,6 +68,16 @@ int main() {
                 break;
             } case 4: {
                 std::cout << "Regular Tetrahedron" << std::endl;
+                std::cout << "Please enter the center of the tetrahedron (x-coordinate, y-coordinate, and then the z-coordinate): ";
+                std::cin >> x;
+                std::cin >> y;
+                std::cin >> z;
+                std::cout << "Please enter the side_length of the tetrahedron: ";
+                std::cin >> side_length;
+                Tetrahedron tetrahedron(x, y, z, side_length);
+                std::cout << "The regular tetrahedron with side length " << tetrahedron.get_side_length() << " that is located at (" << tetrahedron.get_x() << ", " << tetrahedron.get_y() << ", " << tetrahedron.get_z() << ") has:" << std::endl;
+                std::cout << "    -A surface area of: " << tetrahedron.get_area() << std::endl;
+                std::cout << "    -A volume of: " << tetrahedron.get_volume() << std::endl;
                 break;
             } default: {
                 std::cout << "Invalid selection" << std::endl;
