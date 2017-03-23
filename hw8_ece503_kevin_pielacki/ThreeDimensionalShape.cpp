@@ -37,7 +37,3 @@ void ThreeDimensionalShape::set_z(float z_val) {
     z = z_val;
 }
 
-
-float ThreeDimensionalShape::get_volume() {
-    return 0;
-}

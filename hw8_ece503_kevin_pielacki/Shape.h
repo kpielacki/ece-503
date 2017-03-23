@@ -7,6 +7,7 @@ class Shape {
     public:
         Shape();
         virtual float get_area();
+        virtual float get_volume();
 
 };
 

@@ -14,6 +14,7 @@ class Sphere : public ThreeDimensionalShape {
     
     private:
         float radius;
+        float pi;
 
 };
 

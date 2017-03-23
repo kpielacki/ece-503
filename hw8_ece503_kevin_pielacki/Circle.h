@@ -13,6 +13,7 @@ class Circle : public TwoDimensionalShape {
     
     private:
         float radius;
+        float pi;
 
 };
 

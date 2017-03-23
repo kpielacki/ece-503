@@ -12,7 +12,6 @@ class ThreeDimensionalShape : public Shape {
         void set_y(float y_val);
         float get_z();
         void set_z(float z_val);
-        virtual float get_volume();
 
     protected:
         float x;
