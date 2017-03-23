@@ -1,5 +1,6 @@
-#include "TwoDimensionalShape.h"
-#include "Triangle.h"
+#include <iostream>
+#include "twodimensionalshape.h"
+#include "triangle.h"
 
 
 Triangle::Triangle(float x_val, float y_val, float side_length_val) : TwoDimensionalShape(x_val, y_val) {
@@ -13,7 +14,12 @@ float Triangle::get_side_length() {
 
 
 void Triangle::set_side_length(float side_length_val) {
-    side_length = side_length_val;
+    if ( side_length_val >= 0 ) {
+        side_length = side_length_val;
+    } else {
+        side_length = 0;
+        std::cout << "Side length must be non-negative." << std::endl;
+    }
 }
 
 

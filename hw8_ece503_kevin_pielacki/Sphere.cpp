@@ -14,7 +14,12 @@ float Sphere::get_radius() {
 
 
 void Sphere::set_radius(float radius_val) {
-    radius = radius_val;
+    if ( radius_val >= 0 ) {
+        radius = radius_val;
+    } else {
+        radius = 0;
+        std::cout << "Radius value must be non-negative." << std::endl;
+    }
 }
 
 
