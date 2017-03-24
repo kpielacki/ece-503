@@ -12,6 +12,8 @@ class TwoDimensionalShape : public Shape {
         void set_y(float y_val);
 
     private:
+        // No need to set to protected. Let getters and
+        // setters handle interaction.
         float x;
         float y;
 

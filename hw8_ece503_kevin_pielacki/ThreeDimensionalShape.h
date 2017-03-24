@@ -2,6 +2,7 @@
 #define THREEDIMENSIONALSHAPE_H
 #include "Shape.h"
 
+
 class ThreeDimensionalShape : public Shape {
 
     public:
@@ -14,6 +15,7 @@ class ThreeDimensionalShape : public Shape {
         void set_z(float z_val);
 
     private:
+        // No need to set as protected. Use public getters and setters.
         float x;
         float y;
         float z;

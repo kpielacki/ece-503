@@ -6,6 +6,7 @@ class Shape {
 
     public:
         Shape();
+        // Virutal functions for polymorphism.
         virtual float get_area();
         virtual float get_volume();
 
