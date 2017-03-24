@@ -20,6 +20,7 @@ int main() {
     float width;
     float height;
 
+    // Display menu until user selects to exit.
     while (in_menu) {
         std::cout << "Please choose a shape or 0 to exit:" << std::endl;
         std::cout << "1. Circle" << std::endl;
@@ -30,6 +31,7 @@ int main() {
         std::cout << "Choice: ";
         std::cin >> option;
 
+        // Create child shape objects based on user selection, set properties, and print properties.
         switch (option) {
             case 0: {
                 in_menu = false;
@@ -40,6 +42,7 @@ int main() {
                 std::cin >> y;
                 std::cout << "Please enter the radius of the circle: ";
                 std::cin >> radius;
+                // Using constructor for setting coordinates and radius values.
                 Circle circle(x, y, radius);
                 std::cout << "The circle with radius " << circle.get_radius() << " that is located at (" << circle.get_x() << ", " << circle.get_y() << ") has:" << std::endl;
                 std::cout << "    -An area of: " << circle.get_area() << std::endl;
@@ -50,6 +53,7 @@ int main() {
                 std::cin >> y;
                 std::cout << "Please enter the side length of the triangle: ";
                 std::cin >> side_length;
+                // Using constructor for setting coordinates and side_length values.
                 Triangle triangle(x, y, side_length);
                 std::cout << "The triangle with side length " << triangle.get_side_length() << " that is located at (" << triangle.get_x() << ", " << triangle.get_y() << ") has:" << std::endl;
                 std::cout << "    -An area of: " << triangle.get_area() << std::endl;
@@ -61,6 +65,7 @@ int main() {
                 std::cin >> z;
                 std::cout << "Please enter the radius of the sphere: ";
                 std::cin >> radius;
+                // Using constructor for setting coordinates and radius values.
                 Sphere sphere(x, y, z, radius);
                 std::cout << "The sphere with radius " << sphere.get_radius() << " that is located at (" << sphere.get_x() << ", " << sphere.get_y() << ", " << sphere.get_z() << ") has:" << std::endl;
                 std::cout << "    -A surface area of: " << sphere.get_area() << std::endl;
@@ -74,6 +79,7 @@ int main() {
                 std::cin >> z;
                 std::cout << "Please enter the side_length of the tetrahedron: ";
                 std::cin >> side_length;
+                // Using constructor for setting coordinates and side_length values.
                 Tetrahedron tetrahedron(x, y, z, side_length);
                 std::cout << "The regular tetrahedron with side length " << tetrahedron.get_side_length() << " that is located at (" << tetrahedron.get_x() << ", " << tetrahedron.get_y() << ", " << tetrahedron.get_z() << ") has:" << std::endl;
                 std::cout << "    -A surface area of: " << tetrahedron.get_area() << std::endl;
