@@ -13,7 +13,7 @@ class ThreeDimensionalShape : public Shape {
         float get_z();
         void set_z(float z_val);
 
-    protected:
+    private:
         float x;
         float y;
         float z;

@@ -11,7 +11,7 @@ class TwoDimensionalShape : public Shape {
         float get_y();
         void set_y(float y_val);
 
-    protected:
+    private:
         float x;
         float y;
 
