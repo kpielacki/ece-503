@@ -21,7 +21,7 @@ Package::Package() {
 }
 
 
-Package::Package(std::string send_name_in, std::string send_address_in, std::string send_city_in, std::string send_state_in, unsigned int send_zip_in, std::string rec_name_in, std::string rec_address_in, std::string rec_city_in, std::string rec_state_in, unsigned int rec_zip_in) {
+Package::Package(std::string send_name_in, std::string send_address_in, std::string send_city_in, std::string send_state_in, unsigned int send_zip_in, std::string rec_name_in, std::string rec_address_in, std::string rec_city_in, std::string rec_state_in, unsigned int rec_zip_in, double weight_in) {
     // Set sender values.
     Package::set_send_name(send_name_in);
     Package::set_send_address(send_address_in);
@@ -35,6 +35,8 @@ Package::Package(std::string send_name_in, std::string send_address_in, std::str
     Package::set_rec_city(rec_city_in);
     Package::set_rec_state(rec_state_in);
     Package::set_rec_zip(rec_zip_in);
+
+    Package::set_weight(weight_in);
 }
 
 
@@ -146,3 +148,20 @@ unsigned int Package::get_rec_zip() {
 void Package::set_rec_zip(unsigned int rec_zip_in) {
     rec_zip = rec_zip_in;
 }
+
+
+double Package::get_weight() {
+    return weight;
+}
+
+
+void Package::set_weight(double weight_in) {
+    // If entered weight is negative display message and set to zero.
+    if ( weight_in < 0 ) {
+        std::cout << "Weight must be non-negative. Setting weight value to 0." << std::endl;
+        weight = 0;
+    } else {
+        weight = weight_in;
+    }
+}
+

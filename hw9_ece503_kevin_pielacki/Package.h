@@ -6,7 +6,7 @@ class Package {
 
     public:
         Package();
-        Package(std::string send_name_in, std::string send_address_in, std::string send_city_in, std::string send_state_in, unsigned int send_zip_in, std::string rec_name_in, std::string rec_address_in, std::string rec_city_in, std::string rec_state_in, unsigned int rec_zip_in);
+        Package(std::string send_name_in, std::string send_address_in, std::string send_city_in, std::string send_state_in, unsigned int send_zip_in, std::string rec_name_in, std::string rec_address_in, std::string rec_city_in, std::string rec_state_in, unsigned int rec_zip_in, double weight_in);
 
         // Sender getters and setters.
         std::string get_send_name();
@@ -32,6 +32,9 @@ class Package {
         unsigned int get_rec_zip();
         void set_rec_zip(unsigned int zip_in);
 
+        double get_weight(); 
+        void set_weight(double weight_in);
+
     private:
         std::string send_name;
         std::string send_address;
@@ -44,6 +47,8 @@ class Package {
         std::string rec_city;
         std::string rec_state;
         unsigned int rec_zip;
+
+        double weight;
 
 };
 

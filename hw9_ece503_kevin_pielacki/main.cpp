@@ -9,7 +9,7 @@ int main() {
     char test[2];
     std::strcpy(test, "NJ");
     std::cout << test << std::endl;
-    Package package1("Mahmoud", "21 Constitutional Ave", "Piscataway", "NJ", 8892, "Kevin", "1 Ericsson Dr", "Piscataway", "NJ", 8895);
+    Package package1("Mahmoud", "21 Constitutional Ave", "Piscataway", "NJ", 8892, "Kevin", "1 Ericsson Dr", "Piscataway", "NJ", 8895, 0.666);
 
     std::cout << "Sender:" << std::endl;
     std::cout << package1.get_send_name() << std::endl;    
