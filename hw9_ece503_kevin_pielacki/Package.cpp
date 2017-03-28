@@ -165,3 +165,7 @@ void Package::set_weight(double weight_in) {
     }
 }
 
+
+double Package::calculateCost() {
+    return 0;
+}

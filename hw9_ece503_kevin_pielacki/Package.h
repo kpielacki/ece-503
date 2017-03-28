@@ -35,6 +35,8 @@ class Package {
         double get_weight(); 
         void set_weight(double weight_in);
 
+        virtual double calculateCost();
+
     private:
         std::string send_name;
         std::string send_address;

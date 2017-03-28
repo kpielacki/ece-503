@@ -25,5 +25,7 @@ int main() {
     std::cout << package1.get_rec_state() << std::endl;
     std::cout << package1.get_rec_zip() << std::endl;
 
+    std::cout << "Total cost: " << package1.calculateCost() << std::endl;
+
     return 0;
 }
