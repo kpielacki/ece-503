@@ -5,6 +5,7 @@
 #include "Package.h"
 
 
+// Default Constructor
 Package::Package() {
     // Set sender information to empty values.
     Package::set_send_name("");
@@ -22,6 +23,7 @@ Package::Package() {
 }
 
 
+// Constructor set all values.
 Package::Package(std::string send_name_in, std::string send_address_in, std::string send_city_in, std::string send_state_in, unsigned int send_zip_in, std::string rec_name_in, std::string rec_address_in, std::string rec_city_in, std::string rec_state_in, unsigned int rec_zip_in, double weight_in) {
     // Set sender values.
     Package::set_send_name(send_name_in);
@@ -41,6 +43,7 @@ Package::Package(std::string send_name_in, std::string send_address_in, std::str
 }
 
 
+// Returns shipment type. Used to identify object.
 std::string Package::get_delivery_type() const {
     return "Regular";
 }
@@ -181,6 +184,7 @@ double Package::calculate_cost() const {
 }
 
 
+// Overload cout operator for sender, receiver, cost, weight, and shipment type print.
 std::ostream& operator<<(std::ostream &os, const Package& p) {
     return os << "Sender:\n" << p.send_name << "\n" << p.send_address << 
     "\n" << p.send_city << ", " << p.send_state << " " << p.send_zip <<

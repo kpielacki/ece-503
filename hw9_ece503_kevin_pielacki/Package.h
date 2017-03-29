@@ -6,8 +6,14 @@
 class Package {
 
     public:
+        // Default Constructor
         Package();
+        // Set all parameters.
         Package(std::string send_name_in, std::string send_address_in, std::string send_city_in, std::string send_state_in, unsigned int send_zip_in, std::string rec_name_in, std::string rec_address_in, std::string rec_city_in, std::string rec_state_in, unsigned int rec_zip_in, double weight_in);
+
+        // All getters and calculate_cost method is const to allow for cout
+        // operator to take a const pointer to the object so it remains
+        // immutable.
 
         // Used to identify delivery type.
         std::string get_delivery_type() const;
@@ -36,10 +42,14 @@ class Package {
         unsigned int get_rec_zip() const;
         void set_rec_zip(unsigned int zip_in);
 
+        // Getter and setter for weight parameter.
         double get_weight() const; 
         void set_weight(double weight_in);
 
+        // Virtual for polymorphism. Derived classes use different calculation.
         virtual double calculate_cost() const;
+
+        // Used to print sender, receiver, weight, cost, and shipment type info.
         friend std::ostream& operator<<(std::ostream &os, const Package& p);
 
     private:
