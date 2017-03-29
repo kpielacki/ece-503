@@ -28,7 +28,7 @@ Package::Package() {
 
 
 // Constructor set all values.
-Package::Package(std::string send_name_in, std::string send_address_in, std::string send_city_in, std::string send_state_in, unsigned int send_zip_in, std::string rec_name_in, std::string rec_address_in, std::string rec_city_in, std::string rec_state_in, unsigned int rec_zip_in, double weight_in) {
+Package::Package(std::string send_name_in, std::string send_address_in, std::string send_city_in, std::string send_state_in, unsigned int send_zip_in, std::string rec_name_in, std::string rec_address_in, std::string rec_city_in, std::string rec_state_in, unsigned int rec_zip_in, double cost_rate_in, double weight_in) {
     // Set sender values.
     Package::set_send_name(send_name_in);
     Package::set_send_address(send_address_in);
@@ -44,7 +44,7 @@ Package::Package(std::string send_name_in, std::string send_address_in, std::str
     Package::set_rec_zip(rec_zip_in);
 
     // Set cost rate and weight values.
-    Package::set_cost_rate(0.5);
+    Package::set_cost_rate(cost_rate_in);
     Package::set_weight(weight_in);
 }
 
@@ -211,6 +211,6 @@ std::ostream& operator<<(std::ostream &os, const Package& p) {
     "\n" << p.rec_city << ", " << p.rec_state << " " << p.rec_zip <<
     "\n\n" << "Weight of package: " << p.get_weight() << " ounces" <<
     "\n" << "Type of delivery: " << p.get_delivery_type() << " Delivery" <<
-    "\n" << "Cost of package: $" << std::setprecision(2) << p.calculate_cost();
+    "\n" << "Cost of package: $" << std::setprecision(3) << p.calculate_cost();
 }
 

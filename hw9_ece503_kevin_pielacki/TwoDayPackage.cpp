@@ -12,7 +12,7 @@ TwoDayPackage::TwoDayPackage() : Package() {
 
 
 // Use base class parameter constructor and set flat_fee.
-TwoDayPackage::TwoDayPackage(std::string send_name_in, std::string send_address_in, std::string send_city_in, std::string send_state_in, unsigned int send_zip_in, std::string rec_name_in, std::string rec_address_in, std::string rec_city_in, std::string rec_state_in, unsigned int rec_zip_in, double weight_in, double flat_fee_in) : Package(send_name_in, send_address_in, send_city_in, send_state_in, send_zip_in, rec_name_in, rec_address_in, rec_city_in, rec_state_in, rec_zip_in, weight_in) {
+TwoDayPackage::TwoDayPackage(std::string send_name_in, std::string send_address_in, std::string send_city_in, std::string send_state_in, unsigned int send_zip_in, std::string rec_name_in, std::string rec_address_in, std::string rec_city_in, std::string rec_state_in, unsigned int rec_zip_in, double cost_rate_in, double weight_in, double flat_fee_in) : Package(send_name_in, send_address_in, send_city_in, send_state_in, send_zip_in, rec_name_in, rec_address_in, rec_city_in, rec_state_in, rec_zip_in, cost_rate_in, weight_in) {
     set_flat_fee(flat_fee_in);
 }
 
@@ -57,5 +57,5 @@ std::ostream& operator<<(std::ostream &os, const TwoDayPackage& p) {
         "\n" << p.get_rec_city() << ", " << p.get_rec_state() << " " << p.get_rec_zip() <<
         "\n\n" << "Weight of package: " << p.get_weight() << " ounces" <<
         "\n" << "Type of delivery: " << p.get_delivery_type() << " Delivery" <<
-        "\n" << "Cost of package: $" << std::setprecision(2) << p.calculate_cost();
+        "\n" << "Cost of package: $" << std::setprecision(3) << p.calculate_cost();
 }
