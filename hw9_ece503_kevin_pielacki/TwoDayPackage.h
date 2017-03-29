@@ -1,5 +1,5 @@
-#ifndef TWODAYPACKAGE_H
-#define TWODAYPACKAGE_H
+#ifndef TWO_DAY_PACKAGE_H_
+#define TWO_DAY_PACKAGE_H_
 
 #include "Package.h"
 

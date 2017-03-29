@@ -1,5 +1,5 @@
-#ifndef PACKAGE_H
-#define PACKAGE_H
+#ifndef PACKAGE_H_
+#define PACKAGE_H_
 #include <string>
 
 class Package {

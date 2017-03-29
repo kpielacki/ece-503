@@ -1,5 +1,5 @@
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <string>
 #include "Package.h"
 #include "TwoDayPackage.h"
 
