@@ -196,8 +196,10 @@ void Package::set_weight(double weight_in) {
 }
 
 
+// Calculate cost based on cost_rate and weight.
 double Package::calculate_cost() const {
-    return 0;
+    // cost_rate * weight
+    return (get_cost_rate() * get_weight());
 }
 
 

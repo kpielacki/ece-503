@@ -6,7 +6,7 @@
 
 
 int main() {
-    TwoDayPackage package1("Mahmoud", "21 Constitutional Ave", "Piscataway", "NJ", 8892, "Kevin", "1 Ericsson Dr", "Piscataway", "NJ", 8895, 0.666, 1);
+    TwoDayPackage package1("Mahmoud", "21 Constitutional Ave", "Piscataway", "NJ", 8892, "Kevin", "1 Ericsson Dr", "Piscataway", "NJ", 8895, 0.666, 2);
     std::cout << package1 << std::endl;
 
     //std::cout << "Sender:" << std::endl;

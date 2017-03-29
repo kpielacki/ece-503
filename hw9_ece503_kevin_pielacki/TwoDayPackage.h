@@ -25,6 +25,8 @@ class TwoDayPackage : public Package {
         friend std::ostream& operator<<(std::ostream &os, const TwoDayPackage& p);
 
     private:
+        // Flat fee rate per ounce additional to base fee.
+        // Default value: 2
         double flat_fee;
 
 };
