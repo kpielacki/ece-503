@@ -7,12 +7,14 @@
 
 // Used base class default constructor and set flat_fee.
 TwoDayPackage::TwoDayPackage() : Package() {
+    set_cost_rate(2.5);
     set_flat_fee(1);
 }
 
 
 // Use base class parameter constructor and set flat_fee.
 TwoDayPackage::TwoDayPackage(std::string send_name_in, std::string send_address_in, std::string send_city_in, std::string send_state_in, unsigned int send_zip_in, std::string rec_name_in, std::string rec_address_in, std::string rec_city_in, std::string rec_state_in, unsigned int rec_zip_in, double weight_in, double flat_fee_in) : Package(send_name_in, send_address_in, send_city_in, send_state_in, send_zip_in, rec_name_in, rec_address_in, rec_city_in, rec_state_in, rec_zip_in, weight_in) {
+    set_cost_rate(2.5);
     set_flat_fee(flat_fee_in);
 }
 

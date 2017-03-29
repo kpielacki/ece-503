@@ -20,6 +20,10 @@ Package::Package() {
     Package::set_rec_city("");
     Package::set_rec_state("");
     Package::set_rec_zip(0);
+
+    // Set cost rate and weight default values. 
+    Package::set_cost_rate(0.5);
+    Package::set_weight(0);
 }
 
 
@@ -39,6 +43,8 @@ Package::Package(std::string send_name_in, std::string send_address_in, std::str
     Package::set_rec_state(rec_state_in);
     Package::set_rec_zip(rec_zip_in);
 
+    // Set cost rate and weight values.
+    Package::set_cost_rate(0.5);
     Package::set_weight(weight_in);
 }
 
@@ -162,6 +168,17 @@ void Package::set_rec_zip(unsigned int rec_zip_in) {
 /*****************************************************************************
     Weight and Cost
 *****************************************************************************/
+
+
+double Package::get_cost_rate() const {
+    return cost_rate;
+}
+
+
+void Package::set_cost_rate(double cost_rate_in) {
+    cost_rate = cost_rate_in;
+}
+
 
 double Package::get_weight() const {
     return weight;

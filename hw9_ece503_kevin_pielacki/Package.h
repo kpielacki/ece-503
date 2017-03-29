@@ -42,7 +42,9 @@ class Package {
         unsigned int get_rec_zip() const;
         void set_rec_zip(unsigned int zip_in);
 
-        // Getter and setter for weight parameter.
+        // Getter and setter for cost and weight parameters.
+        double get_cost_rate() const;
+        void set_cost_rate(double cost_rate_in);
         double get_weight() const; 
         void set_weight(double weight_in);
 
@@ -53,18 +55,24 @@ class Package {
         friend std::ostream& operator<<(std::ostream &os, const Package& p);
 
     private:
+        // Sender name and location information.
         std::string send_name;
         std::string send_address;
         std::string send_city;
         std::string send_state;
         unsigned int send_zip;
 
+        // Receiver name and location information.
         std::string rec_name;
         std::string rec_address;
         std::string rec_city;
         std::string rec_state;
         unsigned int rec_zip;
 
+        // Cost rate per ounce.
+        // Default value: $0.50
+        double cost_rate;
+        // Weight of package.
         double weight;
 
 };
