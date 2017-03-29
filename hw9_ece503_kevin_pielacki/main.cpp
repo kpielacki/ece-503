@@ -6,24 +6,29 @@
 
 
 int main() {
-    TwoDayPackage package1("Mahmoud", "21 Constitutional Ave", "Piscataway", "NJ", 8892, "Kevin", "1 Ericsson Dr", "Piscataway", "NJ", 8895, 0.5, 0.666, 2);
-    std::cout << package1 << std::endl;
+    double base_rate = 0.5;
+    double flat_rate_2day = 2;
+    double flat_rate_next_day = 5;
+    std::vector<Package*> packages;
+    
 
-    //std::cout << "Sender:" << std::endl;
-    //std::cout << package1.get_send_name() << std::endl;    
-    //std::cout << package1.get_send_address() << std::endl;    
-    //std::cout << package1.get_send_city() << std::endl;
-    //std::cout << package1.get_send_state() << std::endl;
-    //std::cout << package1.get_send_zip() << std::endl;
+    std::cout << "Cost per ounce for a package:           $0.50/ounce" << std::endl;
+    std::cout << "Additional cost for two day delivery:   $2.00/ounce" << std::endl;
+    std::cout << "Additional cost for overnight delivery: $5.00/ounce" << std::endl;
+    
+    Package package1("Michael Bay", "123 Fake St.", "Springfield", "MI", 42321, "John Snow", "142 Maple Ave.", "Newark", "NJ", 23134, base_rate, 12);
+    TwoDayPackage package2("Mahmoud", "21 Constitutional Ave", "Piscataway", "NJ", 8892, "Kevin", "1 Ericsson Dr", "Piscataway", "NJ", 8895, base_rate, 0.666, flat_rate_2day);
 
-    //std::cout << "Receipent:" << std::endl;
-    //std::cout << package1.get_rec_name() << std::endl;
-    //std::cout << package1.get_rec_address() << std::endl;
-    //std::cout << package1.get_rec_city() << std::endl;
-    //std::cout << package1.get_rec_state() << std::endl;
-    //std::cout << package1.get_rec_zip() << std::endl;
+    Package *p1 = &package1;
+    TwoDayPackage *p2 = &package2;
 
-    //std::cout << "Total cost: " << package1.calculate_cost() << std::endl;
+    packages.push_back(p1);
+    packages.push_back(p2);
+
+    for (int i = 0; i < packages.size(); i++) {
+        std::cout << "Package " << i + 1 << ":" << std::endl;
+        std::cout << *packages[i] << std::endl;
+    }
 
     return 0;
 }

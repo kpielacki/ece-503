@@ -176,7 +176,12 @@ double Package::get_cost_rate() const {
 
 
 void Package::set_cost_rate(double cost_rate_in) {
-    cost_rate = cost_rate_in;
+    if (cost_rate_in < 0) {
+        std::cout << "Cost rate must be non-negative. Setting cost rate value to 0.5." << std::endl;
+        cost_rate = 0.5;
+    } else {
+        cost_rate = cost_rate_in;
+    }
 }
 
 

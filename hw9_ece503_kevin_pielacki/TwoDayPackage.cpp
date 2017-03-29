@@ -33,8 +33,8 @@ double TwoDayPackage::get_flat_fee() const {
 void TwoDayPackage::set_flat_fee(double flat_fee_in) {
     // Set flat_fee to one if non-positive.
     if ( flat_fee_in <= 0 ) {
-        std::cout << "Flat fee must be positive. Setting value to 1." << std::endl;
-        flat_fee = 1;
+        std::cout << "Flat fee must be positive. Setting value to 2." << std::endl;
+        flat_fee = 2;
     } else {
         flat_fee = flat_fee_in;
     }
