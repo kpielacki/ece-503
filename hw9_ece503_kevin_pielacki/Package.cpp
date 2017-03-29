@@ -41,6 +41,11 @@ Package::Package(std::string send_name_in, std::string send_address_in, std::str
 }
 
 
+std::string Package::get_delivery_type() const {
+    return "Regular";
+}
+
+
 /* ############################################################################
     Sender Methods
 ############################################################################ */
@@ -182,7 +187,7 @@ std::ostream& operator<<(std::ostream &os, const Package& p) {
     "\n\nReceipent:\n" << p.rec_name << "\n" << p.rec_address <<
     "\n" << p.rec_city << ", " << p.rec_state << " " << p.rec_zip <<
     "\n\n" << "Weight of package: " << p.get_weight() << " ounces" <<
-    "\n" << "Type of delivery: TEMP" <<
+    "\n" << "Type of delivery: " << p.get_delivery_type() << " Delivery" <<
     "\n" << "Cost of package: $" << std::setprecision(2) << p.calculate_cost();
 }
 

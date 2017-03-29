@@ -1,5 +1,6 @@
 #ifndef PACKAGE_H_
 #define PACKAGE_H_
+#include <iostream>
 #include <string>
 
 class Package {
@@ -7,6 +8,9 @@ class Package {
     public:
         Package();
         Package(std::string send_name_in, std::string send_address_in, std::string send_city_in, std::string send_state_in, unsigned int send_zip_in, std::string rec_name_in, std::string rec_address_in, std::string rec_city_in, std::string rec_state_in, unsigned int rec_zip_in, double weight_in);
+
+        // Used to identify delivery type.
+        std::string get_delivery_type() const;
 
         // Sender getters and setters.
         std::string get_send_name() const;
