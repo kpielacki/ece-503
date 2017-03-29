@@ -36,6 +36,7 @@ class Package {
         void set_weight(double weight_in);
 
         virtual double calculateCost();
+        friend std::ostream& operator<<(std::ostream &os, const Package& p);
 
     private:
         std::string send_name;

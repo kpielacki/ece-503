@@ -1,7 +1,8 @@
 #include<iostream>
+#include<sstream>
 #include<string>
 #include<cstring>
-#include"Package.h"
+#include "Package.h"
 
 
 Package::Package() {
@@ -169,3 +170,12 @@ void Package::set_weight(double weight_in) {
 double Package::calculateCost() {
     return 0;
 }
+
+
+std::ostream& operator<<(std::ostream &os, const Package& p) {
+    return os << "Sender:\n" << p.send_name << "\n" << p.send_address << 
+    "\n" << p.send_city << ", " << p.send_state << " " << p.send_zip <<
+    "\n\nReceipent:\n" << p.rec_name << "\n" << p.rec_address <<
+    "\n" << p.rec_city << ", " << p.rec_state << " " << p.rec_zip;
+}
+
