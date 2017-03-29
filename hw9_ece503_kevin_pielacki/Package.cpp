@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <cstring>
+#include <iomanip>
 #include "Package.h"
 
 
@@ -46,7 +46,7 @@ Package::Package(std::string send_name_in, std::string send_address_in, std::str
 ############################################################################ */
 
 
-std::string Package::Package::get_send_name() {
+std::string Package::Package::get_send_name() const {
     return send_name;
 }
 
@@ -56,7 +56,7 @@ void Package::set_send_name(std::string send_name_in) {
 }
 
 
-std::string Package::get_send_address() {
+std::string Package::get_send_address() const {
     return send_address;
 }
 
@@ -66,7 +66,7 @@ void Package::set_send_address(std::string send_address_in) {
 }
 
 
-std::string Package::get_send_city() {
+std::string Package::get_send_city() const {
     return send_city;
 }
 
@@ -76,7 +76,7 @@ void Package::set_send_city(std::string send_city_in) {
 }
 
 
-std::string Package::get_send_state() {
+std::string Package::get_send_state() const {
     return send_state;
 }
 
@@ -86,7 +86,7 @@ void Package::set_send_state(std::string send_state_in) {
 }
 
 
-unsigned int Package::get_send_zip() {
+unsigned int Package::get_send_zip() const {
     return send_zip;
 }
 
@@ -96,12 +96,12 @@ void Package::set_send_zip(unsigned int send_zip_in) {
 }
 
 
-/* ############################################################################
+/******************************************************************************
     Reciver Methods
-############################################################################ */
+******************************************************************************/
 
 
-std::string Package::Package::get_rec_name() {
+std::string Package::Package::get_rec_name() const {
     return rec_name;
 }
 
@@ -111,7 +111,7 @@ void Package::set_rec_name(std::string rec_name_in) {
 }
 
 
-std::string Package::get_rec_address() {
+std::string Package::get_rec_address() const {
     return rec_address;
 }
 
@@ -121,7 +121,7 @@ void Package::set_rec_address(std::string rec_address_in) {
 }
 
 
-std::string Package::get_rec_city() {
+std::string Package::get_rec_city() const {
     return rec_city;
 }
 
@@ -131,7 +131,7 @@ void Package::set_rec_city(std::string rec_city_in) {
 }
 
 
-std::string Package::get_rec_state() {
+std::string Package::get_rec_state() const {
     return rec_state;
 }
 
@@ -141,7 +141,7 @@ void Package::set_rec_state(std::string rec_state_in) {
 }
 
 
-unsigned int Package::get_rec_zip() {
+unsigned int Package::get_rec_zip() const {
     return rec_zip;
 }
 
@@ -151,7 +151,11 @@ void Package::set_rec_zip(unsigned int rec_zip_in) {
 }
 
 
-double Package::get_weight() {
+/*****************************************************************************
+    Weight and Cost
+*****************************************************************************/
+
+double Package::get_weight() const {
     return weight;
 }
 
@@ -167,7 +171,7 @@ void Package::set_weight(double weight_in) {
 }
 
 
-double Package::calculateCost() {
+double Package::calculate_cost() const {
     return 0;
 }
 
@@ -176,6 +180,9 @@ std::ostream& operator<<(std::ostream &os, const Package& p) {
     return os << "Sender:\n" << p.send_name << "\n" << p.send_address << 
     "\n" << p.send_city << ", " << p.send_state << " " << p.send_zip <<
     "\n\nReceipent:\n" << p.rec_name << "\n" << p.rec_address <<
-    "\n" << p.rec_city << ", " << p.rec_state << " " << p.rec_zip;
+    "\n" << p.rec_city << ", " << p.rec_state << " " << p.rec_zip <<
+    "\n\n" << "Weight of package: " << p.get_weight() << " ounces" <<
+    "\n" << "Type of delivery: TEMP" <<
+    "\n" << "Cost of package: $" << std::setprecision(2) << p.calculate_cost();
 }
 

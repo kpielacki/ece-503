@@ -14,7 +14,7 @@ TwoDayPackage::TwoDayPackage(std::string send_name_in, std::string send_address_
 }
 
 
-double TwoDayPackage::get_flat_fee() {
+double TwoDayPackage::get_flat_fee() const {
     return flat_fee;
 }
 
@@ -30,6 +30,6 @@ void TwoDayPackage::set_flat_fee(double flat_fee_in) {
 }
 
 
-double TwoDayPackage::calculateCost() {
+double TwoDayPackage::calculate_cost() const {
     return get_flat_fee() * get_weight();
 }
