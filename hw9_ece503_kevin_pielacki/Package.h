@@ -16,7 +16,7 @@ class Package {
         // immutable.
 
         // Used to identify delivery type.
-        std::string get_delivery_type() const;
+        virtual std::string get_delivery_type() const;
 
         // Sender getters and setters.
         std::string get_send_name() const;
@@ -48,8 +48,9 @@ class Package {
         double get_weight() const; 
         void set_weight(double weight_in);
 
-        // Virtual for polymorphism. Derived classes use different calculation.
+        // Abstract method for cost calculation. Derived classes use different calculation.
         virtual double calculate_cost() const;
+        virtual void print_info() const;
 
         // Used to print sender, receiver, weight, cost, and shipment type info.
         friend std::ostream& operator<<(std::ostream &os, const Package& p);

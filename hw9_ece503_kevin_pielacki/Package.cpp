@@ -208,6 +208,17 @@ double Package::calculate_cost() const {
 }
 
 
+void Package::print_info() const {
+    std::cout << "Sender:\n" << get_send_name() << "\n" << get_send_address() <<
+    "\n" << get_send_city() << ", " << get_send_state() << " " << get_send_zip() <<
+    "\n\nReceipent:\n" << get_rec_name() << "\n" << get_rec_address() <<
+    "\n" << get_rec_city() << ", " << get_rec_state() << " " << get_rec_zip() <<
+    "\n\n" << "Weight of package: " << get_weight() << " ounces" <<
+    "\n" << "Type of delivery: " << get_delivery_type() << " Delivery" <<
+    "\n" << "Cost of package: $" << std::setprecision(3) << calculate_cost();
+}
+
+
 // Overload cout operator for sender, receiver, cost, weight, and shipment type print.
 std::ostream& operator<<(std::ostream &os, const Package& p) {
     return os << "Sender:\n" << p.send_name << "\n" << p.send_address << 
