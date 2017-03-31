@@ -396,42 +396,24 @@ void Package::set_attributes() {
 
 // Print sender, receiver, cost, weight, and shipment type information.
 void Package::print_info() const {
-    unsigned int cost_digit_cnt = 0;
-    unsigned int shipment_cost = (unsigned int) calculate_cost();
-
-    // Count digits for setting precision to round to two decimals.
-    while (shipment_cost) {
-        shipment_cost /= 10;
-        cost_digit_cnt++;
-    }
-
     std::cout << "Sender:\n" << get_send_name() << "\n" << get_send_address() <<
     "\n" << get_send_city() << ", " << get_send_state() << " " << get_send_zip_padded() <<
     "\n\nReceipent:\n" << get_rec_name() << "\n" << get_rec_address() <<
     "\n" << get_rec_city() << ", " << get_rec_state() << " " << get_rec_zip_padded() <<
     "\n\n" << "Weight of package: " << get_weight() << " ounces" <<
     "\n" << "Type of delivery: " << get_delivery_type() << " Delivery" <<
-    "\n" << "Cost of package: $" << std::setprecision(cost_digit_cnt + 2) << calculate_cost();
+    "\n" << "Cost of package: $" <<  std::fixed << std::setprecision(2) << calculate_cost();
 }
 
 
 // Overload cout operator for sender, receiver, cost, weight, and shipment type print.
 std::ostream& operator<<(std::ostream &os, const Package& p) {
-    unsigned int cost_digit_cnt = 0;
-    unsigned int shipment_cost = (unsigned int) p.calculate_cost();
-
-    // Counts digits for setting precision to round to two decimals.
-    while (shipment_cost) {
-        shipment_cost /= 10;
-        cost_digit_cnt++;
-    }
-
     return os << "Sender:\n" << p.get_send_name() << "\n" << p.get_send_address() <<
     "\n" << p.get_send_city() << ", " << p.get_send_state() << " " << p.get_send_zip_padded() <<
     "\n\nReceipent:\n" << p.get_rec_name() << "\n" << p.get_rec_address() <<
     "\n" << p.get_rec_city() << ", " << p.get_rec_state() << " " << p.get_rec_zip_padded() <<
     "\n\n" << "Weight of package: " << p.get_weight() << " ounces" <<
     "\n" << "Type of delivery: " << p.get_delivery_type() << " Delivery" <<
-    "\n" << "Cost of package: $" << std::setprecision(cost_digit_cnt + 2) << p.calculate_cost();
+    "\n" << "Cost of package: $" << std::fixed << std::setprecision(2) << p.calculate_cost();
 }
 

@@ -11,8 +11,9 @@ int main() {
     double base_rate = 0.5;
     double flat_rate_2day = 2;
     double flat_rate_next_day = 5;
+    double total_cost = 0;
     int test_option = -1;
-    
+
     while (true) {
         std::cout << "Since entering package information is long I have a predefined option:" << std::endl;
         std::cout << "0: Use predefined package list" << std::endl;
@@ -43,22 +44,25 @@ int main() {
             packages.push_back(&package1);
             packages.push_back(&package2);
             packages.push_back(&package3);
-    
+
             // Print sender, receiver, weight, and cost information for each package.
             for (int i = 0; i < packages.size(); i++) {
                 std::cout << "Package " << i + 1 << ":" << std::endl;
                 packages[i]->print_info();
                 std::cout << std::endl << std::endl;
+                total_cost = total_cost + packages[i]->calculate_cost();
             }
+            std::cout << std::fixed << std::setprecision(2) << "Total cost of all the packages: " << total_cost << std::endl;
             break;
         } case 1: {
             bool show_menu = true;
             int selection;
             while (show_menu) {
+                std::cout << "Number of packages: " << packages.size() << std::endl;
                 std::cout << "0) Cost per ounce for a package:             $0.50/ounce" << std::endl;
-                std::cout << "1) Additional cost for two day delivery:     $2.00/ounce" << std::endl;                             
-                std::cout << "2) Additional cost for overnight delivery: $5.00/ounce" << std::endl;
-                std::cout << "3) Quit" << std::endl << std::endl;
+                std::cout << "1) Additional cost for two day delivery:     $2.00/ounce" << std::endl;
+                std::cout << "2) Additional cost for overnight delivery:   $5.00/ounce" << std::endl;
+                std::cout << "3) Print packages and quit" << std::endl << std::endl;
                 std::cin >> selection;
 
                 switch (selection) {
@@ -68,7 +72,7 @@ int main() {
                         packages.push_back(new_package);
                         break;
                     } case 1: {
-                        TwoDayPackage *new_package = new TwoDayPackage; 
+                        TwoDayPackage *new_package = new TwoDayPackage;
                         new_package->set_attributes();
                         packages.push_back(new_package);
                         break;
@@ -77,12 +81,6 @@ int main() {
                         new_package->set_attributes();
                         break;
                     } case 3: {
-                        // Print out all packages.
-                        //for (int i = 0; i < packages.size(); i++) {
-                        //    std::cout << "Package " << i + 1 << ":" << std::endl;
-                        //    packages[i]->print_info();
-                        //    std::cout << std::endl << std::endl;
-                        //}
                         show_menu = false;
                         break;
                     } default: {
@@ -92,7 +90,7 @@ int main() {
             }
             for (int i = 0; i < packages.size(); i++) {
                 std::cout << "Package " << i + 1 << ":" << std::endl;
-                packages[i]->print_info(); 
+                packages[i]->print_info();
                 std::cout << std::endl << std::endl;
             }
         }
