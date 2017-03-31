@@ -6,12 +6,6 @@
 #include "OvernightPackage.h"
 
 
-void v_pointer(const Package *pack) {
-    pack->print_info();
-    std::cout << std::endl << std::endl;
-}
-
-
 int main() {
     double base_rate = 0.5;
     double flat_rate_2day = 2;
@@ -26,7 +20,7 @@ int main() {
     // Establish one of each package types.
     Package package1("Tyng Lee", "123 Fake St.", "Springfield", "MI", 42321, "John Snow", "142 Maple Ave.", "Newark", "NJ", 23134, base_rate, 0.666);
     TwoDayPackage package2("Gabriel Johnson", "21 Corporate Ave.", "Piscataway", "NJ", 8892, "Tom Smith", "1 Elm Dr.", "Dallas", "TX", 8895, base_rate, 0.666, flat_rate_2day);
-    OvernightPackage package3("Hank Williams", "214 Willow Ave.", "Edison", "NJ", 88332, "Adam Anderson", "343 Willow St.", "Rahway", "CO", 8895, base_rate, 0.666, flat_rate_2day);
+    OvernightPackage package3("Hank Williams", "214 Willow Ave.", "Edison", "NJ", 88332, "Adam Anderson", "343 Willow St.", "Rahway", "CO", 835, base_rate, 0.666, flat_rate_next_day);
 
     // Populate vector of Package pinter objects.
     packages[0] = &package1;

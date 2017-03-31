@@ -28,6 +28,8 @@ class Package {
         std::string get_send_state() const;
         void set_send_state(std::string state_in);
         unsigned int get_send_zip() const;
+        // Return zero padded string of sender zip code.
+        std::string get_send_zip_padded() const;
         void set_send_zip(unsigned int zip_in);
 
         // Receiver getters and setters.
@@ -40,6 +42,8 @@ class Package {
         std::string get_rec_state() const;
         void set_rec_state(std::string state_in);
         unsigned int get_rec_zip() const;
+        // Return zero padded string of receiver zip code.
+        std::string get_rec_zip_padded() const;
         void set_rec_zip(unsigned int zip_in);
 
         // Getter and setter for cost and weight parameters.
@@ -76,6 +80,10 @@ class Package {
         double cost_rate;
         // Weight of package.
         double weight;
+
+        // Sets returned padding from zip_padded methods and restricts zip code to value.
+        // Default value: 5
+        unsigned int zip_digit_cnt;
 
 };
 

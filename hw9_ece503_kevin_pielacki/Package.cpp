@@ -21,9 +21,11 @@ Package::Package() {
     Package::set_rec_state("");
     Package::set_rec_zip(0);
 
-    // Set cost rate and weight default values. 
+    // Set cost rate and weight default values.
     Package::set_cost_rate(0.5);
     Package::set_weight(0);
+
+    Package::zip_digit_cnt = 5;
 }
 
 
@@ -46,6 +48,8 @@ Package::Package(std::string send_name_in, std::string send_address_in, std::str
     // Set cost rate and weight values.
     Package::set_cost_rate(cost_rate_in);
     Package::set_weight(weight_in);
+
+    Package::zip_digit_cnt = 5;
 }
 
 
@@ -105,8 +109,41 @@ unsigned int Package::get_send_zip() const {
 }
 
 
+std::string Package::get_send_zip_padded() const {
+    std::string zip_string;
+    int check_num, digit_cnt;
+
+    zip_string = "";
+    check_num = get_send_zip();
+    digit_cnt = 0;
+
+    while (check_num) {
+        check_num /= 10;
+        digit_cnt++;
+    }
+
+    for (int i = 0; i < zip_digit_cnt - digit_cnt; i++) {
+        zip_string = zip_string + "0";
+    }
+
+    // Opens string stream to convert int value to string.
+    std::ostringstream ss;
+    ss << get_send_zip();
+    zip_string = zip_string + ss.str();
+
+    return zip_string;
+}
+
+
 void Package::set_send_zip(unsigned int send_zip_in) {
-    send_zip = send_zip_in;
+    // Make sure zip code fits within digit range.
+    if ( send_zip_in % (10 * zip_digit_cnt) != send_zip_in ) {
+        std::cout << "Zip code can only have a maximum of " <<
+        zip_digit_cnt << ". Setting sender zip code to 0." << std::endl;
+        send_zip = 0;
+    } else {
+        send_zip = send_zip_in;
+    }
 }
 
 
@@ -160,8 +197,41 @@ unsigned int Package::get_rec_zip() const {
 }
 
 
+std::string Package::get_rec_zip_padded() const {
+    std::string zip_string;
+    int check_num, digit_cnt;
+
+    zip_string = "";
+    check_num = get_rec_zip();
+    digit_cnt = 0;
+
+    while (check_num) {
+        check_num /= 10;
+        digit_cnt++;
+    }
+
+    for (int i = 0; i < zip_digit_cnt - digit_cnt; i++) {
+        zip_string = zip_string + "0";
+    }
+
+    // Opens string stream to convert int value to string.
+    std::ostringstream ss;
+    ss << get_rec_zip();
+    zip_string = zip_string + ss.str();
+
+    return zip_string;
+}
+
+
 void Package::set_rec_zip(unsigned int rec_zip_in) {
-    rec_zip = rec_zip_in;
+    // Make sure zip code fits within digit range.
+    if ( rec_zip_in % (10 * zip_digit_cnt) != rec_zip_in ) {
+        std::cout << "Zip code can only have a maximum of " <<
+        zip_digit_cnt << ". Setting receiver zip code to 0." << std::endl;
+        rec_zip = 0;
+    } else {
+        rec_zip = rec_zip_in;
+    }
 }
 
 
@@ -210,9 +280,9 @@ double Package::calculate_cost() const {
 
 void Package::print_info() const {
     std::cout << "Sender:\n" << get_send_name() << "\n" << get_send_address() <<
-    "\n" << get_send_city() << ", " << get_send_state() << " " << get_send_zip() <<
+    "\n" << get_send_city() << ", " << get_send_state() << " " << get_send_zip_padded() <<
     "\n\nReceipent:\n" << get_rec_name() << "\n" << get_rec_address() <<
-    "\n" << get_rec_city() << ", " << get_rec_state() << " " << get_rec_zip() <<
+    "\n" << get_rec_city() << ", " << get_rec_state() << " " << get_rec_zip_padded() <<
     "\n\n" << "Weight of package: " << get_weight() << " ounces" <<
     "\n" << "Type of delivery: " << get_delivery_type() << " Delivery" <<
     "\n" << "Cost of package: $" << std::setprecision(3) << calculate_cost();
@@ -221,10 +291,10 @@ void Package::print_info() const {
 
 // Overload cout operator for sender, receiver, cost, weight, and shipment type print.
 std::ostream& operator<<(std::ostream &os, const Package& p) {
-    return os << "Sender:\n" << p.send_name << "\n" << p.send_address << 
-    "\n" << p.send_city << ", " << p.send_state << " " << p.send_zip <<
-    "\n\nReceipent:\n" << p.rec_name << "\n" << p.rec_address <<
-    "\n" << p.rec_city << ", " << p.rec_state << " " << p.rec_zip <<
+    return os << "Sender:\n" << p.get_send_name() << "\n" << p.get_send_address() <<
+    "\n" << p.get_send_city() << ", " << p.get_send_state() << " " << p.get_send_zip() <<
+    "\n\nReceipent:\n" << p.get_rec_name() << "\n" << p.get_rec_address() <<
+    "\n" << p.get_rec_city() << ", " << p.get_rec_state() << " " << p.get_rec_zip() <<
     "\n\n" << "Weight of package: " << p.get_weight() << " ounces" <<
     "\n" << "Type of delivery: " << p.get_delivery_type() << " Delivery" <<
     "\n" << "Cost of package: $" << std::setprecision(3) << p.calculate_cost();
