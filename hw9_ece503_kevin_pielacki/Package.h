@@ -78,6 +78,9 @@ class Package {
         // Cost rate per ounce.
         // Default value: $0.50
         double cost_rate;
+        // Minimum excepted weight of package.
+        // Default value: 0.06
+        double min_weight;
         // Weight of package.
         double weight;
 

@@ -7,32 +7,92 @@
 
 
 int main() {
+    std::vector<Package*> packages;
     double base_rate = 0.5;
     double flat_rate_2day = 2;
     double flat_rate_next_day = 5;
-    std::vector<Package*> packages(3);
+    int test_option = -1;
+    
+    while (true) {
+        std::cout << "Since entering package information is long I have a predefined option:" << std::endl;
+        std::cout << "0: Use predefined package list" << std::endl;
+        std::cout << "1: Enter package information manually" << std::endl;
+        std::cin >> test_option;
 
-    // Print cost of package delivery types.
-    std::cout << "Cost per ounce for a package:           $0.50/ounce" << std::endl;
-    std::cout << "Additional cost for two day delivery:   $2.00/ounce" << std::endl;
-    std::cout << "Additional cost for overnight delivery: $5.00/ounce" << std::endl << std::endl;
-
-    // Establish one of each package types.
-    Package package1("Tyng Lee", "12 Oak St.", "Springfield", "MI", 120, "John Snow", "142 Maple Ave.", "Newark", "NJ", 23134, base_rate, 0.0000666);
-    TwoDayPackage package2("Gabriel Johnson", "21 Corporate Ave.", "Piscataway", "NJ", 24503, "Tom Smith", "1 Elm Dr.", "Dallas", "TX", 8895, base_rate, 0.666, flat_rate_2day);
-    OvernightPackage package3("Hank Williams", "214 Willow Ave.", "Edison", "NJ", 88329, "Adam Anderson", "343 Willow St.", "Rahway", "CO", 835, base_rate, 0.666, flat_rate_next_day);
-
-    // Populate vector of Package pinter objects.
-    packages[0] = &package1;
-    packages[1] = &package2;
-    packages[2] = &package3;
-
-    // Print sender, receiver, weight, and cost information for each package.
-    for (int i = 0; i < packages.size(); i++) {
-        std::cout << "Package " << i + 1 << ":" << std::endl;
-        packages[i]->print_info();
-        std::cout << std::endl << std::endl;
+        if (test_option == 0 or test_option == 1) {
+            break;
+        } else {
+            std::cout << "Invalid selection" << std::endl;
+        }
     }
 
+
+    switch (test_option) {
+        case 0: {
+            // Print cost of package delivery types.
+            std::cout << "Cost per ounce for a package:           $0.50/ounce" << std::endl;
+            std::cout << "Additional cost for two day delivery:   $2.00/ounce" << std::endl;
+            std::cout << "Additional cost for overnight delivery: $5.00/ounce" << std::endl << std::endl;
+
+            // Establish one of each package types.
+            Package package1("Tyng Lee", "12 Oak St.", "Springfield", "MI", 120, "John Snow", "142 Maple Ave.", "Newark", "NJ", 23134, base_rate, 10);
+            TwoDayPackage package2("Gabriel Johnson", "21 Corporate Ave.", "Piscataway", "NJ", 24503, "Tom Smith", "1 Elm Dr.", "Dallas", "TX", 8895, base_rate, 5, flat_rate_2day);
+            OvernightPackage package3("Hank Williams", "214 Willow Ave.", "Edison", "NJ", 88329, "Adam Anderson", "343 Willow St.", "Rahway", "CO", 835, base_rate, 2, flat_rate_next_day);
+
+            // Populate vector of Package pinter objects.
+            packages.push_back(&package1);
+            packages.push_back(&package2);
+            packages.push_back(&package3);
+    
+            // Print sender, receiver, weight, and cost information for each package.
+            for (int i = 0; i < packages.size(); i++) {
+                std::cout << "Package " << i + 1 << ":" << std::endl;
+                packages[i]->print_info();
+                std::cout << std::endl << std::endl;
+            }
+            break;
+        } case 1: {
+            bool show_menu = true;
+            int selection;
+            while (show_menu) {
+                std::cout << "0) Cost per ounce for a package:             $0.50/ounce" << std::endl;
+                std::cout << "1) Additional cost for two day delivery:     $2.00/ounce" << std::endl;                             
+                std::cout << "2) Additional cost for overnight delivery: $5.00/ounce" << std::endl;
+                std::cout << "3) Quit" << std::endl << std::endl;
+                std::cin >> selection;
+
+                switch (selection) {
+                    case 0: {
+                        Package *new_package = new Package;
+                        packages.push_back(new_package);
+                        break;
+                    } case 1: {
+                        TwoDayPackage *new_package = new TwoDayPackage; 
+                        packages.push_back(new_package);
+                        break;
+                    } case 2: {
+                        OvernightPackage *new_package = new OvernightPackage;
+                        break;
+                    } case 3: {
+                        // Print out all packages.
+                        //for (int i = 0; i < packages.size(); i++) {
+                        //    std::cout << "Package " << i + 1 << ":" << std::endl;
+                        //    packages[i]->print_info();
+                        //    std::cout << std::endl << std::endl;
+                        //}
+                        show_menu = false;
+                        break;
+                    } default: {
+                        std::cout << "Invalid option" << std::endl << std:: endl;
+                    }
+                }
+            }
+            for (int i = 0; i < packages.size(); i++) {
+                std::cout << "Package " << i + 1 << ":" << std::endl;
+                packages[i]->print_info(); 
+                std::cout << std::endl << std::endl;
+            }
+        }
+    }
     return 0;
 }

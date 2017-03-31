@@ -8,8 +8,9 @@
 // Default Constructor
 Package::Package() {
     // Set cost rate, weight, and zip digit count default values.
+    Package::min_weight = 0.06;
     Package::set_cost_rate(0.5);
-    Package::set_weight(0);
+    Package::set_weight(Package::min_weight);
     Package::zip_digit_cnt = 5;
 
     // Set sender information to empty values.
@@ -31,6 +32,7 @@ Package::Package() {
 // Constructor set all values.
 Package::Package(std::string send_name_in, std::string send_address_in, std::string send_city_in, std::string send_state_in, unsigned int send_zip_in, std::string rec_name_in, std::string rec_address_in, std::string rec_city_in, std::string rec_state_in, unsigned int rec_zip_in, double cost_rate_in, double weight_in) {
     // Set cost rate, weight, and zip digit count values.
+    Package::min_weight = 0.06;
     Package::set_cost_rate(cost_rate_in);
     Package::set_weight(weight_in);
     Package::zip_digit_cnt = 5;
@@ -275,13 +277,14 @@ double Package::get_weight() const {
 
 
 void Package::set_weight(double weight_in) {
-    // If entered weight is negative display message and set to zero.
-    if ( weight_in < 0 ) {
-        std::cout << "Weight must be non-negative. Setting weight value to 0." << std::endl;
-        weight = 0;
+    // If entered weight is below minimum display message and set to min_weight.
+    if ( weight_in < min_weight ) {
+        std::cout << "Weight cannot be below " << min_weight <<
+        ". Setting weight value to " << min_weight << "." << std::endl;
+        weight = min_weight;
     } else {
         weight = weight_in;
-    }
+    } 
 }
 
 
