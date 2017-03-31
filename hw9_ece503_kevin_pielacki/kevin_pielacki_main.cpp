@@ -2,9 +2,9 @@
 #include <string>
 #include <vector>
 #include <iomanip>
-#include "Package.h"
-#include "TwoDayPackage.h"
-#include "OvernightPackage.h"
+#include "kevin_pielacki_Package.h"
+#include "kevin_pielacki_TwoDayPackage.h"
+#include "kevin_pielacki_OvernightPackage.h"
 
 
 int main() {
@@ -15,6 +15,7 @@ int main() {
     double total_cost = 0;
     int test_option = -1;
 
+    // Test predefined package list or manual input.
     while (true) {
         std::cout << "Since entering package information is long I have a predefined option:" << std::endl;
         std::cout << "0: Use predefined package list" << std::endl;
@@ -27,7 +28,6 @@ int main() {
             std::cout << "Invalid selection" << std::endl;
         }
     }
-
 
     switch (test_option) {
         case 0: {
@@ -53,20 +53,27 @@ int main() {
                 std::cout << std::endl << std::endl;
                 total_cost = total_cost + packages[i]->calculate_cost();
             }
+            // Print total cost of packages.
             std::cout << std::fixed << std::setprecision(2) << "Total cost of all the packages: " << "$" << total_cost << std::endl;
             break;
         } case 1: {
             bool show_menu = true;
             int selection;
+
+            // Force adding packages until user quits.
             while (show_menu) {
+                // Show current total of packages and cost.
                 std::cout << "Number of packages: " << packages.size() << std::endl;
                 std::cout << "Total cost: " << std::fixed << std::setprecision(2) << "$" << total_cost << std::endl;
+                // Show package options.
                 std::cout << "0) Cost per ounce for a package:             $0.50/ounce" << std::endl;
                 std::cout << "1) Additional cost for two day delivery:     $2.00/ounce" << std::endl;
                 std::cout << "2) Additional cost for overnight delivery:   $5.00/ounce" << std::endl;
                 std::cout << "3) Print packages and quit" << std::endl << std::endl;
                 std::cin >> selection;
 
+                // Select what type of package you want to add.
+                // Set new pointer and push back to vector for every new addition.
                 switch (selection) {
                     case 0: {
                         Package *new_package = new Package;
@@ -93,11 +100,14 @@ int main() {
                     }
                 }
             }
+
+            // Print all package information.
             for (int i = 0; i < packages.size(); i++) {
                 std::cout << "Package " << i + 1 << ":" << std::endl;
                 packages[i]->print_info();
                 std::cout << std::endl << std::endl;
             }
+            // Print total cost of packages.
             std::cout << std::fixed << std::setprecision(2) << "Total cost of all the packages: " << "$" << total_cost << std::endl;
         }
     }
