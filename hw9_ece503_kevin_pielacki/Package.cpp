@@ -117,10 +117,10 @@ std::string Package::get_send_zip_padded() const {
     digit_cnt = 0;
 
     // Count zip code digits to front pad zeros.
-    while (check_num) {
+    do {
         check_num /= 10;
         digit_cnt++;
-    }
+    } while (check_num);
 
     for (int i = 0; i < zip_digit_cnt - digit_cnt; i++) {
         zip_string = zip_string + "0";
@@ -145,7 +145,7 @@ void Package::set_send_zip(unsigned int send_zip_in) {
     // Make sure zip code fits within digit range.
     if (send_zip_in >= zip_range) {
         std::cout << "Zip code can only have a maximum of " <<
-        zip_digit_cnt << " digits. Setting sendeiver zip code to 0." << std::endl;
+        zip_digit_cnt << " digits. Setting sender zip code to 0." << std::endl;
         send_zip = 0;
     } else {
         send_zip = send_zip_in;
@@ -213,10 +213,10 @@ std::string Package::get_rec_zip_padded() const {
     digit_cnt = 0;
 
     // Count digits in zip code.
-    while (check_num) {
+    do {
         check_num /= 10;
         digit_cnt++;
-    }
+    } while (check_num);
 
     for (int i = 0; i < zip_digit_cnt - digit_cnt; i++) {
         zip_string = zip_string + "0";
