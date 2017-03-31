@@ -7,7 +7,7 @@
 
 // Used base class default constructor and set flat_fee.
 OvernightPackage::OvernightPackage() : Package() {
-    set_flat_fee(2);
+    set_flat_fee(5);
 }
 
 
@@ -17,7 +17,7 @@ OvernightPackage::OvernightPackage(std::string send_name_in, std::string send_ad
 }
 
 
-// Print shipment type.
+// Print shipment type as Overnight.
 std::string OvernightPackage::get_delivery_type() const {
     return "Overnight";
 }
@@ -33,8 +33,8 @@ double OvernightPackage::get_flat_fee() const {
 void OvernightPackage::set_flat_fee(double flat_fee_in) {
     // Set flat_fee to one if non-positive.
     if ( flat_fee_in <= 0 ) {
-        std::cout << "Flat fee must be positive. Setting value to 2." << std::endl;
-        flat_fee = 2;
+        std::cout << "Flat fee must be positive. Setting value to 5." << std::endl;
+        flat_fee = 5;
     } else {
         flat_fee = flat_fee_in;
     }

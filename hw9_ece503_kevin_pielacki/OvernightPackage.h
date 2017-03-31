@@ -16,6 +16,8 @@ class OvernightPackage : public Package {
 
         // Used to indentify delivery type.
         // All getters set as const function so object remains immutable during call.
+        
+        // Returns Overnight for delivery type.
         virtual std::string get_delivery_type() const;
         double get_flat_fee() const;
         void set_flat_fee(double flat_fee_in);
@@ -26,7 +28,7 @@ class OvernightPackage : public Package {
 
     private:
         // Flat fee rate per ounce additional to base fee.
-        // Default value: 2
+        // Default value: 5
         double flat_fee;
 
 };

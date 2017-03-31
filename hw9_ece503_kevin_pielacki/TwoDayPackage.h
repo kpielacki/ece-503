@@ -16,6 +16,8 @@ class TwoDayPackage : public Package {
 
         // Used to indentify delivery type.
         // All getters set as const function so object remains immutable during call.
+
+        // Return delivery type as Two Day
         virtual std::string get_delivery_type() const;
         double get_flat_fee() const;
         void set_flat_fee(double flat_fee_in);

@@ -48,11 +48,12 @@ class Package {
         double get_weight() const; 
         void set_weight(double weight_in);
 
-        // Abstract method for cost calculation. Derived classes use different calculation.
+        // Virtual function for cost calculation.
+        // Derived classes return different calculation methods.
         virtual double calculate_cost() const;
-        virtual void print_info() const;
-
+        
         // Used to print sender, receiver, weight, cost, and shipment type info.
+        virtual void print_info() const;
         friend std::ostream& operator<<(std::ostream &os, const Package& p);
 
     private:
