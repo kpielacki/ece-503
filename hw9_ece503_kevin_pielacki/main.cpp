@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <iomanip>
 #include "Package.h"
 #include "TwoDayPackage.h"
 #include "OvernightPackage.h"
@@ -52,13 +53,14 @@ int main() {
                 std::cout << std::endl << std::endl;
                 total_cost = total_cost + packages[i]->calculate_cost();
             }
-            std::cout << std::fixed << std::setprecision(2) << "Total cost of all the packages: " << total_cost << std::endl;
+            std::cout << std::fixed << std::setprecision(2) << "Total cost of all the packages: " << "$" << total_cost << std::endl;
             break;
         } case 1: {
             bool show_menu = true;
             int selection;
             while (show_menu) {
                 std::cout << "Number of packages: " << packages.size() << std::endl;
+                std::cout << "Total cost: " << std::fixed << std::setprecision(2) << "$" << total_cost << std::endl;
                 std::cout << "0) Cost per ounce for a package:             $0.50/ounce" << std::endl;
                 std::cout << "1) Additional cost for two day delivery:     $2.00/ounce" << std::endl;
                 std::cout << "2) Additional cost for overnight delivery:   $5.00/ounce" << std::endl;
@@ -69,15 +71,18 @@ int main() {
                     case 0: {
                         Package *new_package = new Package;
                         new_package->set_attributes();
+                        total_cost = total_cost + new_package->calculate_cost();
                         packages.push_back(new_package);
                         break;
                     } case 1: {
                         TwoDayPackage *new_package = new TwoDayPackage;
                         new_package->set_attributes();
+                        total_cost = total_cost + new_package->calculate_cost();
                         packages.push_back(new_package);
                         break;
                     } case 2: {
                         OvernightPackage *new_package = new OvernightPackage;
+                        total_cost = total_cost + new_package->calculate_cost();
                         new_package->set_attributes();
                         break;
                     } case 3: {
@@ -93,6 +98,7 @@ int main() {
                 packages[i]->print_info();
                 std::cout << std::endl << std::endl;
             }
+            std::cout << std::fixed << std::setprecision(2) << "Total cost of all the packages: " << "$" << total_cost << std::endl;
         }
     }
     return 0;
