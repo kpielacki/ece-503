@@ -136,10 +136,16 @@ std::string Package::get_send_zip_padded() const {
 
 
 void Package::set_send_zip(unsigned int send_zip_in) {
+    // Calculate range check for ensuring zip in proper range.
+    unsigned int zip_range = 1;
+    for (int i = 0; i < zip_digit_cnt; i++) {
+       zip_range *= 10;
+    }
+
     // Make sure zip code fits within digit range.
-    if ( send_zip_in % (10 * zip_digit_cnt) != send_zip_in ) {
+    if (send_zip_in >= zip_range) {
         std::cout << "Zip code can only have a maximum of " <<
-        zip_digit_cnt << ". Setting sender zip code to 0." << std::endl;
+        zip_digit_cnt << " digits. Setting sendeiver zip code to 0." << std::endl;
         send_zip = 0;
     } else {
         send_zip = send_zip_in;
