@@ -55,6 +55,9 @@ class Package {
         // Virtual function for cost calculation.
         // Derived classes return different calculation methods.
         virtual double calculate_cost() const;
+
+        // Prompts for populating sender, receiver, and weight information.
+        void set_attributes();
         
         // Used to print sender, receiver, weight, cost, and shipment type info.
         virtual void print_info() const;

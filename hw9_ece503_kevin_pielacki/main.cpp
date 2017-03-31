@@ -64,14 +64,17 @@ int main() {
                 switch (selection) {
                     case 0: {
                         Package *new_package = new Package;
+                        new_package->set_attributes();
                         packages.push_back(new_package);
                         break;
                     } case 1: {
                         TwoDayPackage *new_package = new TwoDayPackage; 
+                        new_package->set_attributes();
                         packages.push_back(new_package);
                         break;
                     } case 2: {
                         OvernightPackage *new_package = new OvernightPackage;
+                        new_package->set_attributes();
                         break;
                     } case 3: {
                         // Print out all packages.

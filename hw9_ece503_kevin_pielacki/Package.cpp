@@ -284,7 +284,7 @@ void Package::set_weight(double weight_in) {
         weight = min_weight;
     } else {
         weight = weight_in;
-    } 
+    }
 }
 
 
@@ -292,6 +292,105 @@ void Package::set_weight(double weight_in) {
 double Package::calculate_cost() const {
     // cost_rate * weight
     return (get_cost_rate() * get_weight());
+}
+
+
+void Package::set_attributes() {
+    std::string send_first_name_in;
+    std::string send_last_name_in;
+    std::string send_address_in;
+    std::string send_city_in;
+    std::string send_state_in;
+    unsigned int send_zip_in;
+    std::string rec_first_name_in;
+    std::string rec_last_name_in;
+    std::string rec_address_in;
+    std::string rec_city_in;
+    std::string rec_state_in;
+    unsigned int rec_zip_in;
+    double weight_in;
+
+    // Sender information.
+    std::cout << "Sender First Name: ";
+    std::cin >> send_first_name_in;
+    std::cout << "Sender Last Name: ";
+    std::cin >> send_last_name_in;
+    std::cout << "Sender Address: ";
+    std::getline(std::cin.ignore(), send_address_in);
+    std::cout << "Sender City: ";
+    std::cin >> send_city_in;
+    std::cout << "Sender State: ";
+    std::cin >> send_state_in;
+    while (true) {
+        std::cout << "Sender Zip Code: ";
+        std::cin >> send_zip_in;
+        unsigned int zip_range = 1;
+        for (int i = 0; i < zip_digit_cnt; i++) {
+           zip_range *= 10;
+        }
+
+        // Make sure zip code fits within digit range.
+        if (send_zip_in >= zip_range) {
+            std::cout << "Zip code can only have a maximum of " <<
+            zip_digit_cnt << " digits." << std::endl;
+        } else {
+            send_zip = send_zip_in;
+            break;
+        }
+    }
+
+    // Receiver information.
+    std::cout << "Receiver First Name: ";
+    std::cin >> rec_first_name_in;
+    std::cout << "Receiver Last Name: ";
+    std::cin >> rec_last_name_in;
+    std::cout << "Receiver Address: ";
+    std::getline(std::cin.ignore(), rec_address_in);
+
+    std::cout << "Receiver City: ";
+    std::cin >> rec_city_in;
+    std::cout << "Receiver State: ";
+    std::cin >> rec_state_in;
+
+    // Ensure valid zip code range.
+    while (true) {
+        std::cout << "Receiver Zip Code: ";
+        std::cin >> rec_zip_in;
+        unsigned int zip_range = 1;
+        for (int i = 0; i < zip_digit_cnt; i++) {
+           zip_range *= 10;
+        }
+
+        // Make sure zip code fits within digit range.
+        if (rec_zip_in >= zip_range) {
+            std::cout << "Zip code can only have a maximum of " <<
+            zip_digit_cnt << " digits." << std::endl;
+        } else {
+            rec_zip = rec_zip_in;
+            break;
+        }
+    }
+
+    // Ensure package is of minimum weight.
+    do {
+        std::cout << "Package Weight (cannot be below " << min_weight << "): ";
+        std::cin >> weight_in;
+    } while (weight_in < min_weight);
+    Package::set_weight(weight_in);
+
+    // Set sender values.
+    Package::set_send_name(send_first_name_in + " " + send_last_name_in);
+    Package::set_send_address(send_address_in);
+    Package::set_send_city(send_city_in);
+    Package::set_send_state(send_state_in);
+    Package::set_send_zip(send_zip_in);
+
+    // Set reciver values.
+    Package::set_rec_name(rec_first_name_in + " " + rec_last_name_in);
+    Package::set_rec_address(rec_address_in);
+    Package::set_rec_city(rec_city_in);
+    Package::set_rec_state(rec_state_in);
+    Package::set_rec_zip(rec_zip_in);
 }
 
 
