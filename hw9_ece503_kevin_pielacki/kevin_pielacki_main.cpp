@@ -22,7 +22,7 @@ int main() {
         std::cout << "1: Enter package information manually" << std::endl;
         std::cin >> test_option;
 
-        if (test_option == 0 or test_option == 1) {
+        if (test_option == 0 || test_option == 1) {
             break;
         } else {
             std::cout << "Invalid selection" << std::endl;
@@ -89,8 +89,9 @@ int main() {
                         break;
                     } case 2: {
                         OvernightPackage *new_package = new OvernightPackage;
-                        total_cost = total_cost + new_package->calculate_cost();
                         new_package->set_attributes();
+                        total_cost = total_cost + new_package->calculate_cost();
+                        packages.push_back(new_package);
                         break;
                     } case 3: {
                         show_menu = false;
