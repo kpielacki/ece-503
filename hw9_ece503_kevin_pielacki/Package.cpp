@@ -7,6 +7,11 @@
 
 // Default Constructor
 Package::Package() {
+    // Set cost rate, weight, and zip digit count default values.
+    Package::set_cost_rate(0.5);
+    Package::set_weight(0);
+    Package::zip_digit_cnt = 5;
+
     // Set sender information to empty values.
     Package::set_send_name("");
     Package::set_send_address("");
@@ -20,17 +25,16 @@ Package::Package() {
     Package::set_rec_city("");
     Package::set_rec_state("");
     Package::set_rec_zip(0);
-
-    // Set cost rate and weight default values.
-    Package::set_cost_rate(0.5);
-    Package::set_weight(0);
-
-    Package::zip_digit_cnt = 5;
 }
 
 
 // Constructor set all values.
 Package::Package(std::string send_name_in, std::string send_address_in, std::string send_city_in, std::string send_state_in, unsigned int send_zip_in, std::string rec_name_in, std::string rec_address_in, std::string rec_city_in, std::string rec_state_in, unsigned int rec_zip_in, double cost_rate_in, double weight_in) {
+    // Set cost rate, weight, and zip digit count values.
+    Package::set_cost_rate(cost_rate_in);
+    Package::set_weight(weight_in);
+    Package::zip_digit_cnt = 5;
+
     // Set sender values.
     Package::set_send_name(send_name_in);
     Package::set_send_address(send_address_in);
@@ -44,12 +48,6 @@ Package::Package(std::string send_name_in, std::string send_address_in, std::str
     Package::set_rec_city(rec_city_in);
     Package::set_rec_state(rec_state_in);
     Package::set_rec_zip(rec_zip_in);
-
-    // Set cost rate and weight values.
-    Package::set_cost_rate(cost_rate_in);
-    Package::set_weight(weight_in);
-
-    Package::zip_digit_cnt = 5;
 }
 
 
@@ -109,6 +107,7 @@ unsigned int Package::get_send_zip() const {
 }
 
 
+// Returns zero padded zip code of sender.
 std::string Package::get_send_zip_padded() const {
     std::string zip_string;
     int check_num, digit_cnt;
@@ -117,6 +116,7 @@ std::string Package::get_send_zip_padded() const {
     check_num = get_send_zip();
     digit_cnt = 0;
 
+    // Count zip code digits to front pad zeros.
     while (check_num) {
         check_num /= 10;
         digit_cnt++;
@@ -197,6 +197,7 @@ unsigned int Package::get_rec_zip() const {
 }
 
 
+// Returns zero padded zip code of receiver.
 std::string Package::get_rec_zip_padded() const {
     std::string zip_string;
     int check_num, digit_cnt;
@@ -205,6 +206,7 @@ std::string Package::get_rec_zip_padded() const {
     check_num = get_rec_zip();
     digit_cnt = 0;
 
+    // Count digits in zip code.
     while (check_num) {
         check_num /= 10;
         digit_cnt++;
@@ -224,10 +226,16 @@ std::string Package::get_rec_zip_padded() const {
 
 
 void Package::set_rec_zip(unsigned int rec_zip_in) {
+    // Calculate range check for ensuring zip in proper range.
+    unsigned int zip_range = 1;
+    for (int i = 0; i < zip_digit_cnt; i++) {
+       zip_range *= 10;
+    }
+
     // Make sure zip code fits within digit range.
-    if ( rec_zip_in % (10 * zip_digit_cnt) != rec_zip_in ) {
+    if (rec_zip_in >= zip_range) {
         std::cout << "Zip code can only have a maximum of " <<
-        zip_digit_cnt << ". Setting receiver zip code to 0." << std::endl;
+        zip_digit_cnt << " digits. Setting receiver zip code to 0." << std::endl;
         rec_zip = 0;
     } else {
         rec_zip = rec_zip_in;
@@ -278,11 +286,12 @@ double Package::calculate_cost() const {
 }
 
 
+// Print sender, receiver, cost, weight, and shipment type information.
 void Package::print_info() const {
-    unsigned int cost_digit_cnt;
+    unsigned int cost_digit_cnt = 0;
     unsigned int shipment_cost = (unsigned int) calculate_cost();
 
-    cost_digit_cnt = 0;
+    // Count digits for setting precision to round to two decimals.
     while (shipment_cost) {
         shipment_cost /= 10;
         cost_digit_cnt++;
@@ -300,12 +309,21 @@ void Package::print_info() const {
 
 // Overload cout operator for sender, receiver, cost, weight, and shipment type print.
 std::ostream& operator<<(std::ostream &os, const Package& p) {
+    unsigned int cost_digit_cnt = 0;
+    unsigned int shipment_cost = (unsigned int) p.calculate_cost();
+
+    // Counts digits for setting precision to round to two decimals.
+    while (shipment_cost) {
+        shipment_cost /= 10;
+        cost_digit_cnt++;
+    }
+
     return os << "Sender:\n" << p.get_send_name() << "\n" << p.get_send_address() <<
-    "\n" << p.get_send_city() << ", " << p.get_send_state() << " " << p.get_send_zip() <<
+    "\n" << p.get_send_city() << ", " << p.get_send_state() << " " << p.get_send_zip_padded() <<
     "\n\nReceipent:\n" << p.get_rec_name() << "\n" << p.get_rec_address() <<
-    "\n" << p.get_rec_city() << ", " << p.get_rec_state() << " " << p.get_rec_zip() <<
+    "\n" << p.get_rec_city() << ", " << p.get_rec_state() << " " << p.get_rec_zip_padded() <<
     "\n\n" << "Weight of package: " << p.get_weight() << " ounces" <<
     "\n" << "Type of delivery: " << p.get_delivery_type() << " Delivery" <<
-    "\n" << "Cost of package: $" << std::setprecision(2) << p.calculate_cost();
+    "\n" << "Cost of package: $" << std::setprecision(cost_digit_cnt + 2) << p.calculate_cost();
 }
 
