@@ -36,6 +36,7 @@ int prompt_item_number() {
 
 int main() {
     int menu_selection, item_number;
+    bool del_success;
     std::string item_name;
     LinkedList shopping_list;
 
@@ -58,7 +59,14 @@ int main() {
                 shopping_list.addToEnd(new_item);
                 break;
             } case 3: {
-                std::cout << 3 << std::endl;
+                del_success = shopping_list.removeFromStart();
+
+                // Print if item removal was successful.
+                if (del_success) {
+                    std::cout << "Removed item from beginning of list." << std::endl;
+                } else {
+                    std::cout << "Your shopping list is already empty." << std::endl;
+                }
                 break;
             } case 4: {
                 std::cout << 4 << std::endl;

@@ -18,11 +18,15 @@ int LinkedList::size() const {
 
 
 void LinkedList::printList() {
-    Node *item;
-    item = myHead;
-    for (int i = 0; i < mySize; i++) {
-        std::cout << item->itemNo << "\t" << item->itemName << std::endl;
-        item = item->next;
+    if (mySize == 0) {
+        std::cout << "Your list is empty." << std::endl;
+    } else {
+        Node *item;
+        item = myHead;
+        for (int i = 0; i < mySize; i++) {
+            std::cout << item->itemNo << "\t" << item->itemName << std::endl;
+            item = item->next;
+        }
     }
 }
 
@@ -51,4 +55,24 @@ void LinkedList::addToEnd(Node *new_node) {
 }
 
 
+bool LinkedList::removeFromStart() {
+    if (size() == 0) {
+        return false;
+    } else {
+        Node *temp_item;
+        temp_item = myHead;
+    
+        if (size() == 1) {
+            myHead = myTail = NULL;
+        } else {
+            myHead = temp_item->next;
+        }
 
+        // Free memory from removed item.
+        delete temp_item;
+
+        // Track size change after node removed.
+        mySize--;
+        return true;
+    }
+}
