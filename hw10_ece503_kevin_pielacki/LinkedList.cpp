@@ -29,11 +29,26 @@ void LinkedList::printList() {
 
 void LinkedList::addToStart(Node *new_node) {
     if (size() == 0) {
-        myHead = myTail = new_node;
         new_node->next = NULL;
+        myHead = myTail = new_node;
     } else {
         new_node->next = myHead;
         myHead = new_node;
     }
     mySize++;
 }
+
+
+void LinkedList::addToEnd(Node *new_node) {
+    new_node->next = NULL;
+    if (size() == 0) {
+        myHead = myTail = new_node;
+    } else {
+        myTail->next = new_node;
+        myTail = new_node;
+    }
+    mySize++;
+}
+
+
+

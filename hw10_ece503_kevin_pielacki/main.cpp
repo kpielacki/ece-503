@@ -44,13 +44,18 @@ int main() {
         std::cin >> menu_selection;
         switch (menu_selection) {
             case 1: {
+                std::cout << "Adding new item to beginning of list." << std::endl;
                 item_number = prompt_item_number();
                 item_name = prompt_item_name();
                 Node* new_item = new Node(item_name, item_number);
                 shopping_list.addToStart(new_item);
                 break;
             } case 2: {
-                std::cout << 2 << std::endl;
+                std::cout << "Adding new item to end of list." << std::endl;
+                item_number = prompt_item_number();
+                item_name = prompt_item_name();
+                Node* new_item = new Node(item_name, item_number);
+                shopping_list.addToEnd(new_item);
                 break;
             } case 3: {
                 std::cout << 3 << std::endl;
