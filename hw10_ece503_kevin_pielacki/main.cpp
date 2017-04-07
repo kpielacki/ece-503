@@ -44,6 +44,7 @@ int main() {
     std::string item_name;
     LinkedList shopping_list;
 
+    // Show menu selection until user quits.
     do {
         show_menu();
         std::cin >> menu_selection;
@@ -52,6 +53,8 @@ int main() {
                 std::cout << "Adding new item to beginning of list." << std::endl;
                 item_number = prompt_item_number();
                 item_name = prompt_item_name();
+
+                // Create new node to put at start of shopping list.
                 Node* new_item = new Node(item_name, item_number);
                 shopping_list.addToStart(new_item);
                 break;
@@ -59,10 +62,13 @@ int main() {
                 std::cout << "Adding new item to end of list." << std::endl;
                 item_number = prompt_item_number();
                 item_name = prompt_item_name();
+
+                // Create new node to put at end of shopping_list.
                 Node* new_item = new Node(item_name, item_number);
                 shopping_list.addToEnd(new_item);
                 break;
             } case 3: {
+                // Try to remove first item in shopping list.
                 del_success = shopping_list.removeFromStart();
 
                 // Print if item removal was successful.
@@ -73,6 +79,7 @@ int main() {
                 }
                 break;
             } case 4: {
+                // Try to remove last item in shopping_list.
                 del_success = shopping_list.removeFromEnd();
 
                 // Print if item removal was successful.
@@ -85,6 +92,8 @@ int main() {
             } case 5: {
                 std::cout << "Removing shopping list item by item number." << std::endl;
                 item_number = prompt_item_number();
+
+                // Remove any nodes with entered item number.
                 shopping_list.removeNodeFromList(item_number);
                 break;
             } case 6: {
