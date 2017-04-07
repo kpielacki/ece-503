@@ -60,12 +60,14 @@ void LinkedList::addToEnd(Node *new_node) {
 
 bool LinkedList::removeFromStart() {
     if (size() == 0) {
+        // Return false when nothing to delete.
         return false;
     } else {
         Node *temp_item;
         temp_item = myHead;
     
         if (size() == 1) {
+            // Set first node to NULL if only node in list.
             myHead = myTail = NULL;
         } else {
             myHead = temp_item->next;
@@ -73,6 +75,38 @@ bool LinkedList::removeFromStart() {
 
         // Free memory from removed item.
         delete temp_item;
+
+        // Track size change after node removed.
+        mySize--;
+        return true;
+    }
+}
+
+
+bool LinkedList::removeFromEnd() {
+    if (size() == 0) {
+        // Return false when nothing to delete.
+        return false;
+    } else {
+        Node *temp_item;
+        temp_item = myHead;
+    
+        if (size() == 1) {
+            // Set first node to NULL if only node in list.
+            myHead = myTail = NULL;
+            // Delete only node to freem memory.
+            delete temp_item;
+        } else {
+            // Get second to last node.
+            for (int i = 0; i < mySize - 1; i++) {
+               temp_item = temp_item->next;
+            }
+            // Delete last node to free memory.
+            delete temp_item->next;
+            // Set second to last node next point to NULL making
+            // it the new last node.
+            temp_item->next = NULL;
+        }
 
         // Track size change after node removed.
         mySize--;

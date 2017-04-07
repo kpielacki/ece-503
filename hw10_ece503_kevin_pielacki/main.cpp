@@ -71,7 +71,14 @@ int main() {
                 }
                 break;
             } case 4: {
-                std::cout << 4 << std::endl;
+                del_success = shopping_list.removeFromEnd();
+
+                // Print if item removal was successful.
+                if (del_success) {
+                    std::cout << "Removed item from end of list." << std::endl;
+                } else {
+                    std::cout << "Your shopping list is already empty." << std::endl;
+                }
                 break;
             } case 5: {
                 std::cout << 5 << std::endl;
