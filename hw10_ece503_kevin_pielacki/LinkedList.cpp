@@ -23,6 +23,9 @@ void LinkedList::printList() {
     } else {
         Node *item;
         item = myHead;
+
+
+        std::cout << "Item No\tItem Name" << std::endl;
         for (int i = 0; i < mySize; i++) {
             std::cout << item->itemNo << "\t" << item->itemName << std::endl;
             item = item->next;

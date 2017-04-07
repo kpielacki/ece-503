@@ -5,6 +5,8 @@
 
 
 void show_menu() {
+
+    std::cout << std::endl;
     std::cout << "Menu Selection:" << std::endl;
     std::cout << "  1. Add a shopping item at the beginning" << std::endl;
     std::cout << "  2. Add a new shopping item at the end" << std::endl;
