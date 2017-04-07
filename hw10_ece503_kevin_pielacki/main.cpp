@@ -20,6 +20,7 @@ void show_menu() {
 }
 
 
+// Prompts user to enter an item name and returns selection.
 std::string prompt_item_name() {
     std::string item_name;
     std::cout << "Please enter the item name: ";
@@ -28,6 +29,7 @@ std::string prompt_item_name() {
 }
 
 
+// Prompts user to enter an item number and returns selection.
 int prompt_item_number() {
     int item_number;
     std::cout << "Please enter the item number: ";
@@ -81,7 +83,9 @@ int main() {
                 }
                 break;
             } case 5: {
-                std::cout << 5 << std::endl;
+                std::cout << "Removing shopping list item by item number." << std::endl;
+                item_number = prompt_item_number();
+                shopping_list.removeNodeFromList(item_number);
                 break;
             } case 6: {
                 std::cout << 6 << std::endl;

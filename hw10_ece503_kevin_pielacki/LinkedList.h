@@ -15,7 +15,7 @@ class LinkedList {
         void printList();
         bool removeFromStart();
         bool removeFromEnd();
-        // void removeNodeFromList(int);
+        void removeNodeFromList(int);
         // void removeNodeFromList(std::string);
 
     private:
