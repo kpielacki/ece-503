@@ -18,15 +18,36 @@ void show_menu() {
 }
 
 
+std::string prompt_item_name() {
+    std::string item_name;
+    std::cout << "Please enter the item name: ";
+    std::cin >> item_name;
+    return item_name;
+}
+
+
+int prompt_item_number() {
+    int item_number;
+    std::cout << "Please enter the item number: ";
+    std::cin >> item_number;
+    return item_number;
+}
+
+
 int main() {
-    int menu_selection;
+    int menu_selection, item_number;
+    std::string item_name;
+    LinkedList shopping_list;
 
     do {
         show_menu();
         std::cin >> menu_selection;
         switch (menu_selection) {
             case 1: {
-                std::cout << 1 << std::endl;
+                item_number = prompt_item_number();
+                item_name = prompt_item_name();
+                Node* new_item = new Node(item_name, item_number);
+                shopping_list.addToStart(new_item);
                 break;
             } case 2: {
                 std::cout << 2 << std::endl;
@@ -44,7 +65,7 @@ int main() {
                 std::cout << 6 << std::endl;
                 break;
             } case 7: {
-                std::cout << 7 << std::endl;
+                shopping_list.printList();
                 break;
             } case 8: {
                 std::cout << "Quitting" << std::endl;

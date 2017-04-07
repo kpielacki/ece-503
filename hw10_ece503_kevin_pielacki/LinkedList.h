@@ -11,12 +11,12 @@ class LinkedList {
         ~LinkedList();
         int size() const;
         void addToStart(Node *);
-        void addToEnd(Node *);
+        // void addToEnd(Node *);
         void printList();
-        bool removeFromStart();
-        bool removeFromEnd();
-        void removeNodeFromList(int);
-        void removeNodeFromList(std::string);
+        // bool removeFromStart();
+        // bool removeFromEnd();
+        // void removeNodeFromList(int);
+        // void removeNodeFromList(std::string);
 
     private:
         Node *myHead;
