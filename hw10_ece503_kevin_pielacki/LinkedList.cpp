@@ -121,7 +121,6 @@ bool LinkedList::removeFromEnd() {
             for (int i = 0; i < mySize - 2; i++) {
                prev_item = prev_item->next;
             }
-            std::cout << prev_item->itemName << std::endl;
             // Delete last node to free memory.
             delete temp_item;
             // Set second to last node next point to NULL and
@@ -180,7 +179,6 @@ void LinkedList::removeNodeFromList(int itemNo_rm) {
 
         // Handle last node in linked list to update myTail.
         if (myTail->itemNo == itemNo_rm) {
-            std::cout << "TEST" << std::endl;
             removeFromEnd();
         }
     }
