@@ -4,8 +4,8 @@
 #include "Node.h"
 
 
+// Display menu options on console.
 void show_menu() {
-
     std::cout << std::endl;
     std::cout << "Menu Selection:" << std::endl;
     std::cout << "  1. Add a shopping item at the beginning" << std::endl;
@@ -57,6 +57,8 @@ int main() {
                 // Create new node to put at start of shopping list.
                 Node* new_item = new Node(item_name, item_number);
                 shopping_list.addToStart(new_item);
+
+                shopping_list.printList();
                 break;
             } case 2: {
                 std::cout << "Adding new item to end of list." << std::endl;
@@ -66,6 +68,8 @@ int main() {
                 // Create new node to put at end of shopping_list.
                 Node* new_item = new Node(item_name, item_number);
                 shopping_list.addToEnd(new_item);
+
+                shopping_list.printList();
                 break;
             } case 3: {
                 // Try to remove first item in shopping list.
@@ -77,6 +81,8 @@ int main() {
                 } else {
                     std::cout << "Your shopping list is already empty." << std::endl;
                 }
+ 
+                shopping_list.printList();
                 break;
             } case 4: {
                 // Try to remove last item in shopping_list.
@@ -88,6 +94,8 @@ int main() {
                 } else {
                     std::cout << "Your shopping list is already empty." << std::endl;
                 }
+
+                shopping_list.printList();
                 break;
             } case 5: {
                 std::cout << "Removing shopping list item by item number." << std::endl;
@@ -95,6 +103,8 @@ int main() {
 
                 // Remove any nodes with entered item number.
                 shopping_list.removeNodeFromList(item_number);
+
+                shopping_list.printList();
                 break;
             } case 6: {
                 std::cout << "Removing shopping list item by item name." << std::endl;
@@ -102,11 +112,15 @@ int main() {
                                                                                          
                 // Remove any nodes with entered item name.
                 shopping_list.removeNodeFromList(item_name);
+
+                shopping_list.printList();
                 break;
             } case 7: {
+                // Print list option.
                 shopping_list.printList();
                 break;
             } case 8: {
+                // Quit program.
                 std::cout << "Quitting" << std::endl;
                 break;
             } default: {
