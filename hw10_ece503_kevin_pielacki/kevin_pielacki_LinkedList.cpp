@@ -1,6 +1,8 @@
 #include <iostream>
-#include "LinkedList.h"
-#include "Node.h"
+#include <string>
+#include "kevin_pielacki_LinkedList.h"
+#include "kevin_pielacki_Node.h"
+
 
 LinkedList::LinkedList() {
     mySize = 0;

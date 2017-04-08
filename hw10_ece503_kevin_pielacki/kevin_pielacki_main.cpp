@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "LinkedList.h"
-#include "Node.h"
+#include "kevin_pielacki_LinkedList.h"
+#include "kevin_pielacki_Node.h"
 
 
 // Display menu options on console.

@@ -2,7 +2,7 @@
 #define LINKED_LIST_H_
 
 #include <string>
-#include "Node.h"
+#include "kevin_pielacki_Node.h"
 
 class LinkedList {
 
