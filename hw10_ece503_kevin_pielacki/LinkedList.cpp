@@ -156,31 +156,32 @@ void LinkedList::removeNodeFromList(int itemNo_rm) {
             }
         }
 
-        //// Handle center nodes in linked list.
-        //Node *item = myHead;
-        //Node *prev_item = myHead;
-        //prev_item = item;
-        //for (int i = 1; i < mySize - 1; i++) {
-        //    //std::cout << i << std::endl;
-        //    // Remove any item with the passed item number.
-        //    if (item->itemNo == itemNo_rm) {
-        //        // Change previous item's next to skip node to be deleted.
-        //        prev_item->next = item->next;
-        //        std::cout << "Removing " << item->itemName << std::endl;
+        // Handle center nodes in linked list excluding myHead and myTail
+        if (myHead != NULL) {
+            Node *prev_item = myHead;
+            Node *item = prev_item->next;
+            for (int i = 1; i < mySize - 1; i++) {
+                if (item->itemNo == itemNo_rm) {
+                    // Change previous item's next to skip node to be deleted.
+                    prev_item->next = item->next;
+                    std::cout << "Removing " << item->itemName << std::endl;
 
-        //        // Remove item with matching itemNo to free memory.
-        //        delete item;
-        //        //std::cout << "AFTER DELETE" << std::endl;
-        //        // Set item to next node in linked list.
-        //        item = prev_item->next;
-        //        //std::cout << "AFTER ASSIGNMENT" << std::endl;
-        //        // Decrement mySize after node removal.
-        //        mySize--;
-        //    } else {
-        //        prev_item = item;
-        //        item = item->next;
-        //    }
-        //}
+                    // Remove item with matching itemNo to free memory.
+                    delete item;
+                    //std::cout << "AFTER DELETE" << std::endl;
+                    // Set item to next node in linked list.
+                    item = prev_item->next;
+                    //std::cout << "AFTER ASSIGNMENT" << std::endl;
+                    // Decrement mySize after node removal.
+                    mySize--;
+                } else {
+                    prev_item = item;
+                    item = item->next;
+                }
+
+
+            }
+        }
 
         // Handle last node in linked list to update myTail.
         if (myTail != NULL) {
