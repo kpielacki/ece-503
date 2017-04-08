@@ -10,7 +10,12 @@ LinkedList::LinkedList() {
 
 
 LinkedList::~LinkedList() {
-
+    // Remove head node until list is empty to free memory.
+    std::cout << "Deleting all nodes." << std::endl;
+    while (myHead) {
+        removeFromStart();
+    }
+    std::cout << "All nodes have been deleted." << std::endl;
 }
 
 
@@ -152,7 +157,7 @@ void LinkedList::removeNodeFromList(int itemNo_rm) {
         // be removed.
         while (true) {
             // Break if no nodes left in list.
-            if (myHead != NULL) {
+            if (myHead) {
                 if (myHead->itemNo == itemNo_rm) {
                     // Let removeFromStart handle first node removal.
                     std::cout << "Removing " << myHead->itemName << std::endl;
@@ -167,7 +172,7 @@ void LinkedList::removeNodeFromList(int itemNo_rm) {
         }
 
         // Handle center nodes in linked list excluding myHead and myTail
-        if (myHead != NULL) {
+        if (myHead) {
             Node *prev_item = myHead;
             Node *item = prev_item->next;
 
@@ -195,7 +200,7 @@ void LinkedList::removeNodeFromList(int itemNo_rm) {
         }
 
         // Handle last node in linked list to update myTail.
-        if (myTail != NULL) {
+        if (myTail) {
             if (myTail->itemNo == itemNo_rm) {
                 std::cout << "Removing " << myTail->itemName << std::endl;
                 removeFromEnd();
@@ -214,7 +219,7 @@ void LinkedList::removeNodeFromList(std::string itemName_rm) {
         // be removed.
         while (true) {
             // Break if no nodes left in list.
-            if (myHead != NULL) {
+            if (myHead) {
                 if (myHead->itemName == itemName_rm) {
                     // Let removeFromStart handle first node removal.
                     std::cout << "Removing " << myHead->itemNo << std::endl;
@@ -229,7 +234,7 @@ void LinkedList::removeNodeFromList(std::string itemName_rm) {
         }
 
         // Handle center nodes in linked list excluding myHead and myTail
-        if (myHead != NULL) {
+        if (myHead) {
             Node *prev_item = myHead;
             Node *item = prev_item->next;
 
@@ -257,7 +262,7 @@ void LinkedList::removeNodeFromList(std::string itemName_rm) {
         }
 
         // Handle last node in linked list to update myTail.
-        if (myTail != NULL) {
+        if (myTail) {
             if (myTail->itemName == itemName_rm) {
                 std::cout << "Removing " << myTail->itemNo << std::endl;
                 removeFromEnd();
