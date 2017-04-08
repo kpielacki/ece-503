@@ -14,12 +14,13 @@ LinkedList::~LinkedList() {
 }
 
 
-// Getter for mySize.
+// mySize getter.
 int LinkedList::size() const {
     return mySize;
 }
 
 
+// Prints all nodes itemNo and itemName with header.
 void LinkedList::printList() {
     // Check if list is empty.
     if (mySize == 0) {
@@ -43,6 +44,7 @@ void LinkedList::printList() {
 }
 
 
+// Adds new node to beginning of linked list.
 void LinkedList::addToStart(Node *new_node) {
     if (size() == 0) {
         // Make sure last node's next pointer points to NULL.
@@ -59,6 +61,7 @@ void LinkedList::addToStart(Node *new_node) {
 }
 
 
+// Adds new node to end of linked list.
 void LinkedList::addToEnd(Node *new_node) {
     // Make sure last node's next pointer points to NULL.
     new_node->next = NULL;
@@ -76,6 +79,8 @@ void LinkedList::addToEnd(Node *new_node) {
 }
 
 
+// Removes head of linked list.
+// If nothing to remove return false.
 bool LinkedList::removeFromStart() {
     if (size() == 0) {
         // Return false when nothing to delete.
@@ -101,6 +106,8 @@ bool LinkedList::removeFromStart() {
 }
 
 
+// Removes tail of linked list.
+// If nothing to remove return false.
 bool LinkedList::removeFromEnd() {
     if (size() == 0) {
         // Return false when nothing to delete.
@@ -136,6 +143,8 @@ bool LinkedList::removeFromEnd() {
 }
 
 
+// Removes ALL nodes that have the passed item number.
+// Prints all item names that were removed by operation.
 void LinkedList::removeNodeFromList(int itemNo_rm) {
 
     if (size() > 0) {
