@@ -146,6 +146,7 @@ void LinkedList::removeNodeFromList(int itemNo_rm) {
             if (myHead != NULL) {
                 if (myHead->itemNo == itemNo_rm) {
                     // Let removeFromStart handle first node removal.
+                    std::cout << "Removing " << myHead->itemName << std::endl; 
                     removeFromStart();
                 } else {
                     // Break to move on to center nodes in list.
@@ -166,12 +167,12 @@ void LinkedList::removeNodeFromList(int itemNo_rm) {
             // less node to be checked.
             int current_size = size();
             for (int i = 1; i < current_size - 1; i++) {
-                std::cout << item->itemName << std::endl;
                 if (item->itemNo == itemNo_rm) {
                     // Change previous item's next to skip node to be deleted.
                     prev_item->next = item->next;
-                    //std::cout << "Removing " << item->itemName << std::endl;
-                    // Remove item with matching itemNo to free memory.
+                    std::cout << "Removing " << item->itemName << std::endl;
+
+                    // Delete item with matching itemNo to free memory.
                     delete item;
                     // Set item to next node in linked list.
                     item = prev_item->next;
@@ -187,6 +188,7 @@ void LinkedList::removeNodeFromList(int itemNo_rm) {
         // Handle last node in linked list to update myTail.
         if (myTail != NULL) {
             if (myTail->itemNo == itemNo_rm) {
+                std::cout << "Removing " << myTail->itemName << std::endl;
                 removeFromEnd();
             }
         }
