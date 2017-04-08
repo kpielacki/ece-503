@@ -28,7 +28,7 @@ void LinkedList::printList() {
     } else {
         Node *item;
         item = myHead;
-        
+
         // Print field header.
         std::cout << "Item No\tItem Name" << std::endl;
         // Use mySize to keep track of how many pointers to reference.
@@ -88,7 +88,7 @@ bool LinkedList::removeFromStart() {
     } else {
         Node *temp_item;
         temp_item = myHead;
-   
+
         if (size() == 1) {
             // Set first node to NULL if only node in list.
             myHead = myTail = NULL;
@@ -117,7 +117,7 @@ bool LinkedList::removeFromEnd() {
         Node *temp_item;
         prev_item = myHead;
         temp_item = myTail;
-    
+
         if (size() == 1) {
             // Set first node to NULL if only node in list.
             myHead = myTail = NULL;
@@ -155,7 +155,7 @@ void LinkedList::removeNodeFromList(int itemNo_rm) {
             if (myHead != NULL) {
                 if (myHead->itemNo == itemNo_rm) {
                     // Let removeFromStart handle first node removal.
-                    std::cout << "Removing " << myHead->itemName << std::endl; 
+                    std::cout << "Removing " << myHead->itemName << std::endl;
                     removeFromStart();
                 } else {
                     // Break to move on to center nodes in list.
@@ -202,5 +202,66 @@ void LinkedList::removeNodeFromList(int itemNo_rm) {
             }
         }
     }
-} 
+}
 
+
+// Removes ALL nodes that have the passed item name.
+// Prints all item numbers that were removed by operation.
+void LinkedList::removeNodeFromList(std::string itemName_rm) {
+
+    if (size() > 0) {
+        // Call removeFromStart until first node does not contain the item to
+        // be removed.
+        while (true) {
+            // Break if no nodes left in list.
+            if (myHead != NULL) {
+                if (myHead->itemName == itemName_rm) {
+                    // Let removeFromStart handle first node removal.
+                    std::cout << "Removing " << myHead->itemNo << std::endl;
+                    removeFromStart();
+                } else {
+                    // Break to move on to center nodes in list.
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        // Handle center nodes in linked list excluding myHead and myTail
+        if (myHead != NULL) {
+            Node *prev_item = myHead;
+            Node *item = prev_item->next;
+
+            // Keep the current size of the linked list to iterate through all
+            // nodes. If a node is removed mySize is decremented causing one
+            // less node to be checked.
+            int current_size = size();
+            for (int i = 1; i < current_size - 1; i++) {
+                if (item->itemName == itemName_rm) {
+                    // Change previous item's next to skip node to be deleted.
+                    prev_item->next = item->next;
+                    std::cout << "Removing " << item->itemNo << std::endl;
+
+                    // Delete item with matching itemName to free memory.
+                    delete item;
+                    // Set item to next node in linked list.
+                    item = prev_item->next;
+                    // Decrement mySize after node removal.
+                    mySize--;
+                } else {
+                    prev_item = item;
+                    item = item->next;
+                }
+            }
+        }
+
+        // Handle last node in linked list to update myTail.
+        if (myTail != NULL) {
+            if (myTail->itemName == itemName_rm) {
+                std::cout << "Removing " << myTail->itemNo << std::endl;
+                removeFromEnd();
+            }
+        }
+    }
+}

@@ -97,7 +97,11 @@ int main() {
                 shopping_list.removeNodeFromList(item_number);
                 break;
             } case 6: {
-                std::cout << 6 << std::endl;
+                std::cout << "Removing shopping list item by item name." << std::endl;
+                item_name = prompt_item_name();
+                                                                                         
+                // Remove any nodes with entered item name.
+                shopping_list.removeNodeFromList(item_name);
                 break;
             } case 7: {
                 shopping_list.printList();

@@ -16,7 +16,7 @@ class LinkedList {
         bool removeFromStart();
         bool removeFromEnd();
         void removeNodeFromList(int);
-        // void removeNodeFromList(std::string);
+        void removeNodeFromList(std::string);
 
     private:
         Node *myHead;
