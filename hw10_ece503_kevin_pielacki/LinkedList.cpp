@@ -160,26 +160,27 @@ void LinkedList::removeNodeFromList(int itemNo_rm) {
         if (myHead != NULL) {
             Node *prev_item = myHead;
             Node *item = prev_item->next;
-            for (int i = 1; i < mySize - 1; i++) {
+
+            // Keep the current size of the linked list to iterate through all
+            // nodes. If a node is removed mySize is decremented causing one
+            // less node to be checked.
+            int current_size = size();
+            for (int i = 1; i < current_size - 1; i++) {
+                std::cout << item->itemName << std::endl;
                 if (item->itemNo == itemNo_rm) {
                     // Change previous item's next to skip node to be deleted.
                     prev_item->next = item->next;
-                    std::cout << "Removing " << item->itemName << std::endl;
-
+                    //std::cout << "Removing " << item->itemName << std::endl;
                     // Remove item with matching itemNo to free memory.
                     delete item;
-                    //std::cout << "AFTER DELETE" << std::endl;
                     // Set item to next node in linked list.
                     item = prev_item->next;
-                    //std::cout << "AFTER ASSIGNMENT" << std::endl;
                     // Decrement mySize after node removal.
                     mySize--;
                 } else {
                     prev_item = item;
                     item = item->next;
                 }
-
-
             }
         }
 
