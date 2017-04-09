@@ -10,14 +10,16 @@ class Account {
         Account();
         Account(std::string);
         ~Account();
-        double get_balance();
-        void set_balance(double);
-        void add_balance(double);
-        void sub_balance(double);
+
+        bool is_active();
+        void init_account();
+
+        double get_cash_balance();
+        void set_cash_balance(double);
 
     private:
         std::string username;
-        double balance;
+        std::string cash_balance_filename;
 
 };
 

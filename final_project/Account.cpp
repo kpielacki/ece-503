@@ -5,21 +5,30 @@
 
 
 Account::Account() {
+    // Set username to "Default" if none is provided.
+    // I use this to prefix all .txt files that hold
+    // account information.
     username = "Default";
-    // Set initial balance to 10000.
-    balance = 10000;
+    cash_balance_filename = username + "_cash_balance.txt";
 
-    std::ofstream user_balance_record;
-    user_balance_record.open ("example.txt");
+    // Initialize user account if first time user.
+    if (!is_active()) {
+       init_account();
+    }
 }
 
 
 Account::Account(std::string username_in) {
+    // Use passed username to prefix all .txt files
+    // that hold user account information.
     username = username_in;
-    // Set initial balance to 10000.
-    balance = 10000;
-}
+    cash_balance_filename = username + "_cash_balance.txt";
 
+    // Initialize user account if first time user.
+    if (!is_active()) {
+       init_account();
+    }
+}
 
 
 Account::~Account() {
@@ -27,21 +36,47 @@ Account::~Account() {
 }
 
 
-double Account::get_balance() {
-    return balance;
+// Checks if a cash balance file can be found for the user.
+bool Account::is_active() {
+    bool account_active;
+
+    std::ifstream cash_balance_file;
+    cash_balance_file.open(cash_balance_filename.c_str());
+
+    // Returns true if cash_balance_file can be found.
+    account_active = cash_balance_file.good();
+
+    cash_balance_file.close();
+
+    return account_active;
 }
 
 
-void Account::set_balance(double balance_in) {
-    balance = balance_in;
+// Creates a user account with an intial cash balance of $10,000.
+void Account::init_account() {
+    std::ofstream cash_balance_file;
+    cash_balance_file.open(cash_balance_filename.c_str());
+    cash_balance_file << 10000;
+    cash_balance_file.close();
 }
 
 
-void Account::add_balance(double balance_in) {
-    balance = balance + balance_in;
+// Returns the number stored in <username>_cash_balance.
+double Account::get_cash_balance() {
+    double cash_balance;
+    std::ifstream cash_balance_file;
+    cash_balance_file.open(cash_balance_filename.c_str());
+    cash_balance_file >> cash_balance;
+    cash_balance_file.close();
+
+    return cash_balance;
 }
 
 
-void Account::sub_balance(double balance_in) {
-    balance = balance - balance_in;
+void Account::set_cash_balance(double balance_in) {
+  std::ofstream cash_balance_file;                       
+  cash_balance_file.open(cash_balance_filename.c_str());
+  cash_balance_file << balance_in;
+  cash_balance_file.close();
 }
+
