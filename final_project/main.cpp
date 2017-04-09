@@ -35,7 +35,7 @@ void checking_account_menu(std::string username) {
                 checking.withdraw(amount);
                 break;
             } case 4: {
-                std::cout << 4 << std::endl;
+                checking.print_transaction_history();
                 break;
             } case 5: {
                 std::cout << "Exiting checking menu." << std::endl;
@@ -52,7 +52,7 @@ void checking_account_menu(std::string username) {
 void account_selection_menu(std::string username) {
     int menu_selection;
     bool in_menu = true;
-    
+
     while (in_menu) {
         std::cout << std::endl << "Welcome " << username << ", please select an account to access:" << std::endl;
         std::cout << "1. Stock Portfolio Account" << std::endl;

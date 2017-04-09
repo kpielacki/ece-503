@@ -13,6 +13,7 @@ class Account {
 
         bool is_active();
         void init_account();
+        std::string get_username();
 
         double get_cash_balance();
         void set_cash_balance(double);

@@ -61,6 +61,12 @@ void Account::init_account() {
 }
 
 
+// Getter for username.
+std::string Account::get_username() {
+    return username;
+}
+
+
 // Returns the number stored in <username>_cash_balance.
 double Account::get_cash_balance() {
     double cash_balance;
