@@ -8,6 +8,7 @@ class Account {
 
     public:
         Account();
+        Account(std::string);
         ~Account();
         double get_balance();
         void set_balance(double);
@@ -15,6 +16,7 @@ class Account {
         void sub_balance(double);
 
     private:
+        std::string username;
         double balance;
 
 };
