@@ -4,6 +4,7 @@
 #include <sstream>
 #include "Account.h"
 #include "BankAccount.h"
+#include "date_str.h"
 
 
 BankAccount::BankAccount() : Account() {
@@ -34,7 +35,7 @@ void BankAccount::withdraw(double amount) {
             // Open file to append new transcation.
             std::ofstream transaction_history_file;
             transaction_history_file.open(transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-            transaction_history_file << "Withdrawal " << amount << " DATE " << new_balance << "\n";
+            transaction_history_file << "Withdrawal " << amount << " " << today_str() << " " << new_balance << "\n";
 
             // Adjust cash balance to reflect transaction.
             BankAccount::set_cash_balance(new_balance);
@@ -54,7 +55,7 @@ void BankAccount::deposit(double amount) {
         // Open file to append new transcation.
         std::ofstream transaction_history_file;
         transaction_history_file.open(transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-        transaction_history_file << "Deposit " << amount << " DATE " << new_balance << "\n";
+        transaction_history_file << "Deposit " << amount << " " << today_str() << " " << new_balance << "\n";
 
         // Adjust cash balance to reflect transaction.
         BankAccount::set_cash_balance(new_balance);
