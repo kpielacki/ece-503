@@ -21,6 +21,8 @@ BankAccount::~BankAccount() {
 }
 
 
+// Deducts input amount from check balance if postive value and greater than current cash balance.
+// Stores transaction in <username>_bank_transaction_history.txt.
 void BankAccount::withdraw(double amount) {
     if (amount > 0) {
         double new_balance = get_cash_balance() - amount;
@@ -43,6 +45,8 @@ void BankAccount::withdraw(double amount) {
 }
 
 
+// Adds input amount from check balance if postive value.
+// Stores transaction in <username>_bank_transaction_history.txt.
 void BankAccount::deposit(double amount) {
     if (amount > 0) {
         double new_balance = get_cash_balance() + amount;
@@ -60,16 +64,19 @@ void BankAccount::deposit(double amount) {
 }
 
 
+// Prints current cash balance.
 void BankAccount::view_account_balance() {
     std::cout << "You have $" << get_cash_balance() << " in your account." << std::endl;
 }
 
 
+// Prints all user transactions.
 void BankAccount::print_transaction_history() {
     // Print transaction history headers.
     std::string line, event, date;
     double amount, balance;
 
+    // Open transaction hisotry file.
     std::ifstream transaction_history_file;
     transaction_history_file.open(transaction_history_filename.c_str());
 
