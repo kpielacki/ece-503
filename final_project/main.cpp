@@ -1,7 +1,60 @@
 #include <iostream>
 #include <string>
 #include "Account.h"
+#include "PortfolioAccount.h"
 #include "BankAccount.h"
+
+
+void portfolio_account_menu(std::string username) {
+    int menu_selection;
+    bool in_menu = true;
+    std::string stock_symbol;
+    double amount;
+    PortfolioAccount portfolio(username);
+
+    while (in_menu) {
+        std::cout << std::endl << "Please select an option:" << std::endl;
+        std::cout << "1. Display the price for a stock symbol" << std::endl;
+        std::cout << "2. Display the current portfolio" << std::endl;
+        std::cout << "3. Buy shares" << std::endl;
+        std::cout << "4. Sell shares" << std::endl;
+        std::cout << "5. View a graph for the portfolio value" << std::endl;
+        std::cout << "6. View transaction history" << std::endl;
+        std::cout << "7. Return to previous menu" << std::endl << std::endl;
+        std::cout << "Option: ";
+        std::cin >> menu_selection;
+
+        switch (menu_selection) {
+            case 1: {
+               std::cout << "Enter the stock symbol (use \"*\" to print all): ";
+               std::cin >> stock_symbol;
+               portfolio.display_stock_value(stock_symbol);
+               break;
+            } case 2: {
+                std::cout << 2 << std::endl;
+                break;
+            } case 3: {
+                std::cout << 3 << std::endl;
+                break;
+            } case 4: {
+                std::cout << 4 << std::endl;
+                break;
+            } case 5: {
+                std::cout << 5 << std::endl;
+                break;
+            } case 6: {
+                portfolio.print_transaction_history();
+                break;
+            } case 7: {
+                std::cout << "Exiting portfolio menu." << std::endl;
+                in_menu = false;
+                break;
+            } default: {
+                std::cout << "Invalid menu option." << std::endl;
+            }
+        }
+    }
+}
 
 
 void checking_account_menu(std::string username) {
@@ -63,7 +116,7 @@ void account_selection_menu(std::string username) {
 
         switch (menu_selection) {
             case 1: {
-                std::cout << 1 << std::endl;
+                portfolio_account_menu(username);
                 break;
             } case 2: {
                 checking_account_menu(username);
@@ -78,8 +131,6 @@ void account_selection_menu(std::string username) {
         }
     }
 }
-
-
 
 
 int main() {

@@ -104,7 +104,7 @@ void BankAccount::print_transaction_history() {
     std::string line, event, date;
     double amount, balance;
 
-    // Open transaction hisotry file.
+    // Open transaction history file.
     std::ifstream transaction_history_file;
     transaction_history_file.open(transaction_history_filename.c_str());
 
