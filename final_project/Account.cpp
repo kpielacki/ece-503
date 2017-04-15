@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cmath>
 #include "Account.h"
 
 
@@ -10,6 +11,11 @@ Account::Account() {
     // account information.
     username = "Default";
     cash_balance_filename = username + "_cash_balance.txt";
+
+    // Sets scaling factor for decimal precision.
+    scale = 0.01;
+    // Sets acceptable difference when comparing two double values.
+    min_diff = 0.000000001;
 
     // Initialize user account if first time user.
     if (!is_active()) {
@@ -23,6 +29,11 @@ Account::Account(std::string username_in) {
     // that hold user account information.
     username = username_in;
     cash_balance_filename = username + "_cash_balance.txt";
+
+    // Sets scaling factor for decimal precision of 2.
+    scale = 0.01;
+    // Sets acceptable difference when comparing two double values.
+    min_diff = 0.000000001;
 
     // Initialize user account if first time user.
     if (!is_active()) {
@@ -39,6 +50,7 @@ Account::~Account() {
 // Checks if a cash balance file can be found for the user.
 bool Account::is_active() {
     bool account_active;
+
 
     std::ifstream cash_balance_file;
     cash_balance_file.open(cash_balance_filename.c_str());
@@ -67,6 +79,37 @@ std::string Account::get_username() {
 }
 
 
+// Getter for scale decimal place management.
+double Account::get_scale() {
+    return scale;
+}
+
+// Getter for min_diff for acceptable difference between double comparison.
+double Account::get_min_diff() {
+    return min_diff;
+}
+
+
+// Returns true if the entered value is within the scale constraint of decimal
+// places.
+// Default checks for two decimal place entries.
+bool Account::check_scale(double value) {
+    double value_check;
+    double diff_check;
+
+    value_check = std::floor(value / get_scale() + 0.5) * get_scale();
+    diff_check = value_check - value;
+
+    // Checks if decimal difference is acceptable.
+    // Comparing two double values with == operator can prove to be unreliable.
+    if ((diff_check < get_min_diff()) && (-diff_check < get_min_diff())) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 // Returns the number stored in <username>_cash_balance.
 double Account::get_cash_balance() {
     double cash_balance;
@@ -80,7 +123,7 @@ double Account::get_cash_balance() {
 
 
 void Account::set_cash_balance(double balance_in) {
-  std::ofstream cash_balance_file;                       
+  std::ofstream cash_balance_file;
   cash_balance_file.open(cash_balance_filename.c_str());
   cash_balance_file << balance_in;
   cash_balance_file.close();

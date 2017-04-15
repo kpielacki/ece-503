@@ -1,4 +1,6 @@
 *.exe
 *.out
 *.stackdump
+*cash_balance.txt
+*bank_transaction_history.txt
 
