@@ -51,6 +51,8 @@ void PortfolioAccount::load_portfolio() {
         ss >> stock_symbol >> share_count;
 
         PortfolioNode* new_node = new PortfolioNode(stock_symbol, share_count);
+
+        // TODO: use node prev and see why loops twice.
         if (first_node) {
             node_list_head = new_node;
             new_node->prev = NULL;
@@ -71,10 +73,10 @@ void PortfolioAccount::load_portfolio() {
 void PortfolioAccount::print_portfolio() {
     PortfolioNode *current_node = node_list_head;
 
+    // Prints all user portfollio information
     if (current_node) {
         while (current_node) {
-            // printf("%-8s$%-8f$%-8.2f\n", current_node->stock_symbol, current_node->share_count, get_stock_value(current_node->share_count));
-            printf("%-8s$\n", current_node->stock_symbol.c_str());
+            printf("%-8s%-8d$%-8.2f\n", current_node->stock_symbol.c_str(), current_node->share_count, get_stock_value(current_node->stock_symbol));
             current_node = current_node->next;
         }
     } else {
