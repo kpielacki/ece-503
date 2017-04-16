@@ -46,6 +46,7 @@ void PortfolioAccount::load_portfolio() {
     portfolio_info_file.open(portfolio_info_filename.c_str());
 
     bool first_node = true;
+    PortfolioNode* prev_node = NULL;
     while (getline(portfolio_info_file, line)) {
         std::istringstream ss(line);
         ss >> stock_symbol >> share_count;
@@ -55,10 +56,12 @@ void PortfolioAccount::load_portfolio() {
         // TODO: use node prev and see why loops twice.
         if (first_node) {
             node_list_head = new_node;
-            new_node->prev = NULL;
             first_node = false;
         }
+        new_node->prev = prev_node;
+
         new_node->next = NULL;
+        prev_node = new_node;
         node_list_tail = new_node;
     }
 
