@@ -4,6 +4,7 @@
 
 #include <string>
 #include "Account.h"
+#include "PortfolioNode.h"
 
 class PortfolioAccount : public Account {
 
@@ -12,8 +13,10 @@ class PortfolioAccount : public Account {
         PortfolioAccount(std::string);
         ~PortfolioAccount();
 
+        void load_portfolio();
         double get_stock_value(std::string);
         void display_stock_value(std::string);
+        void print_portfolio();
         void print_transaction_history();
 
     private:
@@ -21,6 +24,10 @@ class PortfolioAccount : public Account {
         unsigned int result_max;
 
         std::string transaction_history_filename;
+        std::string portfolio_info_filename;
+
+        PortfolioNode *node_list_head;
+        PortfolioNode *node_list_tail;
 };
 
 

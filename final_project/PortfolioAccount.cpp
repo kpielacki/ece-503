@@ -14,6 +14,9 @@ PortfolioAccount::PortfolioAccount() : Account() {
     result_min = 1;
     result_max = 2;
     transaction_history_filename = get_username() + "_bank_transaction_history.txt";
+    portfolio_info_filename = get_username() + "_portfolio_info.txt";
+
+    load_portfolio();
 }
 
 
@@ -22,11 +25,61 @@ PortfolioAccount::PortfolioAccount(std::string username_in) : Account(username_i
     result_min = 1;
     result_max = 2;
     transaction_history_filename = get_username() + "_bank_transaction_history.txt";
+    portfolio_info_filename = get_username() + "_portfolio_info.txt";
+
+    load_portfolio();
 }
 
 
 PortfolioAccount::~PortfolioAccount() {
 
+}
+
+
+// Loads information in <username>_portfolio_info.txt to doubly linked list.
+void PortfolioAccount::load_portfolio() {
+    std::string line, stock_symbol;
+    unsigned int share_count;
+
+    // Open transaction history file.
+    std::ifstream portfolio_info_file;
+    portfolio_info_file.open(portfolio_info_filename.c_str());
+
+    bool first_node = true;
+    while (getline(portfolio_info_file, line)) {
+        std::istringstream ss(line);
+        ss >> stock_symbol >> share_count;
+
+        PortfolioNode* new_node = new PortfolioNode(stock_symbol, share_count);
+        if (first_node) {
+            node_list_head = new_node;
+            new_node->prev = NULL;
+            first_node = false;
+        }
+        new_node->next = NULL;
+        node_list_tail = new_node;
+    }
+
+    // If no information in portfolio account set head and tail to NULL.
+    if (first_node) {
+        node_list_head = NULL;
+        node_list_tail = NULL;
+    }
+}
+
+
+void PortfolioAccount::print_portfolio() {
+    PortfolioNode *current_node = node_list_head;
+
+    if (current_node) {
+        while (current_node) {
+            // printf("%-8s$%-8f$%-8.2f\n", current_node->stock_symbol, current_node->share_count, get_stock_value(current_node->share_count));
+            printf("%-8s$\n", current_node->stock_symbol.c_str());
+            current_node = current_node->next;
+        }
+    } else {
+        std::cout << "No portfolio information found." << std::endl;
+    }
 }
 
 

@@ -10,7 +10,7 @@ class PortfolioNode {
     friend class PortfolioAccount;
 
     public:
-        PortfolioNode(std::string &stock_symbol_in, unsigned int stock_count_in): stock_symbol(stock_symbol_in), stock_count(stock_count_in) {
+        PortfolioNode(std::string &stock_symbol_in, unsigned int share_count_in): stock_symbol(stock_symbol_in), share_count(share_count_in) {
             this->prev = NULL;
             this->next = NULL;
         }

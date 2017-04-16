@@ -31,7 +31,7 @@ void portfolio_account_menu(std::string username) {
                portfolio.display_stock_value(stock_symbol);
                break;
             } case 2: {
-                std::cout << 2 << std::endl;
+                portfolio.print_portfolio();
                 break;
             } case 3: {
                 std::cout << 3 << std::endl;
