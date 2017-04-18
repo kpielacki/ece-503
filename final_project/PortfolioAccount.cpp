@@ -32,7 +32,16 @@ PortfolioAccount::PortfolioAccount(std::string username_in) : Account(username_i
 
 
 PortfolioAccount::~PortfolioAccount() {
+    std::ofstream portfolio_info_file;
+    portfolio_info_file.open(portfolio_info_filename.c_str());
 
+    // Store portfolio information in text file when finished.
+    PortfolioNode *current_node = node_list_head;
+    while (current_node) {
+        portfolio_info_file << current_node->stock_symbol << " " << current_node->share_count << "\n";
+        current_node = current_node->next;
+    }
+    portfolio_info_file.close();
 }
 
 
@@ -53,14 +62,15 @@ void PortfolioAccount::load_portfolio() {
 
         PortfolioNode* new_node = new PortfolioNode(stock_symbol, share_count);
 
-        // TODO: use node prev and see why loops twice.
         if (first_node) {
             node_list_head = new_node;
             first_node = false;
+        } else {
+            prev_node->next = new_node;
         }
         new_node->prev = prev_node;
-
         new_node->next = NULL;
+
         prev_node = new_node;
         node_list_tail = new_node;
     }
@@ -168,6 +178,55 @@ void PortfolioAccount::display_stock_value(std::string stock_symbol_in) {
     }
 }
 
+
+// Deducts input amount from check balance if postive value and greater than current cash balance.
+// Stores transaction in <username>_bank_transaction_history.txt.
+void PortfolioAccount::buy_shares(std::string stock_symbol, int share_purchase_count, double max_price_per_share) {
+
+
+
+    if (check_scale(max_price_per_share)) {
+        if (amount > 0) {
+            double current_share_price = get_stock_value(stock_symbol);
+            if (current_share_price > 0) {
+                if (current_share_price <= max_price_per_share) {
+                    double new_balance = get_cash_balance() - share_purchase_count * current_share_price;
+
+                    // Do not allow withdrawal larger than current balance.
+                    if (new_balance < 0) {
+                        std::cout << "You cannot afford this transaction, cancelling." << std::endl;
+                    } else {
+                        std::string user_confirmation;
+                        printf("You wish to buy %d %s shares at $%.2f per share totaling %.2f, enter \"yes\" to continue: ", share_purchase_count,);
+                        std::cin >> user_confirmation;
+
+                        // Have user confirm transaction before it occurs.
+                        if (user_confirmation == "yes") {
+                            // Open file to append new transcation.
+                            std::ofstream transaction_history_file;
+                            transaction_history_file.open(transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
+                            transaction_history_file << "Withdrawal " << amount << " " << today_str() << " " << new_balance << "\n";
+
+                            // Adjust cash balance to reflect transaction.
+                            BankAccount::set_cash_balance(new_balance);
+                            std::cout << "Transaction Complete" << std::endl;
+                        } else {
+                            std::cout << "Transaction Cancelled" << std::endl;
+                        }
+                    }
+                } else {
+                    printf("Current %s stock price of $%.2f is larger than your max offer of %.2f, cancelling transaction.\n", stock_symbol.c_str(), current_share_price, max_price_per_share);
+                }
+            } else {
+                std::cout << "Invalid stock symbol, cancelling transaction." << std::endl;
+            }
+        } else {
+            std::cout << "Purchase price per share must be postive, cancelling transaction" << std::endl;
+        }
+    } else {
+        std::cout << "Entered price per share cannot be more precise than two digits, cancelling transaction" << std::endl;
+    }
+}
 
 // Prints all user transactions.
 void PortfolioAccount::print_transaction_history() {

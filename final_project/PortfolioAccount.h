@@ -17,6 +17,7 @@ class PortfolioAccount : public Account {
         double get_stock_value(std::string);
         void display_stock_value(std::string);
         void print_portfolio();
+        void buy_shares(std::string, int, double);
         void print_transaction_history();
 
     private:
