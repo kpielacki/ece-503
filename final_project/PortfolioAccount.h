@@ -14,6 +14,7 @@ class PortfolioAccount : public Account {
         ~PortfolioAccount();
 
         void load_portfolio();
+        void add_end_node(std::string, int);
         double get_stock_value(std::string);
         void display_stock_value(std::string);
         void print_portfolio();

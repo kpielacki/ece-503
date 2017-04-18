@@ -9,6 +9,7 @@ void portfolio_account_menu(std::string username) {
     int menu_selection;
     bool in_menu = true;
     std::string stock_symbol;
+    int share_purchase_count;
     double amount;
     PortfolioAccount portfolio(username);
 
@@ -34,7 +35,13 @@ void portfolio_account_menu(std::string username) {
                 portfolio.print_portfolio();
                 break;
             } case 3: {
-                std::cout << 3 << std::endl;
+                std::cout << "Enter the stock symbol you wish to purchase: ";
+                std::cin >> stock_symbol;
+                std::cout << "Enter the number of shares you wish to purchase: ";
+                std::cin >> share_purchase_count;
+                std::cout << "Enter the max price per share you wish to pay: $";
+                std::cin >> amount;
+                portfolio.buy_shares(stock_symbol, share_purchase_count, amount);
                 break;
             } case 4: {
                 std::cout << 4 << std::endl;
