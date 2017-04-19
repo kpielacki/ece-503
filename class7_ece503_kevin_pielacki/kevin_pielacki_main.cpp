@@ -52,6 +52,11 @@ int main() {
 
 	/* Problem 2 */
 	std::cout << "---Problem 2---" << std::endl;
+	std::deque <int> :: const_iterator removal_loc;
+	// int* removal_loc = values + values.size(); // ^ 
+	removal_loc = std::remove(values.begin(), values.end(), 7);
+	// values.erase(&removal_loc);
+
 	for (int i = 0; i < values.size(); i++) {
 		// Erase any elements in deque with value of 7.
 		if (values[i] == 7) {
@@ -107,7 +112,7 @@ int main() {
 	/* Problem 8 */
 	std::cout << "---Problem 8---" << std::endl;
 	std::deque <int> :: const_iterator location;
-	// Sort all elements in deque.
+	// Find  all elements in deque with value of 6.
 	location = std::find_if(values.begin(), values.end(), is_6);
 
 	if (location != values.end()) {
