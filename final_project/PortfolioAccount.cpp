@@ -83,23 +83,33 @@ void PortfolioAccount::load_portfolio() {
 }
 
 
-void PortfolioAccount::add_end_node(std::string stock_symbol, int share_count) {
-    PortfolioNode* new_node = new PortfolioNode(stock_symbol, share_count);
+void PortfolioAccount::add_shares(std::string stock_symbol, int share_count) {
     if (share_count > 0) {
         PortfolioNode *prev_node = node_list_head;
         PortfolioNode *current_node = node_list_head;
 
         // Prints all user portfollio information
         if (current_node) {
+            bool create_new_node = true;
             while (current_node) {
+                if (current_node->stock_symbol == stock_symbol) {
+                  current_node->share_count = current_node->share_count + share_count;
+                  create_new_node = false;
+                  break;
+                }
                 prev_node = current_node;
                 current_node = current_node->next;
             }
-            prev_node->next = new_node;
-            new_node->prev = prev_node;
-            new_node->next = NULL;
-            node_list_tail = new_node;
+
+            if (create_new_node) {
+                PortfolioNode* new_node = new PortfolioNode(stock_symbol, share_count);
+                prev_node->next = new_node;
+                new_node->prev = prev_node;
+                new_node->next = NULL;
+                node_list_tail = new_node;
+            }
         } else {
+            PortfolioNode* new_node = new PortfolioNode(stock_symbol, share_count);
             new_node->prev = NULL;
             new_node->next = NULL;
             node_list_head = new_node;
@@ -263,10 +273,10 @@ void PortfolioAccount::buy_shares(std::string stock_symbol, int share_purchase_c
             // Open file to append new transcation.
             std::ofstream transaction_history_file;
             transaction_history_file.open(transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-            transaction_history_file << "Stock Purchase " << purchase_price << " " << today_str() << " " << new_balance << "\n";
+            transaction_history_file << "Purchase " << purchase_price << " " << today_str() << " " << new_balance << "\n";
 
             // Adjust cash balance to reflect transaction.
-            add_end_node(stock_symbol, share_purchase_count);
+            add_shares(stock_symbol, share_purchase_count);
             PortfolioAccount::set_cash_balance(new_balance);
             std::cout << "Transaction Complete" << std::endl;
         } else {
