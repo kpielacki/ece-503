@@ -14,12 +14,15 @@ class PortfolioAccount : public Account {
         ~PortfolioAccount();
 
         void load_portfolio();
-        void add_shares(std::string, int);
-        double get_stock_value(std::string);
-        void display_stock_value(std::string);
+        void save_portfolio();
         void print_portfolio();
-        void buy_shares(std::string, int, double);
         void print_transaction_history();
+
+        void display_stock_value(std::string);
+        double get_stock_value(std::string);
+
+        void add_shares(std::string, int);
+        void buy_shares(std::string, int, double);
 
     private:
         unsigned int result_min;

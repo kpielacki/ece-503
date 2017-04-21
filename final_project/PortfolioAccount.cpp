@@ -83,6 +83,21 @@ void PortfolioAccount::load_portfolio() {
 }
 
 
+// Saves current portfolio doubly linked list to txt file.
+void PortfolioAccount::save_portfolio() {
+    std::ofstream portfolio_info_file;
+    portfolio_info_file.open(portfolio_info_filename.c_str());
+
+    // Store portfolio information in text file when finished.
+    PortfolioNode *current_node = node_list_head;
+    while (current_node) {
+        portfolio_info_file << current_node->stock_symbol << " " << current_node->share_count << "\n";
+        current_node = current_node->next;
+    }
+    portfolio_info_file.close();
+}
+
+
 void PortfolioAccount::add_shares(std::string stock_symbol, int share_count) {
     if (share_count > 0) {
         PortfolioNode *prev_node = node_list_head;
@@ -116,6 +131,7 @@ void PortfolioAccount::add_shares(std::string stock_symbol, int share_count) {
             node_list_tail = new_node;
         }
     }
+    save_portfolio();
 }
 
 
