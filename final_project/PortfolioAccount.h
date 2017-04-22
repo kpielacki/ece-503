@@ -22,7 +22,7 @@ class PortfolioAccount : public Account {
         int get_current_share_count(std::string);
         double get_stock_value(std::string);
 
-        void add_shares(std::string, int);
+        bool add_shares(std::string, int);
         bool remove_shares(std::string, int);
 
         void buy_shares(std::string, int, double);
@@ -32,7 +32,8 @@ class PortfolioAccount : public Account {
         unsigned int result_min;
         unsigned int result_max;
 
-        std::string transaction_history_filename;
+        std::string bank_transaction_history_filename;
+        std::string portfolio_transaction_history_filename;
         std::string portfolio_info_filename;
 
         PortfolioNode *node_list_head;

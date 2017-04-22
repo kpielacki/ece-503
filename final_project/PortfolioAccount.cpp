@@ -7,13 +7,15 @@
 #include "Account.h"
 #include "PortfolioAccount.h"
 #include "date_str.h"
+#include "time_str.h"
 
 
 PortfolioAccount::PortfolioAccount() : Account() {
     srand(time(NULL));
     result_min = 1;
     result_max = 2;
-    transaction_history_filename = get_username() + "_bank_transaction_history.txt";
+    bank_transaction_history_filename = get_username() + "_bank_transaction_history.txt";
+    portfolio_transaction_history_filename = get_username() + "_portfolio_transaction_history.txt";
     portfolio_info_filename = get_username() + "_portfolio_info.txt";
 
     load_portfolio();
@@ -24,13 +26,15 @@ PortfolioAccount::PortfolioAccount(std::string username_in) : Account(username_i
     srand(time(NULL));
     result_min = 1;
     result_max = 2;
-    transaction_history_filename = get_username() + "_bank_transaction_history.txt";
+    bank_transaction_history_filename = get_username() + "_bank_transaction_history.txt";
+    portfolio_transaction_history_filename = get_username() + "_portfolio_transaction_history.txt";
     portfolio_info_filename = get_username() + "_portfolio_info.txt";
 
     load_portfolio();
 }
 
 
+// Destructor to save current portfolio in text file and delete all nodes in doubly linked list.
 PortfolioAccount::~PortfolioAccount() {
     std::ofstream portfolio_info_file;
     portfolio_info_file.open(portfolio_info_filename.c_str());
@@ -98,7 +102,11 @@ void PortfolioAccount::save_portfolio() {
 }
 
 
-void PortfolioAccount::add_shares(std::string stock_symbol, int share_count) {
+// Add shares to existing or new node if stock symbol not in current list.
+// Returns true upon successful transaction.
+// Fails upon invalid additon count.
+bool PortfolioAccount::add_shares(std::string stock_symbol, int share_count) {
+    bool success = false;
     if (share_count > 0) {
         PortfolioNode *prev_node = node_list_head;
         PortfolioNode *current_node = node_list_head;
@@ -111,31 +119,44 @@ void PortfolioAccount::add_shares(std::string stock_symbol, int share_count) {
                 if (current_node->stock_symbol == stock_symbol) {
                   current_node->share_count = current_node->share_count + share_count;
                   create_new_node = false;
+                  success = true;
                   break;
                 }
                 prev_node = current_node;
                 current_node = current_node->next;
             }
-
+            // Append new node to list.
             if (create_new_node) {
                 PortfolioNode* new_node = new PortfolioNode(stock_symbol, share_count);
                 prev_node->next = new_node;
                 new_node->prev = prev_node;
                 new_node->next = NULL;
                 node_list_tail = new_node;
+                success = true;
             }
         } else {
+            // Add first node to doubly linked list.
             PortfolioNode* new_node = new PortfolioNode(stock_symbol, share_count);
             new_node->prev = NULL;
             new_node->next = NULL;
             node_list_head = new_node;
             node_list_tail = new_node;
+            success = true;
         }
     }
-    save_portfolio();
+
+    // Save portfolio upon successful transaction.
+    if (success) {
+        save_portfolio();
+    }
+    return success;
 }
 
 
+// Remove shares from existing node or delete node entirely if count reduced to zero.
+// Returns true upon successful transaction.
+// Fails upon invalid stock symbol, share removal count larger than currently owned count,
+// or remove count not postive valued.
 bool PortfolioAccount::remove_shares(std::string stock_symbol, int share_count) {
     bool success = false;
     if (share_count > 0) {
@@ -298,6 +319,8 @@ void PortfolioAccount::display_stock_value(std::string stock_symbol_in) {
 }
 
 
+// Returns current count of shares owned for passed stock symbol.
+// Returns 0 for invalid stock symbols and stock symbols not currently owned.
 int PortfolioAccount::get_current_share_count(std::string stock_symbol) {
     PortfolioNode *current_node = node_list_head;
 
@@ -316,8 +339,7 @@ int PortfolioAccount::get_current_share_count(std::string stock_symbol) {
 }
 
 
-// Deducts input amount from check balance if postive value and greater than current cash balance.
-// Stores transaction in <username>_bank_transaction_history.txt.
+// Purchase shares for passed input symbol for input share_purchase_count if max price per share is greater than current price.
 void PortfolioAccount::buy_shares(std::string stock_symbol, int share_purchase_count, double max_price_per_share) {
     // Validators set to false to cancel invalid transaction. 
     bool valid_transaction = true;
@@ -373,15 +395,31 @@ void PortfolioAccount::buy_shares(std::string stock_symbol, int share_purchase_c
 
         // Deduct the cost from current cash balance and add new stock purchase to doubly linked list.
         if (user_confirmation == "yes") {
-            // Open file to append new transcation.
-            std::ofstream transaction_history_file;
-            transaction_history_file.open(transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-            transaction_history_file << "Purchase " << purchase_price << " " << today_str() << " " << new_balance << "\n";
+            // Check if share removal was successful otherwise do not go through with transaction.
+            valid_transaction = add_shares(stock_symbol, share_purchase_count);
+            double total_value;
+            std::string current_time = now_str();
+            // Replace spaces with underscores for easier file IO.
+            current_time.replace(current_time.begin(),current_time.end(), ' ', '_');
 
-            // Adjust cash balance to reflect transaction.
-            add_shares(stock_symbol, share_purchase_count);
-            PortfolioAccount::set_cash_balance(new_balance);
-            std::cout << "Transaction Complete" << std::endl;
+            if (!valid_transaction) {
+                std::cout << "Something has gone wrong, cancelling transaction." << std::endl;
+            } else {
+                // Open file to append new transcations for bank and portfolio account.
+                std::ofstream bank_transaction_history_file;
+                bank_transaction_history_file.open(bank_transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
+                bank_transaction_history_file << "Withdrawal " << purchase_price << " " << today_str() << " " << new_balance << "\n";
+                bank_transaction_history_file.close();
+
+                std::ofstream portfolio_transaction_history_file;
+                portfolio_transaction_history_file.open(portfolio_transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
+                portfolio_transaction_history_file << "Buy " << stock_symbol << " " << share_purchase_count << " " << current_share_price << total_value << current_time;
+                portfolio_transaction_history_file.close();
+
+                // Adjust cash balance to reflect transaction.
+                PortfolioAccount::set_cash_balance(new_balance);
+                std::cout << "Transaction Complete" << std::endl;
+            }
         } else {
             std::cout << "Transaction Cancelled" << std::endl;
         }
@@ -391,6 +429,7 @@ void PortfolioAccount::buy_shares(std::string stock_symbol, int share_purchase_c
 }
 
 
+// Sells shares for passed input symbol for input share_sale_count if min sale price less than current price.
 void PortfolioAccount::sell_shares(std::string stock_symbol, int share_sale_count, double min_price_per_share) {
     // Validators set to false to cancel invalid transaction. 
     bool valid_transaction = true;
@@ -464,8 +503,8 @@ void PortfolioAccount::sell_shares(std::string stock_symbol, int share_sale_coun
                 std::cout << "Something has gone wrong, cancelling transaction." << std::endl;
             } else {
                 std::ofstream transaction_history_file;
-                transaction_history_file.open(transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-                transaction_history_file << "Sale " << sale_price << " " << today_str() << " " << new_balance << "\n";
+                transaction_history_file.open(bank_transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
+                transaction_history_file << "Deposit " << sale_price << " " << today_str() << " " << new_balance << "\n";
 
                 // Adjust cash balance to reflect transaction.
                 PortfolioAccount::set_cash_balance(new_balance);
@@ -480,22 +519,23 @@ void PortfolioAccount::sell_shares(std::string stock_symbol, int share_sale_coun
 }
 
 
-// Prints all user transactions.
+// Prints all user portfolio transactions.
 void PortfolioAccount::print_transaction_history() {
     // Print transaction history headers.
-    std::string line, event, date;
-    double amount, balance;
+    std::string line, event, stock_symbol, current_time;
+    int stock_count;
+    double price_per_share, total_value;
 
     // Open transaction history file.
-    std::ifstream transaction_history_file;
-    transaction_history_file.open(transaction_history_filename.c_str());
+    std::ifstream portfolio_transaction_history_file;
+    portfolio_transaction_history_file.open(portfolio_transaction_history_filename.c_str());
 
-    // Header and transaction history print.
-    printf("%-12s%-16s%-12s%-16s\n", "Event", "Amount", "Date", "Balance");
-    while (getline(transaction_history_file, line)) {
+    // Header and portfolio transaction history print.
+    printf("%-12s%-16s%-12s%-16s%-16s%-12s\n", "Event", "CompSymbol", "Number", "PricePerShare", "TotalValue", "Time");
+    while (getline(portfolio_transaction_history_file, line)) {
         std::istringstream ss(line);
-        ss >> event >> amount >> date >> balance;
-        printf("%-12s$%-15.2f%-12s$%-15.2f\n", event.c_str(), amount, date.c_str(), balance);
+        ss >> event >> stock_symbol >> stock_count >> price_per_share >> total_value >> current_time;
+        printf("%-12s%-16s%-12d$%-15.2f$%-15.2f%-12s\n", event.c_str(), stock_symbol.c_str(), stock_count, price_per_share, total_value, current_time.c_str());
     }
-    transaction_history_file.close();
+    portfolio_transaction_history_file.close();
 }
