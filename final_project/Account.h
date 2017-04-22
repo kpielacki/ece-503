@@ -21,6 +21,8 @@ class Account {
         double get_cash_balance();
         void set_cash_balance(double);
 
+        virtual void print_transaction_history() = 0;
+
     private:
         double scale;
         double min_diff;

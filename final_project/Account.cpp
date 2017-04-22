@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
+#include <iomanip>
 #include <cmath>
 #include "Account.h"
 
@@ -68,7 +70,7 @@ bool Account::is_active() {
 void Account::init_account() {
     std::ofstream cash_balance_file;
     cash_balance_file.open(cash_balance_filename.c_str());
-    cash_balance_file << 10000;
+    cash_balance_file << std::fixed << std::setprecision(2) << 10000;
     cash_balance_file.close();
 }
 
@@ -112,12 +114,17 @@ bool Account::check_scale(double value) {
 
 // Returns the number stored in <username>_cash_balance.
 double Account::get_cash_balance() {
+    std::string line;
     double cash_balance;
+
     std::ifstream cash_balance_file;
     cash_balance_file.open(cash_balance_filename.c_str());
-    cash_balance_file >> cash_balance;
-    cash_balance_file.close();
 
+    getline(cash_balance_file, line);
+    std::istringstream ss(line);
+    ss >> cash_balance;
+
+    cash_balance_file.close();
     return cash_balance;
 }
 
@@ -125,7 +132,6 @@ double Account::get_cash_balance() {
 void Account::set_cash_balance(double balance_in) {
   std::ofstream cash_balance_file;
   cash_balance_file.open(cash_balance_filename.c_str());
-  cash_balance_file << balance_in;
+  cash_balance_file << std::fixed << std::setprecision(2) << balance_in;
   cash_balance_file.close();
 }
-

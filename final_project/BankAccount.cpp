@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <iomanip>
 #include "Account.h"
 #include "BankAccount.h"
 #include "date_str.h"
@@ -42,7 +43,7 @@ void BankAccount::withdraw(double amount) {
                     // Open file to append new transcation.
                     std::ofstream transaction_history_file;
                     transaction_history_file.open(transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-                    transaction_history_file << "Withdrawal " << amount << " " << today_str() << " " << new_balance << "\n";
+                    transaction_history_file << "Withdrawal " << amount << " " << today_str() << " " << std::fixed << std::setprecision(2) << new_balance << "\n";
 
                     // Adjust cash balance to reflect transaction.
                     BankAccount::set_cash_balance(new_balance);
@@ -72,11 +73,14 @@ void BankAccount::deposit(double amount) {
             // Have user confirm transaction before it occurs.
             if (user_confirmation == "yes") {
                 double new_balance = get_cash_balance() + amount;
+                std::cout << get_cash_balance() << std::endl;
+                std::cout << amount << std::endl;
+                std::cout << new_balance << std::endl;
 
                 // Open file to append new transcation.
                 std::ofstream transaction_history_file;
                 transaction_history_file.open(transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-                transaction_history_file << "Deposit " << amount << " " << today_str() << " " << new_balance << "\n";
+                transaction_history_file << "Deposit " << amount << " " << today_str() << " " << std::fixed << std::setprecision(2) << new_balance << "\n";
 
                 // Adjust cash balance to reflect transaction.
                 BankAccount::set_cash_balance(new_balance);
@@ -94,7 +98,7 @@ void BankAccount::deposit(double amount) {
 
 // Prints current cash balance.
 void BankAccount::view_account_balance() {
-    std::cout << "You have $" << get_cash_balance() << " in your account." << std::endl;
+    std::cout << "You have $" << std::fixed << std::setprecision(2) << get_cash_balance() << " in your account." << std::endl;
 }
 
 
