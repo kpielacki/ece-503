@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <string>
 #include <sstream>
 #include <stdlib.h>
@@ -424,12 +425,12 @@ void PortfolioAccount::buy_shares(std::string stock_symbol, int share_purchase_c
                 // Open file to append new transcations for bank and portfolio account.
                 std::ofstream bank_transaction_history_file;
                 bank_transaction_history_file.open(bank_transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-                bank_transaction_history_file << "Withdrawal " << purchase_price << " " << today_str() << " " << new_balance << "\n";
+                bank_transaction_history_file << "Withdrawal " << std::fixed << std::setprecision(2) << purchase_price << " " << today_str() << " " << std::fixed << std::setprecision(2) << new_balance << "\n";
                 bank_transaction_history_file.close();
 
                 std::ofstream portfolio_transaction_history_file;
                 portfolio_transaction_history_file.open(portfolio_transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-                portfolio_transaction_history_file << "Buy " << stock_symbol << " " << share_purchase_count << " " << current_share_price << " " << total_value << " " << current_time << "\n";
+                portfolio_transaction_history_file << "Buy " << stock_symbol << " " << share_purchase_count << " " << std::fixed << std::setprecision(2) << current_share_price << " " << std::fixed << std::setprecision(2) << total_value << " " << current_time << "\n";
                 portfolio_transaction_history_file.close();
 
                 // Adjust cash balance to reflect transaction.
@@ -526,12 +527,12 @@ void PortfolioAccount::sell_shares(std::string stock_symbol, int share_sale_coun
             } else {
                 std::ofstream bank_transaction_history_file;
                 bank_transaction_history_file.open(bank_transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-                bank_transaction_history_file << "Deposit " << sale_price << " " << today_str() << " " << new_balance << "\n";
+                bank_transaction_history_file << "Deposit " << std::fixed << std::setprecision(2) << sale_price << " " << today_str() << " " << std::fixed << std::setprecision(2) << new_balance << "\n";
                 bank_transaction_history_file.close();
 
                 std::ofstream portfolio_transaction_history_file;
                 portfolio_transaction_history_file.open(portfolio_transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-                portfolio_transaction_history_file << "Sell " << stock_symbol << " " << share_sale_count << " " << current_share_price << " " << total_value << " " << current_time << "\n";
+                portfolio_transaction_history_file << "Sell " << stock_symbol << " " << share_sale_count << " " << std::fixed << std::setprecision(2) << current_share_price << " " << std::fixed << std::setprecision(2) << total_value << " " << current_time << "\n";
                 portfolio_transaction_history_file.close();
 
                 // Adjust cash balance to reflect transaction.
