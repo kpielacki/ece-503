@@ -339,6 +339,20 @@ int PortfolioAccount::get_current_share_count(std::string stock_symbol) {
 }
 
 
+// Returns the current total portfolio value.
+double PortfolioAccount::get_portfolio_value() {
+    double total_value = 0;
+    PortfolioNode *current_node = node_list_head;
+
+    // Iterate through all entries in list.
+    while (current_node) {
+        total_value += current_node->share_count * get_stock_value(current_node->stock_symbol);
+        current_node = current_node->next;
+    }
+    return total_value;
+}
+
+
 // Purchase shares for passed input symbol for input share_purchase_count if max price per share is greater than current price.
 void PortfolioAccount::buy_shares(std::string stock_symbol, int share_purchase_count, double max_price_per_share) {
     // Validators set to false to cancel invalid transaction. 
@@ -395,12 +409,18 @@ void PortfolioAccount::buy_shares(std::string stock_symbol, int share_purchase_c
 
         // Deduct the cost from current cash balance and add new stock purchase to doubly linked list.
         if (user_confirmation == "yes") {
+            // Use get_portfolio_value to calculate total value before new purchase and add agreed upon price to value
+            // to avoid mismatch between agreed purchase price and possible change due to value randomness.
+            double total_value;
+            total_value = get_portfolio_value() + purchase_price;
+            std::cout << total_value << std::endl;
+            std::cout << purchase_price << std::endl;
+            std::cout << total_value + purchase_price << std::endl;
+
+            std::string current_time = now_str();
+
             // Check if share removal was successful otherwise do not go through with transaction.
             valid_transaction = add_shares(stock_symbol, share_purchase_count);
-            double total_value;
-            std::string current_time = now_str();
-            // Replace spaces with underscores for easier file IO.
-            current_time.replace(current_time.begin(),current_time.end(), ' ', '_');
 
             if (!valid_transaction) {
                 std::cout << "Something has gone wrong, cancelling transaction." << std::endl;
@@ -413,7 +433,7 @@ void PortfolioAccount::buy_shares(std::string stock_symbol, int share_purchase_c
 
                 std::ofstream portfolio_transaction_history_file;
                 portfolio_transaction_history_file.open(portfolio_transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-                portfolio_transaction_history_file << "Buy " << stock_symbol << " " << share_purchase_count << " " << current_share_price << total_value << current_time;
+                portfolio_transaction_history_file << "Buy " << stock_symbol << " " << share_purchase_count << " " << current_share_price << " " << total_value << " " << current_time << "\n";
                 portfolio_transaction_history_file.close();
 
                 // Adjust cash balance to reflect transaction.
@@ -531,11 +551,11 @@ void PortfolioAccount::print_transaction_history() {
     portfolio_transaction_history_file.open(portfolio_transaction_history_filename.c_str());
 
     // Header and portfolio transaction history print.
-    printf("%-12s%-16s%-12s%-16s%-16s%-12s\n", "Event", "CompSymbol", "Number", "PricePerShare", "TotalValue", "Time");
+    printf("%-12s%-16s%-12s%-16s%-16s%-26s\n", "Event", "CompSymbol", "Number", "PricePerShare", "TotalValue", "DateTime");
     while (getline(portfolio_transaction_history_file, line)) {
         std::istringstream ss(line);
         ss >> event >> stock_symbol >> stock_count >> price_per_share >> total_value >> current_time;
-        printf("%-12s%-16s%-12d$%-15.2f$%-15.2f%-12s\n", event.c_str(), stock_symbol.c_str(), stock_count, price_per_share, total_value, current_time.c_str());
+        printf("%-12s%-16s%-12d$%-15.2f$%-15.2f%-26s\n", event.c_str(), stock_symbol.c_str(), stock_count, price_per_share, total_value, current_time.c_str());
     }
     portfolio_transaction_history_file.close();
 }

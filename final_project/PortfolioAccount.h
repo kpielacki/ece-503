@@ -21,6 +21,7 @@ class PortfolioAccount : public Account {
         void display_stock_value(std::string);
         int get_current_share_count(std::string);
         double get_stock_value(std::string);
+        double get_portfolio_value();
 
         bool add_shares(std::string, int);
         bool remove_shares(std::string, int);
