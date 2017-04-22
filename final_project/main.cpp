@@ -44,7 +44,13 @@ void portfolio_account_menu(std::string username) {
                 portfolio.buy_shares(stock_symbol, share_purchase_count, amount);
                 break;
             } case 4: {
-                std::cout << 4 << std::endl;
+                std::cout << "Enter the stock symbol you wish to sell: ";
+                std::cin >> stock_symbol;
+                std::cout << "Enter the number of shares you wish to sell: ";
+                std::cin >> share_purchase_count;
+                std::cout << "Enter the minimum price per share you wish to sell for: $";
+                std::cin >> amount;
+                portfolio.sell_shares(stock_symbol, share_purchase_count, amount);
                 break;
             } case 5: {
                 std::cout << 5 << std::endl;

@@ -23,6 +23,8 @@ class PortfolioAccount : public Account {
         double get_stock_value(std::string);
 
         void add_shares(std::string, int);
+        bool remove_shares(std::string, int);
+
         void buy_shares(std::string, int, double);
         void sell_shares(std::string, int, double);
 

@@ -137,36 +137,38 @@ void PortfolioAccount::add_shares(std::string stock_symbol, int share_count) {
 
 
 bool PortfolioAccount::remove_shares(std::string stock_symbol, int share_count) {
+    bool success = false;
     if (share_count > 0) {
         PortfolioNode *prev_node = node_list_head;
         PortfolioNode *current_node = node_list_head;
 
-        bool success = false;
         int new_share_count;
         while (current_node) {
             if (current_node->stock_symbol == stock_symbol) {
-                new_share_count = current_node->share_count - share_count
+                new_share_count = current_node->share_count - share_count;
 
                 if (new_share_count < 0) {
                     // Fail if asked to remove more shares than you currently own.
                     success = false;
                 } else if (new_share_count == 0) {
                     // Remove node if share count reduced to zero.
-
                     if (current_node->next && current_node->prev) {
                         // Handle center node removal.
-
-
-                    } else if (current_node->next && !current_node->prev) {
+                        // Have next and previous pointers of surrounding nodes skip node to be deleted.
+                        prev_node->next = current_node->next;
+                        current_node->next->prev = prev_node;
+                        delete current_node;
+                        success = true;
+                    } else if (!current_node->prev) {
                         // Handle head node removal.
-
-                        if (current_node == node_list_tail) {
+                        if (!current_node->next) {
                             // If only node in list set head and tail to NULL.
                             node_list_head = NULL;
                             node_list_tail = NULL;
                         } else {
-                            // If other nodes exist shift new head to next node.
+                            // If other nodes exist shift new head to next node and set new heads previous pointer to NULL.
                             node_list_head = current_node->next;
+                            node_list_head->prev = NULL;
                         }
                         delete current_node;
                         success = true;
@@ -296,7 +298,7 @@ void PortfolioAccount::display_stock_value(std::string stock_symbol_in) {
 }
 
 
-int get_current_share_count(std::string stock_symbol) {
+int PortfolioAccount::get_current_share_count(std::string stock_symbol) {
     PortfolioNode *current_node = node_list_head;
 
     // Iterate through all entries in list.
@@ -348,6 +350,11 @@ void PortfolioAccount::buy_shares(std::string stock_symbol, int share_purchase_c
         valid_transaction = false;
     }
 
+    if (share_purchase_count <= 0) {
+        std::cout << "Share purchase count must be a positive value." << std::endl;
+        valid_transaction = false;
+    }
+
     // Gets new cash balance that appears once transaction has been completed.
     double purchase_price = share_purchase_count * current_share_price;
     double new_balance = get_cash_balance() - purchase_price;
@@ -384,7 +391,6 @@ void PortfolioAccount::buy_shares(std::string stock_symbol, int share_purchase_c
 }
 
 
-
 void PortfolioAccount::sell_shares(std::string stock_symbol, int share_sale_count, double min_price_per_share) {
     // Validators set to false to cancel invalid transaction. 
     bool valid_transaction = true;
@@ -396,7 +402,7 @@ void PortfolioAccount::sell_shares(std::string stock_symbol, int share_sale_coun
     }
 
     // Do not allow user to offer non-postive price per share.
-    if (max_price_per_share <= 0) {
+    if (min_price_per_share <= 0) {
         std::cout << "Sale price per share must be postive." << std::endl;
         valid_transaction = false;
     }
@@ -412,15 +418,22 @@ void PortfolioAccount::sell_shares(std::string stock_symbol, int share_sale_coun
     }
 
     // Check if user acceptable sales offer is not above current stock value.
-    if (current_share_price < min_price_per_share) {
+    // Only display if user has entered a valid stock option.
+    if (current_share_price < min_price_per_share && current_share_price > 0) {
         printf("Current %s stock price of $%.2f is less than your minimum acceptable offer of $%.2f.\n", stock_symbol.c_str(), current_share_price, min_price_per_share);
+        valid_transaction = false;
+    }
+
+    // Ensure share sale count is postive valued.
+    if (share_sale_count <= 0) {
+        std::cout << "Share sale count must be a positive value." << std::endl;
         valid_transaction = false;
     }
 
     // Check if user has enough shares needed for transaction.
     int new_share_count;
     int current_share_count;
-    current_share_count = get_current_share_count(stock_symbol)
+    current_share_count = get_current_share_count(stock_symbol);
     new_share_count = current_share_count - share_sale_count;
 
     // Do not allow sale for more shares than you currently own.
@@ -428,7 +441,7 @@ void PortfolioAccount::sell_shares(std::string stock_symbol, int share_sale_coun
     // price is also valid so this message only appears for valid stock symbols.
     if (new_share_count < 0 && current_share_price > 0) {
         // Gets new cash balance that appears once transaction has been completed.
-        std::cout << "You currently only own " << current_share_count " " << stock_symbol << " shares but attempting to sell " << share_sale_count << " shares, please do not try to sell more shares than you currently own."<< std::endl;
+        std::cout << "You currently only own " << current_share_count << " " << stock_symbol << " shares but attempting to sell " << share_sale_count << " shares, please do not try to sell more shares than you currently own."<< std::endl;
         valid_transaction = false;
     }
 
@@ -444,14 +457,20 @@ void PortfolioAccount::sell_shares(std::string stock_symbol, int share_sale_coun
         // Deduct the cost from current cash balance and add new stock purchase to doubly linked list.
         if (user_confirmation == "yes") {
             // Open file to append new transcation.
-            std::ofstream transaction_history_file;
-            transaction_history_file.open(transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-            transaction_history_file << "Sale " << sale_price << " " << today_str() << " " << new_balance << "\n";
+            valid_transaction = remove_shares(stock_symbol, share_sale_count);
 
-            // Adjust cash balance to reflect transaction.
-            remove_shares(stock_symbol, share_sale_count);
-            PortfolioAccount::set_cash_balance(new_balance);
-            std::cout << "Transaction Complete" << std::endl;
+            // If shares failed to be removed on coding error cancel entire transaction.
+            if (!valid_transaction) {
+                std::cout << "Something has gone wrong, cancelling transaction." << std::endl;
+            } else {
+                std::ofstream transaction_history_file;
+                transaction_history_file.open(transaction_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
+                transaction_history_file << "Sale " << sale_price << " " << today_str() << " " << new_balance << "\n";
+
+                // Adjust cash balance to reflect transaction.
+                PortfolioAccount::set_cash_balance(new_balance);
+                std::cout << "Transaction Complete" << std::endl;
+            }
         } else {
             std::cout << "Transaction Cancelled" << std::endl;
         }
@@ -459,7 +478,6 @@ void PortfolioAccount::sell_shares(std::string stock_symbol, int share_sale_coun
         std::cout << "Transaction Cancelled" << std::endl;
     }
 }
-
 
 
 // Prints all user transactions.
