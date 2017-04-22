@@ -19,10 +19,12 @@ class PortfolioAccount : public Account {
         void print_transaction_history();
 
         void display_stock_value(std::string);
+        int get_current_share_count(std::string);
         double get_stock_value(std::string);
 
         void add_shares(std::string, int);
         void buy_shares(std::string, int, double);
+        void sell_shares(std::string, int, double);
 
     private:
         unsigned int result_min;
