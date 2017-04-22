@@ -42,9 +42,12 @@ PortfolioAccount::~PortfolioAccount() {
 
     // Store portfolio information in text file when finished.
     PortfolioNode *current_node = node_list_head;
+    PortfolioNode *temp_node;
     while (current_node) {
         portfolio_info_file << current_node->stock_symbol << " " << current_node->share_count << "\n";
-        current_node = current_node->next;
+        temp_node = current_node->next;
+        delete current_node;
+        current_node = temp_node;
     }
     portfolio_info_file.close();
 }
