@@ -224,15 +224,19 @@ bool PortfolioAccount::remove_shares(std::string stock_symbol, int share_count) 
 }
 
 
-// Prints current stock symbols, their share counts, and their current values in decreasing order.
+// Prints user cash balance, current stock symbols, their share counts, and their current values in decreasing order.
 void PortfolioAccount::print_portfolio_desc() {
+    // Print user cash balance.
+    printf("%-28s$%-13.2f\n\n", "Cash Balance:", get_cash_balance());
+
     PortfolioNode *current_node = node_list_head;
 
     // Prints all user portfollio information
     if (current_node) {
         double current_total_value;
-        double current_total_value_all = 0;
+        double current_total_value_all;
 
+        current_total_value_all = get_cash_balance();
         printf("%-14s%-14s%-14s\n", "Stock Symbol", "Share Count", "Total Value");
         while (current_node) {
             current_total_value = get_stock_value(current_node->stock_symbol) * current_node->share_count;
@@ -248,15 +252,19 @@ void PortfolioAccount::print_portfolio_desc() {
 }
 
 
-// Prints current stock symbols, their share counts, and their current values in increasing order.
+// Prints user cash balance, current stock symbols, their share counts, and their current values in increasing order.
 void PortfolioAccount::print_portfolio_asc() {
+    // Print user cash balance.
+    printf("%-28s$%-13.2f\n\n", "Cash Balance:", get_cash_balance());
+
     PortfolioNode *current_node = node_list_tail;
 
     // Prints all user portfollio information
     if (current_node) {
         double current_total_value;
-        double current_total_value_all = 0;
+        double current_total_value_all;
 
+        current_total_value_all = get_cash_balance();
         printf("%-14s%-14s%-14s\n", "Stock Symbol", "Share Count", "Total Value");
         while (current_node) {
             current_total_value = get_stock_value(current_node->stock_symbol) * current_node->share_count;
