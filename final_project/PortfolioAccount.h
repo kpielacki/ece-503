@@ -15,6 +15,7 @@ class PortfolioAccount : public Account {
 
         void load_portfolio();
         void save_portfolio();
+        void sort_portfolio_selection();
         void print_portfolio_desc();
         void print_portfolio_asc();
         void print_transaction_history();
@@ -33,6 +34,7 @@ class PortfolioAccount : public Account {
     private:
         unsigned int result_min;
         unsigned int result_max;
+        unsigned int portfolio_node_count;
 
         std::string bank_transaction_history_filename;
         std::string portfolio_transaction_history_filename;

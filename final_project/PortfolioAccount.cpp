@@ -19,6 +19,7 @@ PortfolioAccount::PortfolioAccount() : Account() {
     portfolio_transaction_history_filename = get_username() + "_portfolio_transaction_history.txt";
     portfolio_info_filename = get_username() + "_portfolio_info.txt";
 
+    portfolio_node_count = 0;
     load_portfolio();
 }
 
@@ -31,6 +32,7 @@ PortfolioAccount::PortfolioAccount(std::string username_in) : Account(username_i
     portfolio_transaction_history_filename = get_username() + "_portfolio_transaction_history.txt";
     portfolio_info_filename = get_username() + "_portfolio_info.txt";
 
+    portfolio_node_count = 0;
     load_portfolio();
 }
 
@@ -55,6 +57,8 @@ PortfolioAccount::~PortfolioAccount() {
 
 // Loads information in <username>_portfolio_info.txt to doubly linked list.
 void PortfolioAccount::load_portfolio() {
+    portfolio_node_count = 0;
+
     std::string line, stock_symbol;
     unsigned int share_count;
 
@@ -81,12 +85,82 @@ void PortfolioAccount::load_portfolio() {
 
         prev_node = new_node;
         node_list_tail = new_node;
+        portfolio_node_count++;
     }
 
     // If no information in portfolio account set head and tail to NULL.
     if (first_node) {
         node_list_head = NULL;
         node_list_tail = NULL;
+    }
+
+    sort_portfolio_selection();
+}
+
+
+void PortfolioAccount::sort_portfolio_selection() {
+    PortfolioNode *current_node = node_list_head;
+
+    // Load current portfolio values into array.
+    // This is to keep values consistent during sorting operations.
+    double *current_values_p;
+    current_values_p = new double[portfolio_node_count];
+    for (int i = 0; i < portfolio_node_count; i++) {
+        // Get all the current portfolio value in an array to keep values consistent while sorting.
+        *(current_values_p + i) = get_stock_value(current_node->stock_symbol) * current_node->share_count;
+        current_node = current_node->next;
+    }
+
+    int swap_index;
+    PortfolioNode *current_node_swap = NULL;
+    PortfolioNode *current_node_i = node_list_head;
+    for (int i = 0; i < portfolio_node_count; i++) {
+        int current_max = *(current_values_p + i);
+        // Set swap to current index. Will overwrite if lesser value found.
+        swap_index = i;
+        PortfolioNode *current_node_j = current_node_i->next;
+        for (int j = i + 1; j < portfolio_node_count; j++) {
+            // Select min element and set to first value with
+            if (*(current_values_p + j) > current_max) {
+                current_max = *(current_values_p + j);
+                swap_index = j;
+                current_node_swap = current_node_j;
+            }
+            current_node_j = current_node_j->next;
+        }
+
+        // Swap nodes if selected node i is not the max of the remaining list.
+        if (swap_index != i) {
+            *(current_values_p + swap_index) = *(current_values_p + i);
+            *(current_values_p + i) = current_max;
+            if (i == 1) {
+                // Handle swap where i references head node.
+                if (swap_index == portfolio_node_count) {
+                    // Handle swap where j references tail node.
+                    
+                } else {
+                    // Handle swap where i references head node and j reference mid node.
+
+                }
+            } else if (swap_index == portfolio_node_count) {
+                // Handle swap where i references mid node but j references tail node.
+                
+            } else {
+                // Handle swap where both i and j references mid nodes.
+
+
+
+            }
+
+        }
+
+        current_node_i = current_node_i->next;
+    }
+
+    // Selection sorting on doubly link list using values in array as sorting criteria.
+    for (int i = 0; i < portfolio_node_count; i++) {
+        // Get all the current portfolio value in an array to keep values consistent while sorting.
+        std::cout << *(current_values_p + i) << std::endl;
     }
 }
 
@@ -137,6 +211,7 @@ bool PortfolioAccount::add_shares(std::string stock_symbol, int share_count) {
                 new_node->next = NULL;
                 node_list_tail = new_node;
                 success = true;
+                portfolio_node_count++;
             }
         } else {
             // Add first node to doubly linked list.
@@ -146,6 +221,7 @@ bool PortfolioAccount::add_shares(std::string stock_symbol, int share_count) {
             node_list_head = new_node;
             node_list_tail = new_node;
             success = true;
+            portfolio_node_count++;
         }
     }
 
@@ -184,6 +260,7 @@ bool PortfolioAccount::remove_shares(std::string stock_symbol, int share_count) 
                         current_node->next->prev = prev_node;
                         delete current_node;
                         success = true;
+                        portfolio_node_count--;
                     } else if (!current_node->prev) {
                         // Handle head node removal.
                         if (!current_node->next) {
@@ -197,12 +274,14 @@ bool PortfolioAccount::remove_shares(std::string stock_symbol, int share_count) 
                         }
                         delete current_node;
                         success = true;
+                        portfolio_node_count--;
                     } else if (!current_node->next && current_node->prev) {
                         // Handle tail node removal.
                         delete current_node;
                         prev_node->next = NULL;
                         node_list_tail = prev_node;
                         success = true;
+                        portfolio_node_count--;
                     }
                 } else {
                     // Remove share count if not all shares are sold.
