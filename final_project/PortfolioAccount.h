@@ -15,7 +15,8 @@ class PortfolioAccount : public Account {
 
         void load_portfolio();
         void save_portfolio();
-        void print_portfolio();
+        void print_portfolio_desc();
+        void print_portfolio_asc();
         void print_transaction_history();
 
         void display_stock_value(std::string);

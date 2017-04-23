@@ -16,12 +16,13 @@ void portfolio_account_menu(std::string username) {
     while (in_menu) {
         std::cout << std::endl << "Please select an option:" << std::endl;
         std::cout << "1. Display the price for a stock symbol" << std::endl;
-        std::cout << "2. Display the current portfolio" << std::endl;
-        std::cout << "3. Buy shares" << std::endl;
-        std::cout << "4. Sell shares" << std::endl;
-        std::cout << "5. View a graph for the portfolio value" << std::endl;
-        std::cout << "6. View transaction history" << std::endl;
-        std::cout << "7. Return to previous menu" << std::endl << std::endl;
+        std::cout << "2. Display the current portfolio (descending)" << std::endl;
+        std::cout << "3. Display the current portfolio (ascending)" << std::endl;
+        std::cout << "4. Buy shares" << std::endl;
+        std::cout << "5. Sell shares" << std::endl;
+        std::cout << "6. View a graph for the portfolio value" << std::endl;
+        std::cout << "7. View transaction history" << std::endl;
+        std::cout << "8. Return to previous menu" << std::endl << std::endl;
         std::cout << "Option: ";
         std::cin >> menu_selection;
 
@@ -32,9 +33,12 @@ void portfolio_account_menu(std::string username) {
                portfolio.display_stock_value(stock_symbol);
                break;
             } case 2: {
-                portfolio.print_portfolio();
+                portfolio.print_portfolio_desc();
                 break;
             } case 3: {
+                portfolio.print_portfolio_asc();
+                break;
+            } case 4: {
                 std::cout << "Enter the stock symbol you wish to purchase: ";
                 std::cin >> stock_symbol;
                 std::cout << "Enter the number of shares you wish to purchase: ";
@@ -43,7 +47,7 @@ void portfolio_account_menu(std::string username) {
                 std::cin >> amount;
                 portfolio.buy_shares(stock_symbol, share_purchase_count, amount);
                 break;
-            } case 4: {
+            } case 5: {
                 std::cout << "Enter the stock symbol you wish to sell: ";
                 std::cin >> stock_symbol;
                 std::cout << "Enter the number of shares you wish to sell: ";
@@ -52,13 +56,13 @@ void portfolio_account_menu(std::string username) {
                 std::cin >> amount;
                 portfolio.sell_shares(stock_symbol, share_purchase_count, amount);
                 break;
-            } case 5: {
+            } case 6: {
                 std::cout << 5 << std::endl;
                 break;
-            } case 6: {
+            } case 7: {
                 portfolio.print_transaction_history();
                 break;
-            } case 7: {
+            } case 8: {
                 std::cout << "Exiting portfolio menu." << std::endl;
                 in_menu = false;
                 break;
