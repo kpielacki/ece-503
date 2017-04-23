@@ -231,12 +231,17 @@ void PortfolioAccount::print_portfolio_desc() {
     // Prints all user portfollio information
     if (current_node) {
         double current_total_value;
+        double current_total_value_all = 0;
+
         printf("%-14s%-14s%-14s\n", "Stock Symbol", "Share Count", "Total Value");
         while (current_node) {
             current_total_value = get_stock_value(current_node->stock_symbol) * current_node->share_count;
+            current_total_value_all += current_total_value;
             printf("%-14s%-14d$%-13.2f\n", current_node->stock_symbol.c_str(), current_node->share_count, current_total_value);
             current_node = current_node->next;
         }
+        printf("%-28s$%-13.2f\n", "Total Value:", current_total_value_all);
+
     } else {
         std::cout << "No portfolio information found." << std::endl;
     }
@@ -250,12 +255,16 @@ void PortfolioAccount::print_portfolio_asc() {
     // Prints all user portfollio information
     if (current_node) {
         double current_total_value;
+        double current_total_value_all = 0;
+
         printf("%-14s%-14s%-14s\n", "Stock Symbol", "Share Count", "Total Value");
         while (current_node) {
             current_total_value = get_stock_value(current_node->stock_symbol) * current_node->share_count;
+            current_total_value_all += current_total_value;
             printf("%-14s%-14d$%-13.2f\n", current_node->stock_symbol.c_str(), current_node->share_count, current_total_value);
             current_node = current_node->prev;
         }
+        printf("%-28s$%-13.2f\n", "Total Value:", current_total_value_all);
     } else {
         std::cout << "No portfolio information found." << std::endl;
     }
