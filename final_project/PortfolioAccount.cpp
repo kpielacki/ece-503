@@ -407,6 +407,8 @@ void PortfolioAccount::print_portfolio_asc() {
     } else {
         std::cout << "No portfolio information found." << std::endl;
     }
+    // Delete temporary values to free space.
+    delete [] current_portfolio_values_p;
 }
 
 
