@@ -39,6 +39,9 @@ PortfolioAccount::PortfolioAccount(std::string username_in) : Account(username_i
 
 // Destructor to save current portfolio in text file and delete all nodes in doubly linked list.
 PortfolioAccount::~PortfolioAccount() {
+    double * _ = sort_portfolio_selection();
+    delete [] _;
+
     std::ofstream portfolio_info_file;
     portfolio_info_file.open(portfolio_info_filename.c_str());
 
@@ -122,6 +125,8 @@ double * PortfolioAccount::sort_portfolio_selection() {
         current_node = current_node->next;
     }
 
+
+    // Selection sorting based on array of current portfolio values current_values_p.
     int swap_index;
     PortfolioNode *current_node_swap = NULL;
     PortfolioNode *current_node_i = node_list_head;
@@ -142,62 +147,60 @@ double * PortfolioAccount::sort_portfolio_selection() {
 
         // Swap nodes if selected node i is not the max of the remaining list.
         if (swap_index != i) {
-            std::cout << i << " " << swap_index << std::endl;
             // Swap array value for next sorting step.
             *(current_values_p + swap_index) = *(current_values_p + i);
             *(current_values_p + i) = current_max;
 
-            // Set data elements in nodes to be swapped to each others.
-            // This means the next and prev pointers will remain in place but
-            // the data in the nodes will be exchanged.
-            // std::string stock_symbol_temp = current_node_i->stock_symbol;
-            // int share_count_temp = current_node_i->share_count;
-            // current_node_i->stock_symbol = current_node_swap->stock_symbol;
-            // current_node_i->share_count = current_node_swap->share_count;
-            // current_node_swap->stock_symbol = stock_symbol_temp;
-            // current_node_swap->share_count = share_count_temp;
-
-
             if (i == 0) {
                 // Handle swapping involving head node.
                 node_list_head = current_node_swap;
-            } else if (swap_index == portfolio_node_count) {
+            } else if (swap_index == portfolio_node_count - 1) {
                 // Handle swapping involving tail node.
                 node_list_tail = current_node_i;
             }
 
             if (i == swap_index - 1) {
-                // If swap nodes are right next to each other prev in swap node
-                // references node_i causing a circular reference.
+                // Handle swap when two nodes are neighbors.
 
-                // Update previous node's next pointer if not NULL.
-
+                // Handle neighbor node updates if not end of list.
+                if (current_node_i->prev) {
+                    current_node_i->prev->next = current_node_swap;
+                }
+                if (current_node_swap->next) {
+                    current_node_swap->next->prev = current_node_i;
+                }
+                
                 current_node_i->next = current_node_swap->next;
                 current_node_swap->next = current_node_i;
-
+                current_node_swap->prev = current_node_i->prev;
                 current_node_i->prev = current_node_swap;
-                current_node_swap->prev = NULL;
-
-
-                // current_node_swap->prev = current_node_i->prev;
-                // if (current_node_i->prev) {
-                //     current_node_i->prev->next = current_node_swap;
-                // }
-                // current_node_i->prev = current_node_i->next;
-                // current_node_i->next = current_node_swap->next;
-
-                // current_node_swap->next = current_node_i;
-                current_node_i = current_node_swap;
             } else {
-                // current_node_swap->prev = current_node_i->prev;
-                // current_node_i->prev = current_node_swap->prev;
+                // Handle swap when two nodes are not neighbors.
+                PortfolioNode * temp_node;
+                current_node_swap->prev->next = current_node_i;
+                
+                // Handle neighbor node updates if not end of list.
+                if (current_node_i->prev) {
+                    current_node_i->prev->next = current_node_swap;
+                }
+                if (current_node_swap->next) {
+                    current_node_swap->next->prev = current_node_i;
+                }
+
+                current_node_i->next->prev = current_node_swap;
+                temp_node = current_node_i->next;
+                current_node_i->next = current_node_swap->next;
+                current_node_swap->next = temp_node;
+
+                temp_node = current_node_i->prev;
+                current_node_i->prev = current_node_swap->prev;
+                current_node_swap->prev = temp_node;
+
             }
+            // Set the current node the the newly placed sorted node in it's place.
+            current_node_i = current_node_swap;
         }
-        // std::cout << current_node_swap->next->stock_symbol << std::endl;
-        // std::cout << current_node_swap->prev->stock_symbol << std::endl;
-        std::cout << current_node_i->stock_symbol << std::endl;
         current_node_i = current_node_i->next;
-        // std::cout << "DONT PRINT" << std::endl;
     }
 
     return current_values_p;
@@ -206,6 +209,9 @@ double * PortfolioAccount::sort_portfolio_selection() {
 
 // Saves current portfolio doubly linked list to txt file.
 void PortfolioAccount::save_portfolio() {
+    double * _ = sort_portfolio_selection();
+    delete [] _;
+
     std::ofstream portfolio_info_file;
     portfolio_info_file.open(portfolio_info_filename.c_str());
 
@@ -347,26 +353,30 @@ void PortfolioAccount::print_portfolio_desc() {
     // Print user cash balance.
     printf("%-28s$%-13.2f\n\n", "Cash Balance:", get_cash_balance());
 
-    PortfolioNode *current_node = node_list_head;
-
     // Prints all user portfollio information
+    double * current_portfolio_values_p = sort_portfolio_selection();
+    PortfolioNode *current_node = node_list_head;
     if (current_node) {
         double current_total_value;
         double current_total_value_all;
 
         current_total_value_all = get_cash_balance();
         printf("%-14s%-14s%-14s\n", "Stock Symbol", "Share Count", "Total Value");
+        int i = 0;
         while (current_node) {
-            current_total_value = get_stock_value(current_node->stock_symbol) * current_node->share_count;
+            current_total_value = *(current_portfolio_values_p + i);
             current_total_value_all += current_total_value;
             printf("%-14s%-14d$%-13.2f\n", current_node->stock_symbol.c_str(), current_node->share_count, current_total_value);
             current_node = current_node->next;
+            i++;
         }
         printf("%-28s$%-13.2f\n", "Total Value:", current_total_value_all);
 
     } else {
         std::cout << "No portfolio information found." << std::endl;
     }
+    // Delete temporary values to free space.
+    delete [] current_portfolio_values_p;
 }
 
 
@@ -375,20 +385,22 @@ void PortfolioAccount::print_portfolio_asc() {
     // Print user cash balance.
     printf("%-28s$%-13.2f\n\n", "Cash Balance:", get_cash_balance());
 
-    PortfolioNode *current_node = node_list_tail;
-
     // Prints all user portfollio information
+    double * current_portfolio_values_p = sort_portfolio_selection();
+    PortfolioNode *current_node = node_list_tail;
     if (current_node) {
         double current_total_value;
         double current_total_value_all;
 
         current_total_value_all = get_cash_balance();
         printf("%-14s%-14s%-14s\n", "Stock Symbol", "Share Count", "Total Value");
+        int i = portfolio_node_count - 1;
         while (current_node) {
-            current_total_value = get_stock_value(current_node->stock_symbol) * current_node->share_count;
+            current_total_value = *(current_portfolio_values_p + i);
             current_total_value_all += current_total_value;
             printf("%-14s%-14d$%-13.2f\n", current_node->stock_symbol.c_str(), current_node->share_count, current_total_value);
             current_node = current_node->prev;
+            i--;
         }
         printf("%-28s$%-13.2f\n", "Total Value:", current_total_value_all);
     } else {
