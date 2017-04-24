@@ -97,7 +97,6 @@ void PortfolioAccount::load_portfolio() {
         node_list_tail = NULL;
     }
 
-
     double * _ = sort_portfolio_selection();
     delete [] _;
 }
@@ -125,7 +124,6 @@ double * PortfolioAccount::sort_portfolio_selection() {
         current_node = current_node->next;
     }
 
-
     // Selection sorting based on array of current portfolio values current_values_p.
     int swap_index;
     PortfolioNode *current_node_swap = NULL;
@@ -151,14 +149,17 @@ double * PortfolioAccount::sort_portfolio_selection() {
             *(current_values_p + swap_index) = *(current_values_p + i);
             *(current_values_p + i) = current_max;
 
+            // Handle swapping involving head node.
             if (i == 0) {
-                // Handle swapping involving head node.
                 node_list_head = current_node_swap;
-            } else if (swap_index == portfolio_node_count - 1) {
-                // Handle swapping involving tail node.
+            }
+            
+            // Handle swapping involving tail node.
+            if (swap_index == portfolio_node_count - 1) {
                 node_list_tail = current_node_i;
             }
 
+            // Perform pointer swap for portfolio node list.
             if (i == swap_index - 1) {
                 // Handle swap when two nodes are neighbors.
 
