@@ -94,11 +94,22 @@ void PortfolioAccount::load_portfolio() {
         node_list_tail = NULL;
     }
 
-    sort_portfolio_selection();
+
+    double * _ = sort_portfolio_selection();
+    delete [] _;
 }
 
 
-void PortfolioAccount::sort_portfolio_selection() {
+// Uses selection sorting algorithm to sort all nodes in doubly link list that
+// hold user portfolio information. Returns the pointer to the array of current
+// portfolio values used to sort the list since each time the stock value is
+// read a random value is found meaning before sorting all values must be read
+// to enforce the sorting critiria.
+// This is not using a different data structure to perform the sorting. It is
+// only keeping a temporary record of the values that were used to perform the
+// sorting so there is not a disagreement from the sorted list and the values
+// seen when the list is printed.
+double * PortfolioAccount::sort_portfolio_selection() {
     PortfolioNode *current_node = node_list_head;
 
     // Load current portfolio values into array.
@@ -131,37 +142,65 @@ void PortfolioAccount::sort_portfolio_selection() {
 
         // Swap nodes if selected node i is not the max of the remaining list.
         if (swap_index != i) {
+            std::cout << i << " " << swap_index << std::endl;
+            // Swap array value for next sorting step.
             *(current_values_p + swap_index) = *(current_values_p + i);
             *(current_values_p + i) = current_max;
-            if (i == 1) {
-                // Handle swap where i references head node.
-                if (swap_index == portfolio_node_count) {
-                    // Handle swap where j references tail node.
-                    
-                } else {
-                    // Handle swap where i references head node and j reference mid node.
 
-                }
+            // Set data elements in nodes to be swapped to each others.
+            // This means the next and prev pointers will remain in place but
+            // the data in the nodes will be exchanged.
+            // std::string stock_symbol_temp = current_node_i->stock_symbol;
+            // int share_count_temp = current_node_i->share_count;
+            // current_node_i->stock_symbol = current_node_swap->stock_symbol;
+            // current_node_i->share_count = current_node_swap->share_count;
+            // current_node_swap->stock_symbol = stock_symbol_temp;
+            // current_node_swap->share_count = share_count_temp;
+
+
+            if (i == 0) {
+                // Handle swapping involving head node.
+                node_list_head = current_node_swap;
             } else if (swap_index == portfolio_node_count) {
-                // Handle swap where i references mid node but j references tail node.
-                
-            } else {
-                // Handle swap where both i and j references mid nodes.
-
-
-
+                // Handle swapping involving tail node.
+                node_list_tail = current_node_i;
             }
 
+            if (i == swap_index - 1) {
+                // If swap nodes are right next to each other prev in swap node
+                // references node_i causing a circular reference.
+
+                // Update previous node's next pointer if not NULL.
+
+                current_node_i->next = current_node_swap->next;
+                current_node_swap->next = current_node_i;
+
+                current_node_i->prev = current_node_swap;
+                current_node_swap->prev = NULL;
+
+
+                // current_node_swap->prev = current_node_i->prev;
+                // if (current_node_i->prev) {
+                //     current_node_i->prev->next = current_node_swap;
+                // }
+                // current_node_i->prev = current_node_i->next;
+                // current_node_i->next = current_node_swap->next;
+
+                // current_node_swap->next = current_node_i;
+                current_node_i = current_node_swap;
+            } else {
+                // current_node_swap->prev = current_node_i->prev;
+                // current_node_i->prev = current_node_swap->prev;
+            }
         }
-
+        // std::cout << current_node_swap->next->stock_symbol << std::endl;
+        // std::cout << current_node_swap->prev->stock_symbol << std::endl;
+        std::cout << current_node_i->stock_symbol << std::endl;
         current_node_i = current_node_i->next;
+        // std::cout << "DONT PRINT" << std::endl;
     }
 
-    // Selection sorting on doubly link list using values in array as sorting criteria.
-    for (int i = 0; i < portfolio_node_count; i++) {
-        // Get all the current portfolio value in an array to keep values consistent while sorting.
-        std::cout << *(current_values_p + i) << std::endl;
-    }
+    return current_values_p;
 }
 
 

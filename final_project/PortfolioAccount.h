@@ -15,7 +15,7 @@ class PortfolioAccount : public Account {
 
         void load_portfolio();
         void save_portfolio();
-        void sort_portfolio_selection();
+        double * sort_portfolio_selection();
         void print_portfolio_desc();
         void print_portfolio_asc();
         void print_transaction_history();
