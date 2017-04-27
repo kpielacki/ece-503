@@ -297,7 +297,8 @@ double * PortfolioAccount::sort_portfolio_bubble() {
     for (int sorted_count = 0; sorted_count < portfolio_node_count; sorted_count++) {
         // Offset by already sorted nodes and one less than total list count for look ahead.
         for (int i = 0; i < portfolio_node_count - sorted_count  - 1; i++) {
-            if ((*current_values_p + i) < (*current_values_p + i + 1)) {
+            // Swap current and right node if current node less than right node.
+            if (*(current_values_p + i) < *(current_values_p + i + 1)) {
                 temp = *(current_values_p + i);
                 *(current_values_p + i) = *(current_values_p + i + 1);
                 *(current_values_p + i + 1) = temp;
@@ -305,10 +306,10 @@ double * PortfolioAccount::sort_portfolio_bubble() {
         }
     }
 
-    for (int i = 0; i < portfolio_node_count; i++) {
-        std::cout << *(current_values_p + i) << ", ";
-    }
-    std::cout << std::endl;
+    // for (int i = 0; i < portfolio_node_count; i++) {
+    //     std::cout << *(current_values_p + i) << ", ";
+    // }
+    // std::cout << std::endl;
 
     return current_values_p;
 }
