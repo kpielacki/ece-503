@@ -296,20 +296,51 @@ double * PortfolioAccount::sort_portfolio_bubble() {
     double temp;
     for (int sorted_count = 0; sorted_count < portfolio_node_count; sorted_count++) {
         // Offset by already sorted nodes and one less than total list count for look ahead.
+        PortfolioNode *current_node = node_list_head;
         for (int i = 0; i < portfolio_node_count - sorted_count  - 1; i++) {
             // Swap current and right node if current node less than right node.
             if (*(current_values_p + i) < *(current_values_p + i + 1)) {
+                // Update the array used to reference values.
                 temp = *(current_values_p + i);
                 *(current_values_p + i) = *(current_values_p + i + 1);
                 *(current_values_p + i + 1) = temp;
+                
+                PortfolioNode *current_node_swap = current_node->next;
+
+                // Handle swapping involving head node.
+                if (i == 0) {
+                    node_list_head = current_node_swap;
+                }
+                
+                // Handle swapping involving tail node.
+                if (i + 1 == portfolio_node_count - 1) {
+                    node_list_tail = current_node;
+                }
+
+                // Handle neighbor node updates if not end of list.
+                if (current_node->prev) {
+                    current_node->prev->next = current_node_swap;
+                }
+                if (current_node_swap->next) {
+                    current_node_swap->next->prev = current_node;
+                }
+
+                
+                // Handle swap when two nodes are neighbors.
+                current_node->next = current_node_swap->next;
+                current_node_swap->next = current_node;
+                current_node_swap->prev = current_node->prev;
+                current_node->prev = current_node_swap;
+
+                // Set the current node the the newly placed sorted node in it's place.
+                current_node = current_node_swap;
             }
+
+            // Update to next node.
+            current_node = current_node->next;
+
         }
     }
-
-    // for (int i = 0; i < portfolio_node_count; i++) {
-    //     std::cout << *(current_values_p + i) << ", ";
-    // }
-    // std::cout << std::endl;
 
     return current_values_p;
 }
