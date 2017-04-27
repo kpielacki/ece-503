@@ -19,6 +19,8 @@ PortfolioAccount::PortfolioAccount() : Account() {
     portfolio_transaction_history_filename = get_username() + "_portfolio_transaction_history.txt";
     portfolio_info_filename = get_username() + "_portfolio_info.txt";
 
+    // Set default sort option to bubble.
+    set_sort_method(2);
     portfolio_node_count = 0;
     load_portfolio();
 }
@@ -32,6 +34,8 @@ PortfolioAccount::PortfolioAccount(std::string username_in) : Account(username_i
     portfolio_transaction_history_filename = get_username() + "_portfolio_transaction_history.txt";
     portfolio_info_filename = get_username() + "_portfolio_info.txt";
 
+    // Set default sort option to bubble.
+    set_sort_method(2);
     portfolio_node_count = 0;
     load_portfolio();
 }
@@ -39,7 +43,7 @@ PortfolioAccount::PortfolioAccount(std::string username_in) : Account(username_i
 
 // Destructor to save current portfolio in text file and delete all nodes in doubly linked list.
 PortfolioAccount::~PortfolioAccount() {
-    double * _ = sort_portfolio_selection();
+    double * _ = sort_portfolio();
     delete [] _;
 
     std::ofstream portfolio_info_file;
@@ -55,6 +59,34 @@ PortfolioAccount::~PortfolioAccount() {
         current_node = temp_node;
     }
     portfolio_info_file.close();
+}
+
+
+// Gets the sorting method used.
+std::string PortfolioAccount::get_sort_method() {
+    switch (sort_method) {
+        case 1: {
+            return "Selection";
+            break;
+        } case 2: {
+            return "Bubble";
+            break;
+        } default: {
+            return "Invalid Sort Option";
+        }
+    }
+}
+
+
+// Sets the sorting method used.
+//  1. Selection
+//  2. Bubble
+void PortfolioAccount::set_sort_method(int sort_method_in) {
+    if (sort_method_in == 1 || sort_method_in == 2) {
+        sort_method = sort_method_in;
+    } else {
+        std::cout << "Invalid sort method, current sort method " << get_sort_method() << " remains." << std::endl;
+    }
 }
 
 
@@ -97,8 +129,37 @@ void PortfolioAccount::load_portfolio() {
         node_list_tail = NULL;
     }
 
-    double * _ = sort_portfolio_selection();
+    double * _ = sort_portfolio();
     delete [] _;
+}
+
+
+// Calls on appropriate sort algorithm based on current value of sort_method.
+//  1. Selection
+//  2. Bubble
+double * PortfolioAccount::sort_portfolio() {
+    // Call on appropriate sorting algorithm or return list of unsorted values if bad sorting selection found.
+    double * current_values_p;
+    switch (sort_method) {
+        case 1: {
+            current_values_p = sort_portfolio_selection();
+            break;
+        } case 2: {
+            current_values_p = sort_portfolio_bubble();
+            break;
+        } default: {
+            std::cout << "WARNING: Invalid sorting method selection found. Current portfolio remains unsorted." << std::endl;
+            PortfolioNode *current_node = node_list_head;
+            for (int i = 0; i < portfolio_node_count; i++) {
+                // Get all the current portfolio value in an array to keep values consistent while sorting.
+                *(current_values_p + i) = get_stock_value(current_node->stock_symbol) * current_node->share_count;
+                current_node = current_node->next;
+            }
+            current_values_p = new double[portfolio_node_count];
+        }
+    }
+
+    return current_values_p;
 }
 
 
@@ -208,9 +269,54 @@ double * PortfolioAccount::sort_portfolio_selection() {
 }
 
 
+// Uses bubble sorting algorithm to sort all nodes in doubly link list that
+// hold user portfolio information. Returns the pointer to the array of current
+// portfolio values used to sort the list since each time the stock value is
+// read a random value is found meaning before sorting all values must be read
+// to enforce the sorting critiria.
+// This is not using a different data structure to perform the sorting. It is
+// only keeping a temporary record of the values that were used to perform the
+// sorting so there is not a disagreement from the sorted list and the values
+// seen when the list is printed.
+double * PortfolioAccount::sort_portfolio_bubble() {
+    PortfolioNode *current_node = node_list_head;
+
+    // Load current portfolio values into array.
+    // This is to keep values consistent during sorting operations.
+    double *current_values_p;
+    current_values_p = new double[portfolio_node_count];
+    for (int i = 0; i < portfolio_node_count; i++) {
+        // Get all the current portfolio value in an array to keep values consistent while sorting.
+        *(current_values_p + i) = get_stock_value(current_node->stock_symbol) * current_node->share_count;
+        current_node = current_node->next;
+    }
+
+    // Bubble sorting based on array of current portfolio values current_values_p.
+    PortfolioNode *current_node_i = node_list_head;
+    double temp;
+    for (int sorted_count = 0; sorted_count < portfolio_node_count; sorted_count++) {
+        // Offset by already sorted nodes and one less than total list count for look ahead.
+        for (int i = 0; i < portfolio_node_count - sorted_count  - 1; i++) {
+            if ((*current_values_p + i) < (*current_values_p + i + 1)) {
+                temp = *(current_values_p + i);
+                *(current_values_p + i) = *(current_values_p + i + 1);
+                *(current_values_p + i + 1) = temp;
+            }
+        }
+    }
+
+    for (int i = 0; i < portfolio_node_count; i++) {
+        std::cout << *(current_values_p + i) << ", ";
+    }
+    std::cout << std::endl;
+
+    return current_values_p;
+}
+
+
 // Saves current portfolio doubly linked list to txt file.
 void PortfolioAccount::save_portfolio() {
-    double * _ = sort_portfolio_selection();
+    double * _ = sort_portfolio();
     delete [] _;
 
     std::ofstream portfolio_info_file;
@@ -355,7 +461,7 @@ void PortfolioAccount::print_portfolio_desc() {
     printf("%-28s$%-13.2f\n\n", "Cash Balance:", get_cash_balance());
 
     // Prints all user portfollio information
-    double * current_portfolio_values_p = sort_portfolio_selection();
+    double * current_portfolio_values_p = sort_portfolio();
     PortfolioNode *current_node = node_list_head;
     if (current_node) {
         double current_total_value;
@@ -387,7 +493,7 @@ void PortfolioAccount::print_portfolio_asc() {
     printf("%-28s$%-13.2f\n\n", "Cash Balance:", get_cash_balance());
 
     // Prints all user portfollio information
-    double * current_portfolio_values_p = sort_portfolio_selection();
+    double * current_portfolio_values_p = sort_portfolio();
     PortfolioNode *current_node = node_list_tail;
     if (current_node) {
         double current_total_value;

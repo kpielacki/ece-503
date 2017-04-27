@@ -10,6 +10,7 @@ void portfolio_account_menu(std::string username) {
     bool in_menu = true;
     std::string stock_symbol;
     int share_purchase_count;
+    int sorting_selection;
     double amount;
     PortfolioAccount portfolio(username);
 
@@ -22,7 +23,8 @@ void portfolio_account_menu(std::string username) {
         std::cout << "5. Sell shares" << std::endl;
         std::cout << "6. View a graph for the portfolio value" << std::endl;
         std::cout << "7. View transaction history" << std::endl;
-        std::cout << "8. Return to previous menu" << std::endl << std::endl;
+        std::cout << "8. Select sorting method" << std::endl;
+        std::cout << "9. Return to previous menu" << std::endl << std::endl;
         std::cout << "Option: ";
         std::cin >> menu_selection;
 
@@ -63,6 +65,26 @@ void portfolio_account_menu(std::string username) {
                 portfolio.print_transaction_history();
                 break;
             } case 8: {
+                std::cout << "Current sorting method set to \"" << portfolio.get_sort_method() << "\"" << std::endl;
+                std::cout << "Sort Options:" << std::endl;
+                std::cout << "1. Selection" << std::endl;
+                std::cout << "2. Bubble" << std::endl << std::endl;
+                std::cout << "Option: ";
+                std::cin >> sorting_selection;
+                switch (sorting_selection) {
+                    case 1: {
+                        portfolio.set_sort_method(sorting_selection);
+                        break;
+                    } case 2: {
+                        portfolio.set_sort_method(sorting_selection);
+                        break;
+                    } default: {
+                        std::cout << "Invalid sorting method selection, canceling." << std::endl;
+                    }
+                }
+                std::cout << "Sort method currently set to \"" << portfolio.get_sort_method() << "\"" << std::endl;
+                break;
+            } case 9: {
                 std::cout << "Exiting portfolio menu." << std::endl;
                 in_menu = false;
                 break;
