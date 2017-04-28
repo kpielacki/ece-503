@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iomanip>
 #include <string>
+#include <cstring>
 #include <sstream>
 #include <stdlib.h>
 #include <time.h>
@@ -9,6 +10,9 @@
 #include "PortfolioAccount.h"
 #include "date_str.h"
 #include "time_str.h"
+
+// Matlab engine for plotting.
+#include "engine.h"
 
 
 PortfolioAccount::PortfolioAccount() : Account() {
@@ -871,6 +875,25 @@ void PortfolioAccount::sell_shares(std::string stock_symbol, int share_sale_coun
 
 
 void PortfolioAccount::plot_portfolio_trend() {
+    Engine *m_pEngine;
+
+    m_pEngine = engOpen(NULL);
+    if (m_pEngine == NULL) {
+        std::cout << "Error: Failed to open Matlab." << std::endl;
+    } else {
+        int array_size = 100;
+        int plot_x[array_size];
+        double plot_y[array_size];
+
+        for (int i = 0; i < array_size; i++) {
+            plot_x[i] = i;
+            plot_y[i] = i * 1.2424;            
+        }
+
+        mxArray* PLOT = mxCreateDoubleMatrix(array_size, 1, mxREAL);
+        std::memcpy((void *) mxGetPr(PLOT), (void *) plot_y, sizeof(double) * array_size);
+        engPutVariable(m_pEngine, "Portfolio Value Trend", PLOT);
+    }
 
 }
 
