@@ -18,6 +18,7 @@ PortfolioAccount::PortfolioAccount() : Account() {
     bank_transaction_history_filename = get_username() + "_bank_transaction_history.txt";
     portfolio_transaction_history_filename = get_username() + "_portfolio_transaction_history.txt";
     portfolio_info_filename = get_username() + "_portfolio_info.txt";
+    portfolio_value_history_filename = get_username() + "_portfolio_value_history.txt";
 
     // Set default sort option to bubble.
     set_sort_method(2);
@@ -33,6 +34,7 @@ PortfolioAccount::PortfolioAccount(std::string username_in) : Account(username_i
     bank_transaction_history_filename = get_username() + "_bank_transaction_history.txt";
     portfolio_transaction_history_filename = get_username() + "_portfolio_transaction_history.txt";
     portfolio_info_filename = get_username() + "_portfolio_info.txt";
+    portfolio_value_history_filename = get_username() + "_portfolio_value_history.txt";
 
     // Set default sort option to bubble.
     set_sort_method(2);
@@ -52,13 +54,22 @@ PortfolioAccount::~PortfolioAccount() {
     // Store portfolio information in text file when finished.
     PortfolioNode *current_node = node_list_head;
     PortfolioNode *temp_node;
+    double total_portfolio_value = 0;
     while (current_node) {
         portfolio_info_file << current_node->stock_symbol << " " << current_node->share_count << "\n";
+        total_portfolio_value +=  current_node->share_count * get_stock_value(current_node->stock_symbol);
         temp_node = current_node->next;
         delete current_node;
         current_node = temp_node;
     }
     portfolio_info_file.close();
+
+    // Log portfolio value on close.
+    std::string current_time = now_str();
+    std::ofstream portfolio_value_history_file;
+    portfolio_value_history_file.open(portfolio_value_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
+    portfolio_value_history_file << current_time.c_str() << " " << std::fixed << std::setprecision(2) << total_portfolio_value << " " << std::fixed << std::setprecision(2) << get_cash_balance() << "\n";
+    portfolio_value_history_file.close();
 }
 
 
@@ -856,6 +867,11 @@ void PortfolioAccount::sell_shares(std::string stock_symbol, int share_sale_coun
     } else {
         std::cout << "Transaction Cancelled" << std::endl;
     }
+}
+
+
+void PortfolioAccount::plot_portfolio_trend() {
+
 }
 
 

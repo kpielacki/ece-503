@@ -34,6 +34,7 @@ class PortfolioAccount : public Account {
 
         void buy_shares(std::string, int, double);
         void sell_shares(std::string, int, double);
+        void plot_portfolio_trend();
 
     private:
         unsigned int result_min;
@@ -44,6 +45,7 @@ class PortfolioAccount : public Account {
         std::string bank_transaction_history_filename;
         std::string portfolio_transaction_history_filename;
         std::string portfolio_info_filename;
+        std::string portfolio_value_history_filename;
 
         PortfolioNode *node_list_head;
         PortfolioNode *node_list_tail;

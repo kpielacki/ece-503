@@ -59,7 +59,7 @@ void portfolio_account_menu(std::string username) {
                 portfolio.sell_shares(stock_symbol, share_purchase_count, amount);
                 break;
             } case 6: {
-                std::cout << 5 << std::endl;
+                portfolio.plot_portfolio_trend();
                 break;
             } case 7: {
                 portfolio.print_transaction_history();
