@@ -6,10 +6,10 @@
 #include <sstream>
 #include <stdlib.h>
 #include <time.h>
-#include "Account.h"
-#include "PortfolioAccount.h"
-#include "date_str.h"
-#include "time_str.h"
+#include "Account_kevin_pielacki.h"
+#include "PortfolioAccount_kevin_pielacki.h"
+#include "date_str_kevin_pielacki.h"
+#include "time_str_kevin_pielacki.h"
 
 // Matlab engine for plotting.
 #include "engine.h"
