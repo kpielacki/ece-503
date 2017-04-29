@@ -918,8 +918,9 @@ void PortfolioAccount::plot_portfolio_trend() {
         }
 
         // Build dyanmic arrays based on line count from portfolio value history file.
-        double *x_labels = new double[line_count];
-        double *plot_values = new double[line_count];
+        // Additional index for current value.
+        double *x_labels = new double[line_count + 1];
+        double *plot_values = new double[line_count + 1];
 
         double date_temp, stock_value_temp, cash_balance_temp;
         int iter = 0;
@@ -942,6 +943,21 @@ void PortfolioAccount::plot_portfolio_trend() {
             iter++;
         }
 
+        // Add current porfolio value to trend.
+        PortfolioNode *current_node = node_list_head;
+        PortfolioNode *temp_node;
+        double total_portfolio_value = 0;
+        while (current_node) {
+            total_portfolio_value +=  current_node->share_count * get_stock_value(current_node->stock_symbol);
+            current_node = current_node->next;
+        }
+        portfolio_info_file.close();
+
+        // Set current value to last index in arrays.
+        double unix_now = (double) time(0);
+        *(x_labels + iter) = (unix_now / ml_datenum_div) + ml_datenum_add;
+        *(plot_values + iter) = total_portfolio_value + get_cash_balance();
+
         // Enter x_labels to Matlab variable.
         mxArray* LABELS = mxCreateDoubleMatrix(line_count, 1, mxREAL);
         std::memcpy((void *) mxGetPr(LABELS), (void *) x_labels, sizeof(double) * line_count);
@@ -957,7 +973,7 @@ void PortfolioAccount::plot_portfolio_trend() {
         // Plot portfolio values trend.
         engEvalString(m_pEngine, "plot(plot_values_x, plot_values_y, 'g'), grid minor, title('Portfolio Value Trend')");
         // Format x-axis to datetime.
-        engEvalString(m_pEngine, "xlabel('Date Time'); datetick('x','yyyy-mm-dd HH:MM:SS','keeplimits')");
+        engEvalString(m_pEngine, "xlabel('Date Time'); datetick('x','yyyy-mm-dd HH:MM:SS','keepticks')");
         // Format y-axis to zero min and US dollar units.
         engEvalString(m_pEngine, "ylim([0 inf]); ylabel('Portfolio Value'); ytickformat('usd')");
         system("pause");
