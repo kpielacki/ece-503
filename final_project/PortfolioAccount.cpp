@@ -69,10 +69,10 @@ PortfolioAccount::~PortfolioAccount() {
     portfolio_info_file.close();
 
     // Log portfolio value on close.
-    std::string current_time = now_str();
+    time_t now = time(0);
     std::ofstream portfolio_value_history_file;
     portfolio_value_history_file.open(portfolio_value_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-    portfolio_value_history_file << current_time.c_str() << " " << std::fixed << std::setprecision(2) << total_portfolio_value << " " << std::fixed << std::setprecision(2) << get_cash_balance() << "\n";
+    portfolio_value_history_file << now.c_str() << " " << std::fixed << std::setprecision(2) << total_portfolio_value << " " << std::fixed << std::setprecision(2) << get_cash_balance() << "\n";
     portfolio_value_history_file.close();
 }
 
@@ -896,42 +896,53 @@ void PortfolioAccount::plot_portfolio_trend() {
         std::string *x_labels = new std::string[line_count];
         double *plot_values = new double[line_count];
 
-        // Populate arrays with plot values.
-        std::string date_temp;
-        double stock_value_temp, cash_balance_temp;
+        double date_temp, stock_value_temp, cash_balance_temp;
         int iter = 0;
+
         // Reset file seek to start.
         portfolio_value_history_file.clear();
         portfolio_value_history_file.seekg(0, std::ios::beg);
+
+        // Matlab datenum values used to conver Unix timestamp to Matlab datenum. Conversion found on:
+        // http://stackoverflow.com/questions/12211710/how-to-work-with-unix-timestamps-in-matlab
+        const double ml_datenum_div = 86400;
+        const double ml_datenum_add = 719529;
+        
+        // Populate arrays with plot values.
         while (getline(portfolio_value_history_file, line)) {
             std::istringstream ss(line);
             ss >> date_temp >> stock_value_temp >> cash_balance_temp;
 
-            *(x_labels + iter) = date_temp;
+            *(x_labels + iter) = (date_temp/ ml_datenum_div) + ml_datenum_add;
             *(plot_values + iter) = stock_value_temp + cash_balance_temp;
 
             iter++;
         }
-        std::cout << iter << std::endl;
 
+        // Enter x_labels to Matlab variable.
+        mxArray* LABELS = mxCreateDoubleMatrix(line_count, 1, mxREAL);
+        std::memcpy((void *) mxGetPr(LABELS), (void *) x_labels, sizeof(double) * line_count);
+        engPutVariable(m_pEngine, "plot_values_x", LABELS);
+
+        // Enter y_labels to Matlab variable.
         mxArray* PLOT = mxCreateDoubleMatrix(line_count, 1, mxREAL);
         std::memcpy((void *) mxGetPr(PLOT), (void *) plot_values, sizeof(double) * line_count);
         engPutVariable(m_pEngine, "plot_values_y", PLOT);
 
         // Open Matlab figure.
         engEvalString(m_pEngine, "figure();");
+        // Plot portfolio values trend.
+        engEvalString(m_pEngine, "plot(plot_values_x, plot_values_y, 'g'), grid minor, title('Portfolio Value Trend')");
+        // Format x-axis to datetime.
+        engEvalString(m_pEngine, "xlabel('Date Time'); datetick('x','yyyy-mm-dd','keeplimits')");
         // Format y-axis to zero min and US dollar units.
         engEvalString(m_pEngine, "ylim([0 inf]); ylabel('Portfolio Value'); ytickformat('usd')");
-        engEvalString(m_pEngine, "xlabel('Date Time');");
-        // Plot portfolio values trend.
-        engEvalString(m_pEngine, "plot(plot_values_y, 'g'), grid minor, title('Portfolio Value Trend')");
         // Â» labels = {'A' 'B' 'C'};
         // Â» plot([1,2,3]);
         // Â» set(gca, 'XTICK', 1:3, 'XTickLabel', labels);
-
         system("pause");
 
-        // Close Matlab.
+        // Close Matlab engine.
         engEvalString(m_pEngine, "close;");
 
         // Free memory used to build dynamic arrays.
