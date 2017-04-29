@@ -2,7 +2,7 @@
 #include <string>
 #include <sstream>
 #include <time.h>
-#include "time_str.h"
+#include "time_str_kevin_pielacki.h"
 
 
 // Example function given in final project instructions with removal of print
