@@ -72,7 +72,7 @@ PortfolioAccount::~PortfolioAccount() {
     time_t now = time(0);
     std::ofstream portfolio_value_history_file;
     portfolio_value_history_file.open(portfolio_value_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-    portfolio_value_history_file << now.c_str() << " " << std::fixed << std::setprecision(2) << total_portfolio_value << " " << std::fixed << std::setprecision(2) << get_cash_balance() << "\n";
+    portfolio_value_history_file << now << " " << std::fixed << std::setprecision(2) << total_portfolio_value << " " << std::fixed << std::setprecision(2) << get_cash_balance() << "\n";
     portfolio_value_history_file.close();
 }
 
@@ -893,7 +893,7 @@ void PortfolioAccount::plot_portfolio_trend() {
         }
 
         // Build dyanmic arrays based on line count from portfolio value history file.
-        std::string *x_labels = new std::string[line_count];
+        double *x_labels = new double[line_count];
         double *plot_values = new double[line_count];
 
         double date_temp, stock_value_temp, cash_balance_temp;
@@ -912,10 +912,8 @@ void PortfolioAccount::plot_portfolio_trend() {
         while (getline(portfolio_value_history_file, line)) {
             std::istringstream ss(line);
             ss >> date_temp >> stock_value_temp >> cash_balance_temp;
-
-            *(x_labels + iter) = (date_temp/ ml_datenum_div) + ml_datenum_add;
+            *(x_labels + iter) = (date_temp / ml_datenum_div) + ml_datenum_add;
             *(plot_values + iter) = stock_value_temp + cash_balance_temp;
-
             iter++;
         }
 
@@ -934,12 +932,9 @@ void PortfolioAccount::plot_portfolio_trend() {
         // Plot portfolio values trend.
         engEvalString(m_pEngine, "plot(plot_values_x, plot_values_y, 'g'), grid minor, title('Portfolio Value Trend')");
         // Format x-axis to datetime.
-        engEvalString(m_pEngine, "xlabel('Date Time'); datetick('x','yyyy-mm-dd','keeplimits')");
+        engEvalString(m_pEngine, "xlabel('Date Time'); datetick('x','yyyy-mm-dd HH:MM:SS','keeplimits')");
         // Format y-axis to zero min and US dollar units.
         engEvalString(m_pEngine, "ylim([0 inf]); ylabel('Portfolio Value'); ytickformat('usd')");
-        // Â» labels = {'A' 'B' 'C'};
-        // Â» plot([1,2,3]);
-        // Â» set(gca, 'XTICK', 1:3, 'XTickLabel', labels);
         system("pause");
 
         // Close Matlab engine.
