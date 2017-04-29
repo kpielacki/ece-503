@@ -881,26 +881,42 @@ void PortfolioAccount::plot_portfolio_trend() {
     if (m_pEngine == NULL) {
         std::cout << "Error: Failed to open Matlab." << std::endl;
     } else {
-        const int array_size = 100;
-        int plot_x[array_size];
-        double plot_y[array_size];
+        // Open portfolio value history file.
+	    std::ifstream portfolio_value_history_file;
+	    portfolio_value_history_file.open(portfolio_value_history_filename.c_str());
 
-        for (int i = 0; i < array_size; i++) {
-            plot_x[i] = i;
-            plot_y[i] = i * 1.2424;            
-        }
+	    data_count = 0;
+	    while (getline(portfolio_value_history_file, line)) {
+	    	data_count++;
+	    }
 
+	    // Populate arrays with plot values.
+        std::string x_labels[data_count];
+        double plot_values[data_count];
+	    std::string date_temp;
+	    double stock_value_temp, cash_balance_temp;
+	    iter = 0;
+	    while (getline(portfolio_value_history_file, line)) {
+	        std::istringstream ss(line);
+	        ss >> date_temp >> stock_value_temp >> cash_balance_temp;
 
+	        x_labels[i] = date_temp;
+	        plot_values[i] = stock_value_temp + cash_balance_temp;
+
+	        iter++;
+	    }
+
+        mxArray* PLOT = mxCreateDoubleMatrix(data_count, 1, mxREAL);
+        std::memcpy((void *) mxGetPr(PLOT), (void *) plot_values, sizeof(double) * data_count);
+        engPutVariable(m_pEngine, "plot_values_y", PLOT);
+
+        // Open Matlab figure.
+        engEvalString(m_pEngine, "figure();");
+        // Plot portfolio values trend.
+        engEvalString(m_pEngine, "plot(plot_values_y, 'g'), grid minor, title('Portfolio Value Trend')");
         // » labels = {'A' 'B' 'C'};
         // » plot([1,2,3]);
         // » set(gca, 'XTICK', 1:3, 'XTickLabel', labels);
-
-        mxArray* PLOT = mxCreateDoubleMatrix(array_size, 1, mxREAL);
-        std::memcpy((void *) mxGetPr(PLOT), (void *) plot_y, sizeof(double) * array_size);
-        engPutVariable(m_pEngine, "PortfolioValueTrend", PLOT);
-
-        engEvalString(m_pEngine, "figure();"); // Opens matlab figure window
-        engEvalString(m_pEngine, "plot(PortfolioValueTrend, 'g'), grid minor, title('Portfolio Value Trend')");
 
         system("pause");
 
