@@ -881,7 +881,7 @@ void PortfolioAccount::plot_portfolio_trend() {
     if (m_pEngine == NULL) {
         std::cout << "Error: Failed to open Matlab." << std::endl;
     } else {
-        int array_size = 100;
+        const int array_size = 100;
         int plot_x[array_size];
         double plot_y[array_size];
 
@@ -890,9 +890,21 @@ void PortfolioAccount::plot_portfolio_trend() {
             plot_y[i] = i * 1.2424;            
         }
 
+
+        // » labels = {'A' 'B' 'C'};
+        // » plot([1,2,3]);
+        // » set(gca, 'XTICK', 1:3, 'XTickLabel', labels);
+
         mxArray* PLOT = mxCreateDoubleMatrix(array_size, 1, mxREAL);
         std::memcpy((void *) mxGetPr(PLOT), (void *) plot_y, sizeof(double) * array_size);
-        engPutVariable(m_pEngine, "Portfolio Value Trend", PLOT);
+        engPutVariable(m_pEngine, "PortfolioValueTrend", PLOT);
+
+        engEvalString(m_pEngine, "figure();"); // Opens matlab figure window
+        engEvalString(m_pEngine, "plot(PortfolioValueTrend, 'g'), grid minor, title('Portfolio Value Trend')");
+
+        system("pause");
+
+        engEvalString(m_pEngine, "close;"); // Closes the matlab engine
     }
 
 }
