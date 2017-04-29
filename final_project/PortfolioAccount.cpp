@@ -882,6 +882,7 @@ void PortfolioAccount::plot_portfolio_trend() {
         std::cout << "Error: Failed to open Matlab." << std::endl;
     } else {
         // Open portfolio value history file.
+<<<<<<< HEAD
         std::ifstream portfolio_value_history_file;
         portfolio_value_history_file.open(portfolio_value_history_filename.c_str());
 
@@ -905,15 +906,49 @@ void PortfolioAccount::plot_portfolio_trend() {
 
         mxArray* PLOT = mxCreateDoubleMatrix(iter, 1, mxREAL);
         std::memcpy((void *) mxGetPr(PLOT), (void *) plot_values, sizeof(double) * iter);
+=======
+	    std::ifstream portfolio_value_history_file;
+	    portfolio_value_history_file.open(portfolio_value_history_filename.c_str());
+
+	    data_count = 0;
+	    while (getline(portfolio_value_history_file, line)) {
+	    	data_count++;
+	    }
+
+	    // Populate arrays with plot values.
+        std::string x_labels[data_count];
+        double plot_values[data_count];
+	    std::string date_temp;
+	    double stock_value_temp, cash_balance_temp;
+	    iter = 0;
+	    while (getline(portfolio_value_history_file, line)) {
+	        std::istringstream ss(line);
+	        ss >> date_temp >> stock_value_temp >> cash_balance_temp;
+
+	        x_labels[i] = date_temp;
+	        plot_values[i] = stock_value_temp + cash_balance_temp;
+
+	        iter++;
+	    }
+
+        mxArray* PLOT = mxCreateDoubleMatrix(data_count, 1, mxREAL);
+        std::memcpy((void *) mxGetPr(PLOT), (void *) plot_values, sizeof(double) * data_count);
+>>>>>>> d5536e15219b3446a99b899136e53f5a70d59142
         engPutVariable(m_pEngine, "plot_values_y", PLOT);
 
         // Open Matlab figure.
         engEvalString(m_pEngine, "figure();");
         // Plot portfolio values trend.
         engEvalString(m_pEngine, "plot(plot_values_y, 'g'), grid minor, title('Portfolio Value Trend')");
+<<<<<<< HEAD
         // Â» labels = {'A' 'B' 'C'};
         // Â» plot([1,2,3]);
         // Â» set(gca, 'XTICK', 1:3, 'XTickLabel', labels);
+=======
+        // » labels = {'A' 'B' 'C'};
+        // » plot([1,2,3]);
+        // » set(gca, 'XTICK', 1:3, 'XTickLabel', labels);
+>>>>>>> d5536e15219b3446a99b899136e53f5a70d59142
 
         system("pause");
 
