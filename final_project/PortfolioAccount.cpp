@@ -77,6 +77,30 @@ PortfolioAccount::~PortfolioAccount() {
 }
 
 
+// Logs current portfolio value (share_count * share_value + current balance).
+void PortfolioAccount::log_portfolio_value() {
+    std::ofstream portfolio_info_file;
+    portfolio_info_file.open(portfolio_info_filename.c_str());
+
+    // Get current porfolio value.
+    PortfolioNode *current_node = node_list_head;
+    PortfolioNode *temp_node;
+    double total_portfolio_value = 0;
+    while (current_node) {
+        total_portfolio_value +=  current_node->share_count * get_stock_value(current_node->stock_symbol);
+        current_node = current_node->next;
+    }
+    portfolio_info_file.close();
+
+    // Log portfolio value on close.
+    time_t now = time(0);
+    std::ofstream portfolio_value_history_file;
+    portfolio_value_history_file.open(portfolio_value_history_filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
+    portfolio_value_history_file << now << " " << std::fixed << std::setprecision(2) << total_portfolio_value << " " << std::fixed << std::setprecision(2) << get_cash_balance() << "\n";
+    portfolio_value_history_file.close();
+}
+
+
 // Gets the sorting method used.
 std::string PortfolioAccount::get_sort_method() {
     switch (sort_method) {
@@ -376,6 +400,7 @@ void PortfolioAccount::save_portfolio() {
         current_node = current_node->next;
     }
     portfolio_info_file.close();
+    log_portfolio_value();
 }
 
 

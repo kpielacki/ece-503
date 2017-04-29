@@ -15,6 +15,7 @@ class PortfolioAccount : public Account {
 
         void load_portfolio();
         void save_portfolio();
+        void log_portfolio_value();
         std::string get_sort_method();
         void set_sort_method(int);
         double * sort_portfolio();
