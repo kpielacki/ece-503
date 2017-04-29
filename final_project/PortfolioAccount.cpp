@@ -884,12 +884,19 @@ void PortfolioAccount::plot_portfolio_trend() {
         // Open portfolio value history file.
         std::ifstream portfolio_value_history_file;
         portfolio_value_history_file.open(portfolio_value_history_filename.c_str());
-
         std::string line;
 
+        // Get count for dynamic array size.
+        unsigned int line_count = 0;
+        while (getline(portfolio_value_history_file, line)) {
+            line_count++;
+        }
+
+        // Build dyanmic arrays based on line count from portfolio value history file.
+        std::string *x_labels = new std::string[line_count];
+        double *plot_values = new double[line_count];
+
         // Populate arrays with plot values.
-        std::string x_labels[100];
-        double plot_values[100];
         std::string date_temp;
         double stock_value_temp, cash_balance_temp;
         int iter = 0;
@@ -903,8 +910,8 @@ void PortfolioAccount::plot_portfolio_trend() {
             iter++;
         }
 
-        mxArray* PLOT = mxCreateDoubleMatrix(iter, 1, mxREAL);
-        std::memcpy((void *) mxGetPr(PLOT), (void *) plot_values, sizeof(double) * iter);
+        mxArray* PLOT = mxCreateDoubleMatrix(line_count, 1, mxREAL);
+        std::memcpy((void *) mxGetPr(PLOT), (void *) plot_values, sizeof(double) * line_count);
         engPutVariable(m_pEngine, "plot_values_y", PLOT);
 
         // Open Matlab figure.
@@ -917,7 +924,12 @@ void PortfolioAccount::plot_portfolio_trend() {
 
         system("pause");
 
-        engEvalString(m_pEngine, "close;"); // Closes the matlab engine
+        // Close Matlab.
+        engEvalString(m_pEngine, "close;");
+
+        // Free memory used to build dynamic arrays.
+        delete [] x_labels;
+        delete [] plot_values; 
     }
 
 }
