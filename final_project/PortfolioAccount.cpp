@@ -944,8 +944,6 @@ void PortfolioAccount::plot_portfolio_trend() {
         }
 
         // Add current porfolio value to trend.
-        std::ofstream portfolio_info_file;
-        portfolio_info_file.open(portfolio_info_filename.c_str());
         PortfolioNode *current_node = node_list_head;
         PortfolioNode *temp_node;
         double total_portfolio_value = 0;
@@ -953,7 +951,6 @@ void PortfolioAccount::plot_portfolio_trend() {
             total_portfolio_value +=  current_node->share_count * get_stock_value(current_node->stock_symbol);
             current_node = current_node->next;
         }
-        portfolio_info_file.close();
 
         // Set current value to last index in arrays.
         double unix_now = (double) time(0);
