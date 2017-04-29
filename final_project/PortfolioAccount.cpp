@@ -900,15 +900,18 @@ void PortfolioAccount::plot_portfolio_trend() {
         std::string date_temp;
         double stock_value_temp, cash_balance_temp;
         int iter = 0;
+        // Reset file seek to start.
+        std::fseek(portfolio_value_history_file, 0, SEEK_SET);
         while (getline(portfolio_value_history_file, line)) {
             std::istringstream ss(line);
             ss >> date_temp >> stock_value_temp >> cash_balance_temp;
 
-            x_labels[iter] = date_temp;
-            plot_values[iter] = stock_value_temp + cash_balance_temp;
+            *(x_labels + iter) = date_temp;
+            *(plot_values + iter) = stock_value_temp + cash_balance_temp;
 
             iter++;
         }
+        std::cout << iter << std::endl;
 
         mxArray* PLOT = mxCreateDoubleMatrix(line_count, 1, mxREAL);
         std::memcpy((void *) mxGetPr(PLOT), (void *) plot_values, sizeof(double) * line_count);
