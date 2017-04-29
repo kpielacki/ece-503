@@ -901,7 +901,8 @@ void PortfolioAccount::plot_portfolio_trend() {
         double stock_value_temp, cash_balance_temp;
         int iter = 0;
         // Reset file seek to start.
-        std::fseek(portfolio_value_history_file, 0, SEEK_SET);
+        portfolio_value_history_file.clear();
+        portfolio_value_history_file.seekg(0, std::ios::beg);
         while (getline(portfolio_value_history_file, line)) {
             std::istringstream ss(line);
             ss >> date_temp >> stock_value_temp >> cash_balance_temp;
@@ -919,6 +920,9 @@ void PortfolioAccount::plot_portfolio_trend() {
 
         // Open Matlab figure.
         engEvalString(m_pEngine, "figure();");
+        // Format y-axis to zero min and US dollar units.
+        engEvalString(m_pEngine, "ylim([0 inf]); ylabel('Portfolio Value'); ytickformat('usd')");
+        engEvalString(m_pEngine, "xlabel('Date Time');");
         // Plot portfolio values trend.
         engEvalString(m_pEngine, "plot(plot_values_y, 'g'), grid minor, title('Portfolio Value Trend')");
         // Â» labels = {'A' 'B' 'C'};
