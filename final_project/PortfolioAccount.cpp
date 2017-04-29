@@ -976,6 +976,8 @@ void PortfolioAccount::plot_portfolio_trend() {
         engEvalString(m_pEngine, "xlabel('Date Time'); datetick('x','yyyy-mm-dd HH:MM:SS','keepticks'); xtickangle(45)");
         // Format y-axis to zero min and US dollar units.
         engEvalString(m_pEngine, "ylim([0 inf]); ylabel('Portfolio Value'); ytickformat('usd')");
+        // Remove space between axis and plotted line.
+        engEvalString(m_pEngine, "axis tight");
         system("pause");
 
         // Close Matlab engine.
