@@ -944,6 +944,8 @@ void PortfolioAccount::plot_portfolio_trend() {
         }
 
         // Add current porfolio value to trend.
+        std::ofstream portfolio_info_file;
+        portfolio_info_file.open(portfolio_info_filename.c_str());
         PortfolioNode *current_node = node_list_head;
         PortfolioNode *temp_node;
         double total_portfolio_value = 0;
@@ -973,7 +975,7 @@ void PortfolioAccount::plot_portfolio_trend() {
         // Plot portfolio values trend.
         engEvalString(m_pEngine, "plot(plot_values_x, plot_values_y, 'g'), grid minor, title('Portfolio Value Trend')");
         // Format x-axis to datetime.
-        engEvalString(m_pEngine, "xlabel('Date Time'); datetick('x','yyyy-mm-dd HH:MM:SS','keepticks')");
+        engEvalString(m_pEngine, "xlabel('Date Time'); datetick('x','yyyy-mm-dd HH:MM:SS','keepticks'); xtickangle(45)");
         // Format y-axis to zero min and US dollar units.
         engEvalString(m_pEngine, "ylim([0 inf]); ylabel('Portfolio Value'); ytickformat('usd')");
         system("pause");
