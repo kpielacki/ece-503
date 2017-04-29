@@ -956,15 +956,16 @@ void PortfolioAccount::plot_portfolio_trend() {
         double unix_now = (double) time(0);
         *(x_labels + iter) = (unix_now / ml_datenum_div) + ml_datenum_add;
         *(plot_values + iter) = total_portfolio_value + get_cash_balance();
+        iter++;
 
         // Enter x_labels to Matlab variable.
-        mxArray* LABELS = mxCreateDoubleMatrix(iter + 1, 1, mxREAL);
-        std::memcpy((void *) mxGetPr(LABELS), (void *) x_labels, sizeof(double) * iter + 1);
+        mxArray* LABELS = mxCreateDoubleMatrix(iter, 1, mxREAL);
+        std::memcpy((void *) mxGetPr(LABELS), (void *) x_labels, sizeof(double) * iter);
         engPutVariable(m_pEngine, "plot_values_x", LABELS);
 
         // Enter y_labels to Matlab variable.
-        mxArray* PLOT = mxCreateDoubleMatrix(iter + 1, 1, mxREAL);
-        std::memcpy((void *) mxGetPr(PLOT), (void *) plot_values, sizeof(double) * iter + 1);
+        mxArray* PLOT = mxCreateDoubleMatrix(iter, 1, mxREAL);
+        std::memcpy((void *) mxGetPr(PLOT), (void *) plot_values, sizeof(double) * iter);
         engPutVariable(m_pEngine, "plot_values_y", PLOT);
 
         // Open Matlab figure.
