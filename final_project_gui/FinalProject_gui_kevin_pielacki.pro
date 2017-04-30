@@ -26,12 +26,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     accountselection.cpp \
-    bankaccountselection.cpp
+    bankaccountselection.cpp \
+    Account_kevin_pielacki.cpp \
+    BankAccount_kevin_pielacki.cpp \
+    date_str_kevin_pielacki.cpp \
+    PortfolioAccount_kevin_pielacki.cpp \
+    time_str.cpp \
+    checking_balance_window.cpp \
+    bank_transaction_prompt.cpp
 
 HEADERS  += mainwindow.h \
     accountselection.h \
-    bankaccountselection.h
+    bankaccountselection.h \
+    Account_kevin_pielacki.h \
+    BankAccount_kevin_pielacki.h \
+    date_str_kevin_pielacki.h \
+    PortfolioAccount_kevin_pielacki.h \
+    PortfolioNode_kevin_pielacki.h \
+    time_str_kevin_pielacki.h \
+    checking_balance_window.h \
+    bank_transaction_prompt.h
 
 FORMS    += mainwindow.ui \
     accountselection.ui \
-    bankaccountselection.ui
+    bankaccountselection.ui \
+    checking_balance_window.ui \
+    bank_transaction_prompt.ui

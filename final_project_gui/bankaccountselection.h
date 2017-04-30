@@ -22,6 +22,14 @@ public:
 private slots:
     void on_bank_return_button_released();
 
+    void on_view_account_balance_button_released();
+
+    void on_print_history_button_released();
+
+    void on_deposit_button_released();
+
+    void on_withdraw_button_released();
+
 private:
     Ui::BankAccountSelection *ui;
 };
