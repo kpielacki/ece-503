@@ -26,6 +26,10 @@ private slots:
 
     void on_stock_prices_button_released();
 
+    void on_transaction_history_button_released();
+
+    void on_sort_select_button_released();
+
 private:
     Ui::PortfolioAccountSelection *ui;
 };

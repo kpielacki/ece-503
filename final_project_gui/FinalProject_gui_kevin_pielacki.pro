@@ -51,7 +51,8 @@ HEADERS  += mainwindow.h \
     bank_transaction_prompt.h \
     portfolioaccountselection.h \
     stockvaluewindow.h \
-    sortselectionwindow.h
+    sortselectionwindow.h \
+    sort_select_var.h
 
 FORMS    += mainwindow.ui \
     accountselection.ui \
