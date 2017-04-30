@@ -78,3 +78,10 @@ void PortfolioAccountSelection::on_sell_shares_button_released()
     buy_sell_window_obj.transaction_type = 2;
     buy_sell_window_obj.exec();
 }
+
+void PortfolioAccountSelection::on_graph_button_released()
+{
+    PortfolioAccount portfolio(username);
+    portfolio.set_sort_method(sort_method);
+    portfolio.plot_portfolio_trend();
+}

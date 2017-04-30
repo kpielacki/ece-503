@@ -34,6 +34,8 @@ private slots:
 
     void on_sell_shares_button_released();
 
+    void on_graph_button_released();
+
 private:
     Ui::PortfolioAccountSelection *ui;
 };

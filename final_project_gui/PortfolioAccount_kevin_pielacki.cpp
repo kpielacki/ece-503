@@ -903,6 +903,8 @@ void PortfolioAccount::sell_shares(std::string stock_symbol, int share_sale_coun
 
 
 void PortfolioAccount::plot_portfolio_trend() {
+    std::cout << "Having issues getting Matlab working with my version of QT due to architecture difference." << std::endl;
+    std::cout << "The CLI version has plotting capability." << std::endl;
 //    Engine *m_pEngine;
 
 //    m_pEngine = engOpen(NULL);
