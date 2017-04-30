@@ -762,9 +762,7 @@ void PortfolioAccount::buy_shares(std::string stock_symbol, int share_purchase_c
 
     // If valid transaction prompt user to confirm.
     if (valid_transaction) {
-        std::string user_confirmation;
-        printf("You wish to buy %d %s shares at $%.2f per share totaling $%.2f, enter \"yes\" to continue: ", share_purchase_count, stock_symbol.c_str(), current_share_price, purchase_price);
-        std::cin >> user_confirmation;
+        std::string user_confirmation = "yes";
 
         // Deduct the cost from current cash balance and add new stock purchase to doubly linked list.
         if (user_confirmation == "yes") {
@@ -864,9 +862,7 @@ void PortfolioAccount::sell_shares(std::string stock_symbol, int share_sale_coun
         double sale_price = share_sale_count * current_share_price;
         double new_balance = get_cash_balance() + sale_price;
 
-        std::string user_confirmation;
-        printf("You wish to sell %d %s shares at $%.2f per share totaling $%.2f, enter \"yes\" to continue: ", share_sale_count, stock_symbol.c_str(), current_share_price, sale_price);
-        std::cin >> user_confirmation;
+        std::string user_confirmation = "yes";
 
         // Deduct the cost from current cash balance and add new stock purchase to doubly linked list.
         if (user_confirmation == "yes") {

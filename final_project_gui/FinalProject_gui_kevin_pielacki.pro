@@ -36,7 +36,8 @@ SOURCES += main.cpp\
     bank_transaction_prompt.cpp \
     portfolioaccountselection.cpp \
     stockvaluewindow.cpp \
-    sortselectionwindow.cpp
+    sortselectionwindow.cpp \
+    buy_sell_window.cpp
 
 HEADERS  += mainwindow.h \
     accountselection.h \
@@ -52,7 +53,8 @@ HEADERS  += mainwindow.h \
     portfolioaccountselection.h \
     stockvaluewindow.h \
     sortselectionwindow.h \
-    sort_select_var.h
+    sort_select_var.h \
+    buy_sell_window.h
 
 FORMS    += mainwindow.ui \
     accountselection.ui \
@@ -61,4 +63,5 @@ FORMS    += mainwindow.ui \
     bank_transaction_prompt.ui \
     portfolioaccountselection.ui \
     stockvaluewindow.ui \
-    sortselectionwindow.ui
+    sortselectionwindow.ui \
+    buy_sell_window.ui

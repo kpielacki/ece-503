@@ -30,6 +30,10 @@ private slots:
 
     void on_sort_select_button_released();
 
+    void on_buy_shares_button_released();
+
+    void on_sell_shares_button_released();
+
 private:
     Ui::PortfolioAccountSelection *ui;
 };

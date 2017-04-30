@@ -4,6 +4,7 @@
 #include "stockvaluewindow.h"
 #include "sort_select_var.h"
 #include "sortselectionwindow.h"
+#include "buy_sell_window.h"
 #include <iostream>
 
 int sort_method = 2;
@@ -58,4 +59,22 @@ void PortfolioAccountSelection::on_sort_select_button_released()
 {
     SortSelectionWindow sort_selection_window;
     sort_selection_window.exec();
+}
+
+void PortfolioAccountSelection::on_buy_shares_button_released()
+{
+    buy_sell_window buy_sell_window_obj;
+    buy_sell_window_obj.username = username;
+    // Set type for purchase.
+    buy_sell_window_obj.transaction_type = 1;
+    buy_sell_window_obj.exec();
+}
+
+void PortfolioAccountSelection::on_sell_shares_button_released()
+{
+    buy_sell_window buy_sell_window_obj;
+    buy_sell_window_obj.username = username;
+    // Set type for sale.
+    buy_sell_window_obj.transaction_type = 2;
+    buy_sell_window_obj.exec();
 }
