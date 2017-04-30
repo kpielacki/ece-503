@@ -33,7 +33,10 @@ SOURCES += main.cpp\
     PortfolioAccount_kevin_pielacki.cpp \
     time_str.cpp \
     checking_balance_window.cpp \
-    bank_transaction_prompt.cpp
+    bank_transaction_prompt.cpp \
+    portfolioaccountselection.cpp \
+    stockvaluewindow.cpp \
+    sortselectionwindow.cpp
 
 HEADERS  += mainwindow.h \
     accountselection.h \
@@ -45,10 +48,16 @@ HEADERS  += mainwindow.h \
     PortfolioNode_kevin_pielacki.h \
     time_str_kevin_pielacki.h \
     checking_balance_window.h \
-    bank_transaction_prompt.h
+    bank_transaction_prompt.h \
+    portfolioaccountselection.h \
+    stockvaluewindow.h \
+    sortselectionwindow.h
 
 FORMS    += mainwindow.ui \
     accountselection.ui \
     bankaccountselection.ui \
     checking_balance_window.ui \
-    bank_transaction_prompt.ui
+    bank_transaction_prompt.ui \
+    portfolioaccountselection.ui \
+    stockvaluewindow.ui \
+    sortselectionwindow.ui

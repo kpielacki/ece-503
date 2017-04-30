@@ -1,6 +1,13 @@
+# Result Text File #
+Place the result text files in the executable directory of QT otherwiseit's viewed as missing and you
+will no be able to make any purchases, sales, or view stock values. Example directory below.
 
+This may not appear until the code is compiled by QT.
 
-# Envirement Variables #
+C:\Users\ekevpie\Documents\build-FinalProject_gui_kevin_pielacki-Desktop_Qt_5_9_0_MinGW_32bit-Debug
+<Project Directory Setting>\build-FinalProject_gui_kevin_pielacki-Desktop_Qt_5_9_0_MinGW_32bit-Debug
+
+# Environment Variables #
 Set Visual Studio Envirement Variable to Matlab Path
 PATH=C:\Program Files\MATLAB\R2017a\bin\win64
 

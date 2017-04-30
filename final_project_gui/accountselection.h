@@ -25,6 +25,8 @@ private slots:
 
     void on_bank_account_button_released();
 
+    void on_stock_account_button_released();
+
 private:
     Ui::AccountSelection *ui;
 };

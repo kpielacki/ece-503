@@ -1,6 +1,7 @@
 #include "accountselection.h"
 #include "ui_accountselection.h"
 #include "bankaccountselection.h"
+#include "portfolioaccountselection.h"
 #include <QString>
 #include <cstring>
 #include <string>
@@ -34,4 +35,11 @@ void AccountSelection::on_bank_account_button_released() {
     BankAccountSelection bank_account_selection_window;
     bank_account_selection_window.username = AccountSelection::username;
     bank_account_selection_window.exec();
+}
+
+void AccountSelection::on_stock_account_button_released()
+{
+    PortfolioAccountSelection portfolio_account_selection_window;
+    portfolio_account_selection_window.username = AccountSelection::username;
+    portfolio_account_selection_window.exec();
 }

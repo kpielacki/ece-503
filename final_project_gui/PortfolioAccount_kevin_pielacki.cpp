@@ -551,6 +551,9 @@ void PortfolioAccount::print_portfolio_desc() {
         }
         printf("%-28s$%-13.2f\n", "Total Value:", current_total_value_all);
 
+        // QT doesn't print printf statements until cout is used.
+        std::cout << std::endl;
+
     } else {
         std::cout << "No portfolio information found." << std::endl;
     }
@@ -582,6 +585,8 @@ void PortfolioAccount::print_portfolio_asc() {
             i--;
         }
         printf("%-28s$%-13.2f\n", "Total Value:", current_total_value_all);
+        // QT doesn't print printf statements until cout is used.
+        std::cout << std::endl;
     } else {
         std::cout << "No portfolio information found." << std::endl;
     }
@@ -663,6 +668,8 @@ void PortfolioAccount::display_stock_value(std::string stock_symbol_in) {
             }
         }
     }
+    // QT doesn't print printf statements until cout is used.
+    std::cout << std::endl;
 
     // Tell user when cannot find entered stock symbol.
     if (!found) {
@@ -1010,4 +1017,7 @@ void PortfolioAccount::print_transaction_history() {
         printf("%-12s%-16s%-12d$%-15.2f$%-15.2f%-26s\n", event.c_str(), stock_symbol.c_str(), stock_count, price_per_share, total_value, current_time.c_str());
     }
     portfolio_transaction_history_file.close();
+
+    // QT doesn't print printf statements until cout is used.
+    std::cout << std::endl;
 }

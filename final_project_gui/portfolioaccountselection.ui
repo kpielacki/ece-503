@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PortfolioAccountSelection</class>
+ <widget class="QDialog" name="PortfolioAccountSelection">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>195</width>
+    <height>298</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>168</width>
+     <height>279</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="header_label">
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Portfolio Account Options&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="stock_prices_button">
+      <property name="text">
+       <string>Stock Prices</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="print_portfoio_asc_button">
+      <property name="text">
+       <string>Print Portfolio (Asc)</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="print_portfoio_desc_button">
+      <property name="text">
+       <string>Print Portfolio (Desc)</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="buy_shares_button">
+      <property name="text">
+       <string>Buy Shares</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="sell_shares_button">
+      <property name="text">
+       <string>Sell Shares</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="graph_button">
+      <property name="text">
+       <string>View Portfolio Graph</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="transaction_history_button">
+      <property name="text">
+       <string>View Transaction History</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="sort_select_button">
+      <property name="text">
+       <string>Select Sorting Method</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="return_button">
+      <property name="text">
+       <string>Return</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
